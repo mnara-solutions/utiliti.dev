@@ -38,5 +38,5 @@ Deployment is done automatically when the PR is merged via GitHub Actions.
 ## Todo
  - [ ] Better local development instructions since it requires wrangler which requires a cloudflare account.
  - [ ] Remove mistakenly committed .idea folder
- - [ ] Add prettier and a GitHub action to enforce it
+ - [ ] Add a GitHub action to enforce prettier
  - [ ] Add a GitHub action to enforce linting
