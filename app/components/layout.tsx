@@ -4,7 +4,7 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Outlet } from "@remix-run/react";
+import { Link, Outlet } from "@remix-run/react";
 import Sidebar from "~/components/sidebar";
 import { Dialog, Transition } from "@headlessui/react";
 
@@ -17,13 +17,13 @@ export default function Layout() {
         <div className="contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pt-4 lg:pb-8 lg:dark:border-white/10 xl:w-80">
           {/* desktop logo */}
           <div className="hidden lg:flex">
-            <a
+            <Link
+              to="/"
               aria-label="Home"
-              href="/"
               className="text-white font-mono text-xl"
             >
               Utiliti
-            </a>
+            </Link>
           </div>
 
           {/* top bar */}
@@ -64,13 +64,13 @@ export default function Layout() {
                   />
                 )}
               </button>
-              <a
+              <Link
+                to="/"
                 aria-label="Home"
-                href="/"
                 className="text-white font-mono text-xl"
               >
                 Utiliti
-              </a>
+              </Link>
             </div>
           </div>
 

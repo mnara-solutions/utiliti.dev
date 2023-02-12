@@ -4,7 +4,12 @@ export default function Index() {
       <h1>Utiliti</h1>
       <p className="lead">
         A collection of{" "}
-        <a href="https://github.com/mnara-solutions/utiliti.dev">open source</a>{" "}
+        <a
+          href="https://github.com/mnara-solutions/utiliti.dev"
+          target="_blank"
+        >
+          open source
+        </a>{" "}
         utilities.
       </p>
       <h2>Standards</h2>
