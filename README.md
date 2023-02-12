@@ -1,11 +1,22 @@
-# utiliti.dev
+# Utiliti
 
 A collection of open source utilities hosted online at [utiliti.dev](https://utiliti.dev).
 
 Our promise:
- - A set of fast and well-designed utilities
+ - A set of fast and well-designed utilities.
  - No data will be sent back to us, except for private notes.
- - No tracking
+ - No tracking.
+
+## Tech Stack
+- Built on top of [Remix](https://remix.run)
+- Styled with [Tailwind](https://tailwindcss.com/)
+- Hosted on [Cloudflare Pages](https://pages.cloudflare.com/) + Functions
+
+Running a framework like Remix on Cloudflare Pages means that we utilize edge functions to deliver a server side rendered initial page. This increases the cost of hosting a project like this, but our users get a performance benefit and more importantly it unlocks more powerful utilities like private notes. 
+
+## Monetization
+
+Each page will have a small, non-intrusive advertisement to cover the cost of hosting the project on Cloudflare.
 
 ## Local Development
  
@@ -23,3 +34,9 @@ Open up [http://127.0.0.1:8788](http://127.0.0.1:8788) and you should be ready t
 ## Deployment
 
 Deployment is done automatically when the PR is merged via GitHub Actions.
+
+## Todo
+ - [ ] Better local development instructions since it requires wrangler which requires a cloudflare account.
+ - [ ] Remove mistakenly committed .idea folder
+ - [ ] Add prettier and a GitHub action to enforce it
+ - [ ] Add a GitHub action to enforce linting
