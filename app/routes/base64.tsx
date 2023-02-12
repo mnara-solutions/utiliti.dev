@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
 import { copyText } from "~/utils/copy";
+import * as b64 from "base64-encoding";
 
 export const meta: MetaFunction = () => ({
   title: "Base64 | Utiliti",
@@ -14,7 +15,6 @@ export const meta: MetaFunction = () => ({
 
 /**
  * TODO:
- *  - Breaks when characters extend the 8-bit ascii character range ("✓ à la mode")
  *  - Add options for URL Safe output (Base64URL)
  *  - Add option to download output
  * @constructor
@@ -24,13 +24,17 @@ export default function Base64() {
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const encode = useCallback(() => {
+  const encode = useCallback(async () => {
     if (!inputRef.current) {
       return;
     }
 
     try {
-      setOutput(btoa(inputRef.current.value || ""));
+      const encoder = await new b64.Base64Encoder({ url: false }).optimize();
+
+      setOutput(
+        encoder.encode(new TextEncoder().encode(inputRef.current.value || ""))
+      );
       setError(null);
     } catch (e) {
       setError((e as DOMException).message);
@@ -38,13 +42,17 @@ export default function Base64() {
     }
   }, [setOutput]);
 
-  const decode = useCallback(() => {
+  const decode = useCallback(async () => {
     if (!inputRef.current) {
       return;
     }
 
     try {
-      setOutput(atob(inputRef.current.value || ""));
+      const decoder = await new b64.Base64Decoder().optimize();
+
+      setOutput(
+        new TextDecoder().decode(decoder.decode(inputRef.current.value || ""))
+      );
       setError(null);
     } catch (e) {
       setError((e as DOMException).message);
@@ -96,7 +104,7 @@ export default function Base64() {
                 type="file"
                 id="file-input"
                 accept="text/plain"
-                style={{ display: "none" }}
+                className="hidden"
                 onChange={(e) => {
                   const files = e.target.files || [];
 
@@ -160,9 +168,7 @@ export default function Base64() {
                 <button
                   type="button"
                   className="p-2 rounded cursor-pointer sm:ml-auto text-zinc-400 hover:text-white hover:bg-zinc-600"
-                  onClick={() => {
-                    copyText(output || "");
-                  }}
+                  onClick={() => copyText(output || "")}
                 >
                   <DocumentDuplicateIcon
                     className="h-5 w-5"

@@ -17,11 +17,11 @@ const navigation = [
     children: [
       {
         name: "Base64",
-        url: "/base64/",
+        url: "/base64",
       },
       {
         name: "JSON",
-        url: "/json/",
+        url: "/json",
       },
     ],
   },

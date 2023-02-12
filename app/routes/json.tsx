@@ -56,9 +56,7 @@ export default function JSONEncoder() {
             <button
               type="button"
               className="p-2 rounded cursor-pointer sm:ml-auto text-zinc-400 hover:text-white hover:bg-zinc-600"
-              onClick={() => {
-                copyText(inputRef.current?.value || "");
-              }}
+              onClick={() => copyText(inputRef.current?.value || "")}
             >
               <DocumentDuplicateIcon className="h-5 w-5" aria-hidden="true" />
               <span className="sr-only">Copy to clipboard</span>
@@ -89,7 +87,7 @@ export default function JSONEncoder() {
                 type="file"
                 id="file-input"
                 accept="text/plain"
-                style={{ display: "none" }}
+                className="hidden"
                 onChange={(e) => {
                   const files = e.target.files || [];
 
