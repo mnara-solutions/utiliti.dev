@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from "react";
 import type { MetaFunction } from "@remix-run/cloudflare";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
+import { copyText } from "~/utils/copy";
 
 export const meta: MetaFunction = () => ({
   title: "Base64 | Utiliti",
@@ -39,6 +40,9 @@ export default function Index() {
             <button
               type="button"
               className="p-2 rounded cursor-pointer sm:ml-auto text-zinc-400 hover:text-white hover:bg-zinc-600"
+              onClick={() => {
+                copyText(inputRef.current?.value || "");
+              }}
             >
               <DocumentDuplicateIcon className="h-5 w-5" aria-hidden="true" />
               <span className="sr-only">Copy to clipboard</span>
@@ -80,6 +84,9 @@ export default function Index() {
               <button
                 type="button"
                 className="p-2 rounded cursor-pointer sm:ml-auto text-zinc-400 hover:text-white hover:bg-zinc-600"
+                onClick={() => {
+                  copyText(output || "");
+                }}
               >
                 <DocumentDuplicateIcon className="h-5 w-5" aria-hidden="true" />
                 <span className="sr-only">Copy to clipboard</span>
