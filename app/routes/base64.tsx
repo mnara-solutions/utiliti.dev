@@ -1,27 +1,20 @@
 import Button from "~/components/button";
 import { useCallback, useRef, useState } from "react";
 import type { MetaFunction } from "@remix-run/cloudflare";
-import {
-  DocumentDuplicateIcon,
-  PaperClipIcon,
-} from "@heroicons/react/24/outline";
+import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
 import { copyText } from "~/utils/copy";
 import * as b64 from "base64-encoding";
+import ReadFile from "~/components/read-file";
 
 export const meta: MetaFunction = () => ({
   title: "Base64 | Utiliti",
 });
 
-/**
- * TODO:
- *  - Add options for URL Safe output (Base64URL)
- *  - Add option to download output
- * @constructor
- */
 export default function Base64() {
   const [output, setOutput] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [urlSafe, setUrlSafe] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const encode = useCallback(async () => {
@@ -30,7 +23,7 @@ export default function Base64() {
     }
 
     try {
-      const encoder = await new b64.Base64Encoder({ url: false }).optimize();
+      const encoder = await new b64.Base64Encoder({ url: urlSafe }).optimize();
 
       setOutput(
         encoder.encode(new TextEncoder().encode(inputRef.current.value || ""))
@@ -40,7 +33,7 @@ export default function Base64() {
       setError((e as DOMException).message);
       setOutput(null);
     }
-  }, [setOutput]);
+  }, [setOutput, urlSafe]);
 
   const decode = useCallback(async () => {
     if (!inputRef.current) {
@@ -93,49 +86,33 @@ export default function Base64() {
             required={true}
           ></textarea>
         </div>
+        <div className="flex px-5 py-2 border-t border-gray-600 bg-zinc-800/50">
+          <div className="flex items-center h-5 w-5">
+            <input
+              id="url-safe"
+              type="checkbox"
+              checked={urlSafe}
+              className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
+              onChange={(e) => setUrlSafe(e.target.checked)}
+            />
+          </div>
+          <label
+            htmlFor="url-safe"
+            className="ml-2 text-sm font-medium text-gray-300"
+          >
+            URL Safe
+          </label>
+        </div>
         <div className="flex items-center justify-between px-3 py-2 border-t border-gray-600">
           <div>
-            <button
-              type="button"
-              className="inline-flex justify-center p-2 rounded cursor-pointer text-gray-400 hover:text-white hover:bg-zinc-600"
-              onClick={() => document.getElementById("file-input")?.click()}
-            >
-              <input
-                type="file"
-                id="file-input"
-                accept="text/plain"
-                className="hidden"
-                onChange={(e) => {
-                  const files = e.target.files || [];
-
-                  // stop, no file selected
-                  if (files.length === 0) {
-                    return;
-                  }
-
-                  const file = files[0];
-                  const maxAllowedSize = 10 * 1024 * 1024;
-
-                  // stop if we are passed a certain limit
-                  if (file.size > maxAllowedSize) {
-                    return;
-                  }
-
-                  // read file
-                  const reader = new FileReader();
-                  reader.addEventListener("load", function (e) {
-                    const text = (e.target?.result || "").toString();
-
-                    if (inputRef.current) {
-                      inputRef.current.value = text;
-                    }
-                  });
-                  reader.readAsText(file);
-                }}
-              />
-              <PaperClipIcon className="w-5 h-5" />
-              <span className="sr-only">Load file</span>
-            </button>
+            <ReadFile
+              accept="text/plain"
+              onLoad={(text) => {
+                if (inputRef.current) {
+                  inputRef.current.value = text;
+                }
+              }}
+            />
           </div>
 
           <div className="flex gap-x-2">

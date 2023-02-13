@@ -1,15 +1,26 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import {
   Bars3BottomLeftIcon,
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Link, Outlet } from "@remix-run/react";
+import { Link, Outlet, useLocation } from "@remix-run/react";
 import Sidebar from "~/components/sidebar";
 import { Dialog, Transition } from "@headlessui/react";
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+  const prevPath = useRef(location.pathname);
+
+  // if url changes while the sidebar is open, close the sidebar
+  useEffect(() => {
+    if (sidebarOpen && prevPath.current !== location.pathname) {
+      setSidebarOpen(false);
+    }
+
+    prevPath.current = location.pathname;
+  }, [location.pathname, sidebarOpen, setSidebarOpen]);
 
   return (
     <div className="lg:ml-72 xl:ml-80">

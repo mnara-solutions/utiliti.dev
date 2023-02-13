@@ -13,20 +13,18 @@ export default function Index() {
         utilities.
       </p>
       <h2>Standards</h2>
-      <p>
-        <ul>
-          <li>A set of fast and well-designed utilities.</li>
-          <li>
-            Use local computation where possible so that no data is ever sent
-            back to us.
-          </li>
-          <li>
-            If data needs to be sent to us (private notes), it will be
-            end-to-end encrypted.
-          </li>
-          <li>No tracking.</li>
-        </ul>
-      </p>
+      <ul>
+        <li>A set of fast and well-designed utilities.</li>
+        <li>
+          All compute will be done in-browser so that no data is sent back to
+          us.
+        </li>
+        <li>
+          If data needs to be sent to us (private notes), it will be end-to-end
+          encrypted.
+        </li>
+        <li>No tracking.</li>
+      </ul>
     </>
   );
 }

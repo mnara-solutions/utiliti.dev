@@ -1,12 +1,10 @@
 import Button from "~/components/button";
 import { useCallback, useRef, useState } from "react";
 import type { MetaFunction } from "@remix-run/cloudflare";
-import {
-  DocumentDuplicateIcon,
-  PaperClipIcon,
-} from "@heroicons/react/24/outline";
+import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
 import { copyText } from "~/utils/copy";
+import ReadFile from "~/components/read-file";
 
 export const meta: MetaFunction = () => ({
   title: "JSON | Utiliti",
@@ -78,47 +76,14 @@ export default function JSONEncoder() {
         </div>
         <div className="flex items-center justify-between px-3 py-2 border-t border-gray-600">
           <div>
-            <button
-              type="button"
-              className="inline-flex justify-center p-2 rounded cursor-pointer text-gray-400 hover:text-white hover:bg-zinc-600"
-              onClick={() => document.getElementById("file-input")?.click()}
-            >
-              <input
-                type="file"
-                id="file-input"
-                accept="text/plain"
-                className="hidden"
-                onChange={(e) => {
-                  const files = e.target.files || [];
-
-                  // stop, no file selected
-                  if (files.length === 0) {
-                    return;
-                  }
-
-                  const file = files[0];
-                  const maxAllowedSize = 10 * 1024 * 1024;
-
-                  // stop if we are passed a certain limit
-                  if (file.size > maxAllowedSize) {
-                    return;
-                  }
-
-                  // read file
-                  const reader = new FileReader();
-                  reader.addEventListener("load", function (e) {
-                    const text = (e.target?.result || "").toString();
-
-                    if (inputRef.current) {
-                      inputRef.current.value = text;
-                    }
-                  });
-                  reader.readAsText(file);
-                }}
-              />
-              <PaperClipIcon className="w-5 h-5" />
-              <span className="sr-only">Load file</span>
-            </button>
+            <ReadFile
+              accept="text/plain,application/JSON"
+              onLoad={(text) => {
+                if (inputRef.current) {
+                  inputRef.current.value = text;
+                }
+              }}
+            />
           </div>
           <div className="flex gap-x-2">
             <Button onClick={encode} label="encode" />
