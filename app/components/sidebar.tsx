@@ -23,6 +23,10 @@ const navigation = [
         name: "JSON",
         url: "/json",
       },
+      {
+        name: "URL",
+        url: "/url",
+      },
     ],
   },
 ];
@@ -40,12 +44,7 @@ export default function Sidebar() {
               {it.children.map((c) => (
                 <li key={c.name} className="relative">
                   {location.pathname === c.url && (
-                    <div
-                      className="absolute h-6 w-px bg-orange-500"
-                      style={{
-                        left: "-1px",
-                      }}
-                    ></div>
+                    <div className="absolute h-6 w-px bg-orange-500 -left-px"></div>
                   )}
 
                   <Link
