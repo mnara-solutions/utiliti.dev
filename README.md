@@ -42,7 +42,6 @@ Deployment is done automatically when the PR is merged via GitHub Actions.
 - [ ] Add JSON "prettier" output
 - [ ] Simple editor with line numbers for encode & decoder IO
 - [ ] Prevent private note from ever posting plaintext to backend if javascript is not enabled
-- [ ] Error pages (404 / 500)
 - [ ] Favicon + icon
 - [ ] Tooltip for icon buttons + copy confirmation
 - [ ] Better local development instructions since it requires wrangler which requires a cloudflare account.

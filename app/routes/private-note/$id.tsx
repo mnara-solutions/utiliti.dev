@@ -2,7 +2,7 @@ import type { LoaderFunction } from "@remix-run/router";
 import { redirect } from "@remix-run/router";
 import type { NoteMetadata } from "~/routes/private-note/common";
 import { Link, useLoaderData, useLocation } from "@remix-run/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { decrypt } from "./aes";
 import { copyText } from "~/utils/copy";
 import {
@@ -10,11 +10,20 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import Security from "~/routes/private-note/security";
+import type { MetaFunction } from "@remix-run/cloudflare";
+import {
+  ArrowSmallLeftIcon,
+  ArrowSmallRightIcon,
+} from "@heroicons/react/24/solid";
 
 type LoaderData = {
   readonly note: { ciphertext: string; expiration: number } | null;
   readonly needsConfirmation?: boolean;
 };
+
+export const meta: MetaFunction = () => ({
+  title: "Private Note | Utiliti",
+});
 
 export const loader: LoaderFunction = async ({
   request,
@@ -82,22 +91,10 @@ export default function PrivateNote() {
 
         <div className="not-prose flex flex-col items-start gap-3">
           <Link
-            className="inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
+            className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
             to="/private-note/"
           >
-            <svg
-              viewBox="0 0 20 20"
-              fill="none"
-              aria-hidden="true"
-              className="mt-0.5 h-5 w-5 -ml-1 rotate-180"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m11.5 6.5 3 3.5m0 0-3 3.5m3-3.5h-9"
-              ></path>
-            </svg>
+            <ArrowSmallLeftIcon className="h-4 w-4 -ml-1" aria-hidden="true" />
             Back
           </Link>
         </div>
@@ -117,23 +114,14 @@ export default function PrivateNote() {
           </p>
           <div className="not-prose my-6">
             <Link
-              className="inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
+              className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
               to={`${location.pathname}?confirm=true${location.hash}`}
             >
               Show the note
-              <svg
-                viewBox="0 0 20 20"
-                fill="none"
+              <ArrowSmallRightIcon
+                className="h-4 w-4 -mr-1"
                 aria-hidden="true"
-                className="mt-0.5 h-5 w-5 -mr-1"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m11.5 6.5 3 3.5m0 0-3 3.5m3-3.5h-9"
-                ></path>
-              </svg>
+              />
             </Link>
           </div>
         </>

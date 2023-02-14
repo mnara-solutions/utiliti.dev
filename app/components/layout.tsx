@@ -4,11 +4,11 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Link, Outlet, useLocation } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import Sidebar from "~/components/sidebar";
 import { Dialog, Transition } from "@headlessui/react";
 
-export default function Layout() {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const prevPath = useRef(location.pathname);
@@ -108,7 +108,7 @@ export default function Layout() {
                 </div>
               </div>
             </div>
-            <Outlet />
+            {children}
           </article>
         </main>
       </div>
