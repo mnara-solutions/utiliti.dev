@@ -46,4 +46,5 @@ Deployment is done automatically when the PR is merged via GitHub Actions.
  - [ ] Remove mistakenly committed .idea folder
  - [ ] Add a GitHub action to enforce prettier
  - [ ] Add a GitHub action to enforce linting
+ - [ ] SEO
  - [ ] Make available offline as much as possible

@@ -3,7 +3,7 @@ import { redirect } from "@remix-run/router";
 import type { NoteMetadata } from "~/routes/private-note/common";
 import { Link, useLoaderData, useLocation } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { decrypt } from "~/utils/aes";
+import { decrypt } from "./aes";
 import { copyText } from "~/utils/copy";
 import {
   DocumentDuplicateIcon,

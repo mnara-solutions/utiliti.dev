@@ -94,7 +94,7 @@ export default function Layout() {
 
       <div className="relative px-4 pt-14 sm:px-6 lg:px-8">
         <main className="py-16">
-          <article className="prose max-w-none prose-invert">
+          <article className="prose prose-sm max-w-none prose-invert">
             <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
               <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#ea580c]/30 to-[#fdba74]/30 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] opacity-100">

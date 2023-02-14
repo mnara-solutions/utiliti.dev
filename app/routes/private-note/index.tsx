@@ -4,7 +4,7 @@ import type { FormEvent } from "react";
 import { useCallback, useRef, useState } from "react";
 import { Form, useActionData, useSubmit } from "@remix-run/react";
 import type { ActionFunction } from "@remix-run/router";
-import { encrypt } from "~/utils/aes";
+import { encrypt } from "./aes";
 import { createId, init } from "@paralleldrive/cuid2";
 import { noteExpiries } from "~/routes/private-note/common";
 import { copyText } from "~/utils/copy";
@@ -177,6 +177,25 @@ export default function Index() {
           </div>
         </div>
       </Form>
+      <h2>Security & Privacy</h2>
+      <p>
+        We aim to make private notes as secure as possible by taking the
+        following steps:
+      </p>
+      <ul>
+        <li>All data is encrypted in the browser before it is sent to us.</li>
+        <li>The encryption key is never sent to us.</li>
+        <li>
+          All the code is available on{" "}
+          <a
+            href="https://github.com/mnara-solutions/utiliti.dev/tree/main/app/routes/private-note"
+            target="_blank"
+          >
+            GitHub
+          </a>
+          .
+        </li>
+      </ul>
     </>
   );
 }
