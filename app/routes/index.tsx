@@ -7,6 +7,7 @@ export default function Index() {
         <a
           href="https://github.com/mnara-solutions/utiliti.dev"
           target="_blank"
+          rel="noreferrer"
         >
           open source
         </a>{" "}

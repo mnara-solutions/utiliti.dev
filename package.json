@@ -12,7 +12,8 @@
     "generate:css": "npx tailwindcss -i ./styles/tailwind.css -o ./app/tailwind.css",
     "start": "cross-env NODE_ENV=production npm run wrangler",
     "typecheck": "tsc",
-    "wrangler": "wrangler pages dev ./public -k PRIVATE_NOTES"
+    "wrangler": "wrangler pages dev ./public -k PRIVATE_NOTES",
+    "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --ignore-path .gitignore ."
   },
   "dependencies": {
     "@headlessui/react": "^1.7.10",

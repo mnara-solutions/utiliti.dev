@@ -12,6 +12,7 @@ import {
   DocumentDuplicateIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
+import Security from "~/routes/private-note/security";
 
 export const meta: MetaFunction = () => ({
   title: "Private Note | Utiliti",
@@ -47,6 +48,8 @@ export const action: ActionFunction = async ({ request, context }) => {
 
   return { id };
 };
+
+const Title = () => <h1>Private Notes</h1>;
 
 export default function Index() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -86,9 +89,11 @@ export default function Index() {
 
   if (created) {
     const output = `${window.location.origin}/private-note/${created}#${passwordRef.current}`;
+
     return (
       <>
-        <h1>Private Notes</h1>
+        <Title />
+
         <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
           <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600 font-bold">
             <div>Success</div>
@@ -104,14 +109,11 @@ export default function Index() {
             </div>
           </div>
           <div className="px-4 py-2 bg-zinc-800">
-            <label htmlFor="input" className="sr-only">
-              Your output
-            </label>
             <input
               type="text"
               className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
               readOnly={true}
-              value={output || ""}
+              value={output}
             />
           </div>
           <div className="flex px-3 py-2 border-t border-gray-600 rounded-b-lg text-sm items-center">
@@ -123,13 +125,21 @@ export default function Index() {
             {noteExpiries.find((it) => it.id === expiry)?.label}.
           </div>
         </div>
+
+        <h2>What's Next</h2>
+        <p>
+          You have created a private note that you can easily share with anyone
+          you want with the link above.
+        </p>
+
+        <Security />
       </>
     );
   }
 
   return (
     <>
-      <h1>Private Notes</h1>
+      <Title />
 
       <Form method="post" onSubmit={onSubmit}>
         <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
@@ -141,7 +151,7 @@ export default function Index() {
               id="input"
               name="input"
               ref={inputRef}
-              rows={4}
+              rows={10}
               className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
               placeholder="Write your note here..."
               required={true}
@@ -177,25 +187,7 @@ export default function Index() {
           </div>
         </div>
       </Form>
-      <h2>Security & Privacy</h2>
-      <p>
-        We aim to make private notes as secure as possible by taking the
-        following steps:
-      </p>
-      <ul>
-        <li>All data is encrypted in the browser before it is sent to us.</li>
-        <li>The encryption key is never sent to us.</li>
-        <li>
-          All the code is available on{" "}
-          <a
-            href="https://github.com/mnara-solutions/utiliti.dev/tree/main/app/routes/private-note"
-            target="_blank"
-          >
-            GitHub
-          </a>
-          .
-        </li>
-      </ul>
+      <Security />
     </>
   );
 }

@@ -1,15 +1,15 @@
 @media (min-width: 1024px) {
-    .prose :where(.prose>*):not(:where([class~=not-prose] *)) {
-        max-width: 40rem;
-        margin-left: auto;
-        margin-right: auto;
-    }
+  .prose :where(.prose > *):not(:where([class~="not-prose"] *)) {
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
-.prose :where(.prose>*):not(:where([class~=not-prose] *)) {
-    max-width: 50rem;
-    margin-left: calc(50% - min(50%, 33rem));
-    margin-right: calc(50% - min(50%, 33rem));
+.prose :where(.prose > *):not(:where([class~="not-prose"] *)) {
+  max-width: 50rem;
+  margin-left: calc(50% - min(50%, 33rem));
+  margin-right: calc(50% - min(50%, 33rem));
 }
 
 @tailwind base;
