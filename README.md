@@ -2,10 +2,11 @@
 
 A collection of open source utilities hosted online at [utiliti.dev](https://utiliti.dev).
 
-Our promise:
+## Standards
 
 - A set of fast and well-designed utilities.
-- No data will be sent back to us, except for private notes.
+- All compute will be done in-browser so that no data is sent back to us.
+- If data needs to be sent to us (private notes), it will be end-to-end encrypted.
 - No tracking.
 
 ## Tech Stack
