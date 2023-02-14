@@ -16,6 +16,7 @@
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@floating-ui/react": "^0.19.2",
     "@headlessui/react": "^1.7.10",
     "@heroicons/react": "^2.0.15",
     "@paralleldrive/cuid2": "^2.0.1",

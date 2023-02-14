@@ -1,10 +1,9 @@
 import type { ReactNode } from "react";
 import { useCallback, useRef, useState } from "react";
-import { copyText } from "~/utils/copy";
-import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
 import ReadFile from "~/components/read-file";
+import Copy from "~/components/copy";
 
 interface Props {
   readonly label: string;
@@ -51,14 +50,7 @@ export default function EncoderDecoder({
         <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600">
           <div className="font-bold">Input</div>
           <div>
-            <button
-              type="button"
-              className="p-2 rounded cursor-pointer sm:ml-auto text-zinc-400 hover:text-white hover:bg-zinc-600"
-              onClick={() => copyText(inputRef.current?.value || "")}
-            >
-              <DocumentDuplicateIcon className="h-5 w-5" aria-hidden="true" />
-              <span className="sr-only">Copy to clipboard</span>
-            </button>
+            <Copy content={inputRef.current?.value || ""} />
           </div>
         </div>
         <div className="px-4 py-2 bg-zinc-800">
@@ -68,7 +60,7 @@ export default function EncoderDecoder({
           <textarea
             id="input"
             ref={inputRef}
-            rows={4}
+            rows={10}
             className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
             placeholder="Paste in your content..."
             required={true}
@@ -117,17 +109,7 @@ export default function EncoderDecoder({
             <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600 font-bold">
               <div>Output</div>
               <div>
-                <button
-                  type="button"
-                  className="p-2 rounded cursor-pointer sm:ml-auto text-zinc-400 hover:text-white hover:bg-zinc-600"
-                  onClick={() => copyText(output || "")}
-                >
-                  <DocumentDuplicateIcon
-                    className="h-5 w-5"
-                    aria-hidden="true"
-                  />
-                  <span className="sr-only">Copy to clipboard</span>
-                </button>
+                <Copy content={output || ""} />
               </div>
             </div>
             <div className="px-4 py-2 bg-zinc-800 rounded-b-lg">
@@ -136,7 +118,7 @@ export default function EncoderDecoder({
               </label>
               <textarea
                 id="output"
-                rows={4}
+                rows={10}
                 className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
                 placeholder="Paste in your content..."
                 readOnly={true}

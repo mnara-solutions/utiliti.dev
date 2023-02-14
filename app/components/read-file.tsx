@@ -1,6 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useCallback } from "react";
 import { PaperClipIcon } from "@heroicons/react/24/outline";
+import IconButton from "~/components/icon-button";
 
 interface Props {
   readonly accept: string;
@@ -39,11 +40,13 @@ export default function ReadFile({ accept, onLoad }: Props) {
   );
 
   return (
-    <button
-      type="button"
-      className="inline-flex justify-center p-2 rounded cursor-pointer text-gray-400 hover:text-white hover:bg-zinc-600"
-      onClick={onButtonClick}
-    >
+    <>
+      <IconButton
+        icon={PaperClipIcon}
+        label="Load file"
+        onClick={onButtonClick}
+        tooltipPlacement="bottom"
+      />
       <input
         type="file"
         id="file-input"
@@ -51,8 +54,6 @@ export default function ReadFile({ accept, onLoad }: Props) {
         className="hidden"
         onChange={onChange}
       />
-      <PaperClipIcon className="w-5 h-5" />
-      <span className="sr-only">Load file</span>
-    </button>
+    </>
   );
 }
