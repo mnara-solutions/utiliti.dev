@@ -91,8 +91,8 @@ export default function EncoderDecoder({
             )}
           </div>
           <div className="flex gap-x-2">
-            <Button onClick={() => process(true)} label="encode" />
-            <Button onClick={() => process(false)} label="decode" />
+            <Button onClick={() => process(true)} label="Encode" />
+            <Button onClick={() => process(false)} label="Decode" />
           </div>
         </div>
       </div>

@@ -36,7 +36,14 @@ Open up [http://127.0.0.1:8788](http://127.0.0.1:8788) and you should be ready t
 Deployment is done automatically when the PR is merged via GitHub Actions.
 
 ## Todo
+ - [ ] Add JSON "prettier" output
+ - [ ] Simple editor with line numbers for encode & decoder IO
+ - [ ] Prevent private note from ever posting plaintext to backend if javascript is not enabled
+ - [ ] Error pages (404 / 500)
+ - [ ] Favicon + icon
+ - [ ] Tooltip for icon buttons + copy confirmation
  - [ ] Better local development instructions since it requires wrangler which requires a cloudflare account.
  - [ ] Remove mistakenly committed .idea folder
  - [ ] Add a GitHub action to enforce prettier
  - [ ] Add a GitHub action to enforce linting
+ - [ ] Make available offline as much as possible
