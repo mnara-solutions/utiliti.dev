@@ -6,11 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
-    defaults:
-      run:
-        working-directory: api
-
+  lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
