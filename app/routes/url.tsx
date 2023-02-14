@@ -20,6 +20,7 @@ export default function JSONEncoder() {
       encode={encode}
       decode={decode}
       showLoadFile={false}
+      rows={3}
     />
   );
 }

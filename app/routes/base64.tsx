@@ -41,6 +41,7 @@ export default function Base64() {
       encode={encode}
       decode={decode}
       showLoadFile={true}
+      rows={10}
       renderOptions={() => (
         <div className="flex px-5 py-2 border-t border-gray-600 bg-zinc-800/50">
           <div className="flex items-center h-5 w-5">

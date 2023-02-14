@@ -40,7 +40,6 @@ Deployment is done automatically when the PR is merged via GitHub Actions.
 ## Todo
 
 - [ ] Spinners when processing a large amount of data
-- [ ] Add JSON "prettier" output
 - [ ] Simple editor with line numbers for encode & decoder IO
 - [ ] Prevent private note from ever posting plaintext to backend if javascript is not enabled
 - [ ] Favicon + icon
@@ -48,3 +47,4 @@ Deployment is done automatically when the PR is merged via GitHub Actions.
 - [ ] Remove mistakenly committed .idea folder
 - [ ] SEO
 - [ ] Make available offline as much as possible
+- [ ] Temporarily store input in localStorage

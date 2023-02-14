@@ -4,6 +4,7 @@ import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
 import ReadFile from "~/components/read-file";
 import Copy from "~/components/copy";
+import ReadOnlyTextArea from "~/components/read-only-textarea";
 
 interface Props {
   readonly label: string;
@@ -11,6 +12,7 @@ interface Props {
   readonly decode: (text: string) => Promise<string>;
   readonly showLoadFile: Boolean;
   readonly renderOptions?: () => ReactNode;
+  readonly rows: number;
 }
 
 export default function EncoderDecoder({
@@ -19,6 +21,7 @@ export default function EncoderDecoder({
   decode,
   showLoadFile,
   renderOptions,
+  rows,
 }: Props) {
   const [output, setOutput] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -60,8 +63,8 @@ export default function EncoderDecoder({
           <textarea
             id="input"
             ref={inputRef}
-            rows={10}
-            className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+            rows={rows}
+            className="font-mono w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
             placeholder="Paste in your content..."
             required={true}
           ></textarea>
@@ -116,14 +119,7 @@ export default function EncoderDecoder({
               <label htmlFor="input" className="sr-only">
                 Your output
               </label>
-              <textarea
-                id="output"
-                rows={10}
-                className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
-                placeholder="Paste in your content..."
-                readOnly={true}
-                value={output || ""}
-              />
+              <ReadOnlyTextArea value={output || ""} />
             </div>
           </div>
         )}

@@ -10,6 +10,10 @@ const navigation = [
         name: "Private Notes",
         url: "/private-note/",
       },
+      {
+        name: "JSON",
+        url: "/json",
+      },
     ],
   },
   {
@@ -18,10 +22,6 @@ const navigation = [
       {
         name: "Base64",
         url: "/base64",
-      },
-      {
-        name: "JSON",
-        url: "/json",
       },
       {
         name: "URL",

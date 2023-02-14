@@ -146,7 +146,7 @@ export default function PrivateNote() {
             <textarea
               id="output"
               rows={10}
-              className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+              className="font-mono w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
               placeholder="Paste in your content..."
               readOnly={true}
               value={plainText}
