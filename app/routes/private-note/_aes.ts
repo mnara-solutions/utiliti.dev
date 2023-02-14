@@ -1,7 +1,6 @@
+const ALGORITHM = "AES-GCM";
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
-
-const ALGORITHM = "AES-GCM";
 
 export async function encrypt(
   plaintext: string,

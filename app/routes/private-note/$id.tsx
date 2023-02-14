@@ -1,20 +1,21 @@
 import type { LoaderFunction } from "@remix-run/router";
 import { redirect } from "@remix-run/router";
-import type { NoteMetadata } from "~/routes/private-note/common";
+import type { NoteMetadata } from "~/routes/private-note/_common";
 import { Link, useLoaderData, useLocation } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
-import { decrypt } from "./aes";
 import { copyText } from "~/utils/copy";
 import {
   DocumentDuplicateIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
-import Security from "~/routes/private-note/security";
+import Security from "~/routes/private-note/_security";
 import type { MetaFunction } from "@remix-run/cloudflare";
 import {
   ArrowSmallLeftIcon,
   ArrowSmallRightIcon,
 } from "@heroicons/react/24/solid";
+import ReadOnlyTextArea from "~/components/read-only-textarea";
+import { decrypt } from "~/routes/private-note/_aes";
 
 type LoaderData = {
   readonly note: { ciphertext: string; expiration: number } | null;
@@ -140,17 +141,7 @@ export default function PrivateNote() {
             </div>
           </div>
           <div className="px-4 py-2 bg-zinc-800">
-            <label htmlFor="input" className="sr-only">
-              Your output
-            </label>
-            <textarea
-              id="output"
-              rows={10}
-              className="font-mono w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
-              placeholder="Paste in your content..."
-              readOnly={true}
-              value={plainText}
-            />
+            <ReadOnlyTextArea value={plainText} />
           </div>
           <div className="flex px-3 py-2 border-t border-gray-600 rounded-b-lg text-sm items-center">
             <InformationCircleIcon

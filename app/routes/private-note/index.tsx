@@ -4,15 +4,15 @@ import type { FormEvent } from "react";
 import { useCallback, useRef, useState } from "react";
 import { Form, useActionData, useSubmit } from "@remix-run/react";
 import type { ActionFunction } from "@remix-run/router";
-import { encrypt } from "./aes";
 import { createId, init } from "@paralleldrive/cuid2";
-import { noteExpiries } from "~/routes/private-note/common";
+import { noteExpiries } from "~/routes/private-note/_common";
 import { copyText } from "~/utils/copy";
 import {
   DocumentDuplicateIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
-import Security from "~/routes/private-note/security";
+import Security from "~/routes/private-note/_security";
+import { encrypt } from "~/routes/private-note/_aes";
 
 export const meta: MetaFunction = () => ({
   title: "Private Note | Utiliti",
