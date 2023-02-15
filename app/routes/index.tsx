@@ -1,6 +1,7 @@
 import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import { Link } from "@remix-run/react";
+import Routes from "~/routes";
 
 export default function Index() {
   return (
@@ -38,22 +39,22 @@ export default function Index() {
           <PopularUtility
             name="Private Notes"
             description="Share private notes securely via a link."
-            path="/private-note/"
+            path={Routes.PRIVATE_NOTES}
           />
           <PopularUtility
             name="JSON"
             description="View complex JSON documents as a tree structure."
-            path="/json"
+            path={Routes.JSON}
           />
           <PopularUtility
             name="Base64"
             description="Easily encode and decode base64 content."
-            path="/base64"
+            path={Routes.BASE64}
           />
           <PopularUtility
             name="URL"
             description="Encodes or decodes a string so that it conforms to the URL Specification."
-            path="/url"
+            path={Routes.URL}
           />
         </div>
       </div>

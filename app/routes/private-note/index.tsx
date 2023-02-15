@@ -5,14 +5,11 @@ import { useCallback, useRef, useState } from "react";
 import { Form, useActionData, useSubmit } from "@remix-run/react";
 import type { ActionFunction } from "@remix-run/router";
 import { createId, init } from "@paralleldrive/cuid2";
-import { noteExpiries } from "~/routes/private-note/_common";
-import { copyText } from "~/utils/copy";
-import {
-  DocumentDuplicateIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/outline";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import Security from "~/routes/private-note/_security";
-import { encrypt } from "~/routes/private-note/_aes";
+import { encrypt } from "~/utils/aes";
+import Routes from "~/routes";
+import Copy from "~/components/copy";
 
 export const meta: MetaFunction = () => ({
   title: "Private Note | Utiliti",
@@ -20,12 +17,46 @@ export const meta: MetaFunction = () => ({
 
 type ActionData = {
   readonly error?: string;
-  readonly id?: string;
+  readonly id: string;
 };
+
+export type NoteMetadata = {
+  readonly deleteAfterRead: boolean;
+  readonly expiration: number;
+};
+
+export const noteExpiries = [
+  {
+    id: "0",
+    label: "after reading it",
+    ttl: 30 * 24 * 60 * 60,
+  },
+  {
+    id: "1",
+    label: "1 hour from now",
+    ttl: 1 * 60 * 60,
+  },
+  {
+    id: "24",
+    label: "24 hours from now",
+    ttl: 24 * 60 * 60,
+  },
+  {
+    id: "168",
+    label: "7 days from now",
+    ttl: 7 * 24 * 60 * 60,
+  },
+  {
+    id: "720",
+    label: "30 days from now",
+    ttl: 30 * 24 * 60 * 60,
+  },
+];
 
 export const action: ActionFunction = async ({ request, context }) => {
   const privateNotesNs = context.PRIVATE_NOTES as KVNamespace;
 
+  // grab submitted data
   const formData = await request.formData();
   const id = createId();
   const expiry = formData.get("expiry") as string;
@@ -33,7 +64,7 @@ export const action: ActionFunction = async ({ request, context }) => {
   const expiryObject = noteExpiries.find((it) => it.id === expiry);
 
   if (!expiryObject) {
-    return { error: "Invalid expiry." };
+    throw new Response("Invalid Expiry", { status: 400 });
   }
 
   // store ciphertext in kv store
@@ -46,6 +77,7 @@ export const action: ActionFunction = async ({ request, context }) => {
     },
   });
 
+  // return only the id back to the frontend
   return { id };
 };
 
@@ -53,10 +85,13 @@ const Title = () => <h1>Private Notes</h1>;
 
 export default function Index() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const passwordRef = useRef<string | null>(null);
   const [expiry, setExpiry] = useState("0");
   const submit = useSubmit();
   const actionData = useActionData<ActionData>();
+
+  // on submit, encrypt the plaintext and then send it to the action
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       if (!inputRef.current) {
@@ -80,73 +115,36 @@ export default function Index() {
       );
 
       // submit form
-      submit(data, { method: "post", action: "/private-note/" });
+      submit(data, { method: "post", action: Routes.PRIVATE_NOTES });
     },
     [submit]
   );
 
-  const created = actionData?.id;
+  // we are intentionally not adding a <button type="submit" /> because we never want the plaintext
+  // to ever be submitted (in case javascript is disabled). still using form so that we get all the remix goodies
+  const onClickSubmit = useCallback(() => {
+    formRef.current?.submit();
+  }, []);
 
-  if (created) {
-    const output = `${window.location.origin}/private-note/${created}#${passwordRef.current}`;
-
+  // if the form was submitted, and we have action data, a note was created
+  if (actionData) {
     return (
-      <>
-        <Title />
-
-        <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
-          <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600 font-bold">
-            <div>Success</div>
-            <div>
-              <button
-                type="button"
-                className="p-2 rounded cursor-pointer sm:ml-auto text-zinc-400 hover:text-white hover:bg-zinc-600"
-                onClick={() => copyText(output || "")}
-              >
-                <DocumentDuplicateIcon className="h-5 w-5" aria-hidden="true" />
-                <span className="sr-only">Copy to clipboard</span>
-              </button>
-            </div>
-          </div>
-          <div className="px-4 py-2 bg-zinc-800">
-            <input
-              type="text"
-              className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
-              readOnly={true}
-              value={output}
-            />
-          </div>
-          <div className="flex px-3 py-2 border-t border-gray-600 rounded-b-lg text-sm items-center">
-            <InformationCircleIcon
-              className="h-5 w-5 mr-1"
-              aria-hidden="true"
-            />
-            This note will self-destruct{" "}
-            {noteExpiries.find((it) => it.id === expiry)?.label}.
-          </div>
-        </div>
-
-        <h2>What's Next</h2>
-        <p>
-          You have created a private note that you can easily share with anyone
-          you want with the link above.
-        </p>
-
-        <Security />
-      </>
+      <CreatedNote
+        id={actionData.id}
+        key={passwordRef.current || ""}
+        expiry={expiry}
+      />
     );
   }
 
+  // render form to create note
   return (
     <>
       <Title />
 
-      <Form method="post" onSubmit={onSubmit}>
+      <Form ref={formRef} method="post" onSubmit={onSubmit} replace={true}>
         <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
           <div className="px-4 py-2 bg-zinc-800 rounded-t-lg">
-            <label htmlFor="input" className="sr-only">
-              Your input
-            </label>
             <textarea
               id="input"
               name="input"
@@ -182,11 +180,59 @@ export default function Index() {
 
           <div className="flex items-center justify-end px-3 py-2 border-t border-gray-600">
             <div className="flex gap-x-2">
-              <Button type="submit" label="Create" />
+              <Button type="button" label="Create" onClick={onClickSubmit} />
             </div>
           </div>
         </div>
       </Form>
+      <Security />
+    </>
+  );
+}
+
+function CreatedNote({
+  id,
+  key,
+  expiry,
+}: {
+  readonly id: string;
+  readonly key: string;
+  readonly expiry: string;
+}) {
+  const output = `${window.location.origin}${Routes.PRIVATE_NOTE(id, key)}`;
+
+  return (
+    <>
+      <Title />
+
+      <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
+        <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600 font-bold">
+          <div>Success</div>
+          <div>
+            <Copy content={output || ""} />
+          </div>
+        </div>
+        <div className="px-4 py-2 bg-zinc-800">
+          <input
+            type="text"
+            className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+            readOnly={true}
+            value={output}
+          />
+        </div>
+        <div className="flex px-3 py-2 border-t border-gray-600 rounded-b-lg text-sm items-center">
+          <InformationCircleIcon className="h-5 w-5 mr-1" aria-hidden="true" />
+          This note will self-destruct{" "}
+          {noteExpiries.find((it) => it.id === expiry)?.label}.
+        </div>
+      </div>
+
+      <h2>What's Next</h2>
+      <p>
+        You have created a private note that you can easily share with anyone
+        you want with the link above.
+      </p>
+
       <Security />
     </>
   );

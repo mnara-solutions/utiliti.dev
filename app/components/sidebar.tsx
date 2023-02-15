@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router";
 import { Link } from "@remix-run/react";
+import Routes from "~/routes";
 
 const navigation = [
   {
@@ -8,11 +9,11 @@ const navigation = [
     children: [
       {
         name: "Private Notes",
-        url: "/private-note/",
+        url: Routes.PRIVATE_NOTES,
       },
       {
         name: "JSON",
-        url: "/json",
+        url: Routes.JSON,
       },
     ],
   },
@@ -21,11 +22,11 @@ const navigation = [
     children: [
       {
         name: "Base64",
-        url: "/base64",
+        url: Routes.BASE64,
       },
       {
         name: "URL",
-        url: "/url",
+        url: Routes.URL,
       },
     ],
   },

@@ -39,8 +39,7 @@ Open up [http://127.0.0.1:8788](http://127.0.0.1:8788) and you should be ready t
 Deployment is done automatically when the PR is merged via GitHub Actions.
 
 ## Todo
-- [ ] Error when decryption of a note fails (truncated URL?)
-- [ ] Prevent private note from ever posting plaintext to backend if javascript is not enabled
+
 - [ ] Favicon + icon
 - [ ] Spinners when processing a large amount of data
 - [ ] Simple editor with line numbers for encode & decoder IO
