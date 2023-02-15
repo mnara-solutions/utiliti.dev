@@ -39,13 +39,13 @@ Open up [http://127.0.0.1:8788](http://127.0.0.1:8788) and you should be ready t
 Deployment is done automatically when the PR is merged via GitHub Actions.
 
 ## Todo
-
-- [ ] Spinners when processing a large amount of data
-- [ ] Simple editor with line numbers for encode & decoder IO
+- [ ] Error when decryption of a note fails (truncated URL?)
 - [ ] Prevent private note from ever posting plaintext to backend if javascript is not enabled
 - [ ] Favicon + icon
-- [ ] Better local development instructions since it requires wrangler which requires a cloudflare account.
-- [ ] Remove mistakenly committed .idea folder
+- [ ] Spinners when processing a large amount of data
+- [ ] Simple editor with line numbers for encode & decoder IO
 - [ ] SEO
 - [ ] Make available offline as much as possible
 - [ ] Temporarily store input in localStorage
+- [ ] Better local development instructions since it requires wrangler which requires a cloudflare account.
+- [ ] Remove mistakenly committed .idea folder
