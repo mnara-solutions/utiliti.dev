@@ -34,25 +34,7 @@ interface Output {
 }
 
 export default function JSONEncoder() {
-  const [json, setJson] = useState(
-    `
-
-{"menu": {
-  "id": "file",
-  "value": "File",
-  "number": 5,
-  "boolean": false,
-  "popup": {
-    "menuitem": [
-      {"value": "New", "onclick": "CreateNewDoc()"},
-      {"value": "Open", "onclick": "OpenDoc()"},
-      {"value": "Close", "onclick": "CloseDoc()"}
-    ]
-  }
-}}
-
-`
-  );
+  const [json, setJson] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [output, setOutput] = useState<Output | null>(null);
 
