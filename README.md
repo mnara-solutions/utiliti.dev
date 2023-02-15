@@ -41,8 +41,9 @@ Deployment is done automatically when the PR is merged via GitHub Actions.
 ## Todo
 
 - [ ] Favicon + icon
+- [ ] Implement search functionality and expose in mobile as well
+- [ ] Add GitHub link to top bar
 - [ ] Spinners when processing a large amount of data
-- [ ] Simple editor with line numbers for encode & decoder IO
 - [ ] SEO
 - [ ] Make available offline as much as possible
 - [ ] Temporarily store input in localStorage

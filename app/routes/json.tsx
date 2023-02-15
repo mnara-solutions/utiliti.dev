@@ -3,9 +3,10 @@ import Copy from "~/components/copy";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { JSONTree } from "react-json-tree";
-import ReadOnlyTextArea from "~/components/read-only-textarea";
+import Code from "~/components/code";
+import { noop } from "~/common";
 
 export const meta: MetaFunction = () => ({
   title: "JSON | Utiliti",
@@ -33,14 +34,30 @@ interface Output {
 }
 
 export default function JSONEncoder() {
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [json, setJson] = useState(
+    `
+
+{"menu": {
+  "id": "file",
+  "value": "File",
+  "number": 5,
+  "boolean": false,
+  "popup": {
+    "menuitem": [
+      {"value": "New", "onclick": "CreateNewDoc()"},
+      {"value": "Open", "onclick": "OpenDoc()"},
+      {"value": "Close", "onclick": "CloseDoc()"}
+    ]
+  }
+}}
+
+`
+  );
   const [error, setError] = useState<string | null>(null);
   const [output, setOutput] = useState<Output | null>(null);
 
   const minify = useCallback(async () => {
-    const text = inputRef.current?.value || "";
-
-    decode(text)
+    decode(json)
       .then((it) => encode(it))
       .then((it) => {
         setOutput({ type: "text", data: it });
@@ -50,12 +67,10 @@ export default function JSONEncoder() {
         setError(e.message);
         setOutput(null);
       });
-  }, []);
+  }, [json]);
 
   const format = useCallback(async () => {
-    const text = inputRef.current?.value || "";
-
-    decode(text)
+    decode(json)
       .then((it) => JSON.stringify(it, null, 2))
       .then((it) => {
         setOutput({ type: "text", data: it });
@@ -65,12 +80,10 @@ export default function JSONEncoder() {
         setError(e.message);
         setOutput(null);
       });
-  }, []);
+  }, [json]);
 
   const view = useCallback(async () => {
-    const text = inputRef.current?.value || "";
-
-    decode(text)
+    decode(json)
       .then((it) => {
         setOutput({ type: "json", data: it });
         setError(null);
@@ -79,7 +92,7 @@ export default function JSONEncoder() {
         setError(e.message);
         setOutput(null);
       });
-  }, []);
+  }, [json]);
 
   return (
     <>
@@ -89,33 +102,21 @@ export default function JSONEncoder() {
         <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600">
           <div className="font-bold">Input</div>
           <div>
-            <Copy content={inputRef.current?.value || ""} />
+            <Copy content={json} />
           </div>
         </div>
-        <div className="px-4 py-2 bg-zinc-800">
-          <label htmlFor="input" className="sr-only">
-            Your input
-          </label>
-          <textarea
-            id="input"
-            ref={inputRef}
-            rows={10}
-            className="font-mono w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
-            placeholder="Paste in your content..."
-            required={true}
-          ></textarea>
+        <div className="px-4 py-2 bg-zinc-800 max-h-96 overflow-auto">
+          <Code
+            value={json}
+            setValue={setJson}
+            minHeight="12rem"
+            readonly={false}
+          />
         </div>
 
         <div className="flex items-center justify-between px-3 py-2 border-t border-gray-600">
           <div>
-            <ReadFile
-              accept="text/plain,application/JSON"
-              onLoad={(text) => {
-                if (inputRef.current) {
-                  inputRef.current.value = text;
-                }
-              }}
-            />
+            <ReadFile accept="text/plain,application/JSON" onLoad={setJson} />
           </div>
           <div className="flex gap-x-2">
             <Button onClick={() => view()} label="View" />
@@ -160,11 +161,15 @@ export default function JSONEncoder() {
                     level < 3
                   }
                   theme={{
-                    base00: "#27272a",
+                    base00: "#27272a", // background
+                    base0D: "#9876aa", // label + arrow
+                    base09: "#6897bb", // number + boolean
+                    base0B: "#6a8759", // string + date + item string
+                    base03: "#6a8759", // item string expanded
                   }}
                 />
               ) : (
-                <ReadOnlyTextArea value={output?.data || ""} />
+                <Code value={output?.data} setValue={noop} readonly={true} />
               )}
             </div>
           </div>
