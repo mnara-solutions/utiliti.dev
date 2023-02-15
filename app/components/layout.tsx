@@ -25,7 +25,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="lg:ml-72 xl:ml-80">
       <header className="contents lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex">
-        <div className="contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pt-4 lg:pb-8 lg:dark:border-white/10 xl:w-80">
+        <div className="contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:px-6 lg:pt-4 lg:pb-8 lg:border-white/10 xl:w-80">
           {/* desktop logo */}
           <div className="hidden lg:flex">
             <Link
@@ -38,12 +38,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* top bar */}
-          <div className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80 backdrop-blur-sm dark:backdrop-blur lg:left-72 xl:left-80 bg-white/[var(--bg-opacity-light)] dark:bg-zinc-900/[var(--bg-opacity-dark)]">
-            <div className="absolute inset-x-0 top-full h-px transition bg-zinc-900/7.5 dark:bg-white/10"></div>
+          <div className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80 backdrop-blur-sm backdrop-blur lg:left-72 xl:left-80 bg-zinc-900/[var(--bg-opacity-dark)]">
+            <div className="absolute inset-x-0 top-full h-px transition bg-white/10"></div>
             <div className="hidden lg:block lg:max-w-md lg:flex-auto">
               <button
                 type="button"
-                className="hidden h-8 w-full items-center gap-2 rounded-full bg-white pl-2 pr-3 text-sm text-zinc-500 ring-1 ring-zinc-900/10 transition hover:ring-zinc-900/20 dark:bg-white/5 dark:text-zinc-400 dark:ring-inset dark:ring-white/10 dark:hover:ring-white/20 lg:flex focus:[&:not(:focus-visible)]:outline-none"
+                className="hidden h-8 w-full items-center gap-2 rounded-full pl-2 pr-3 text-sm ring-1 transition bg-white/5 text-zinc-400 ring-inset ring-white/10 hover:ring-white/20 lg:flex focus:[&:not(:focus-visible)]:outline-none"
               >
                 <MagnifyingGlassIcon
                   className="h-5 w-5 stroke-current"
@@ -96,7 +96,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <main className="py-16">
           <article className="prose prose-sm max-w-none prose-invert">
             <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
-              <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
+              <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] [mask-image:linear-gradient(white,transparent)]">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#ea580c]/30 to-[#fdba74]/30 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] opacity-100">
                   <div
                     className="absolute inset-0 opacity-30"

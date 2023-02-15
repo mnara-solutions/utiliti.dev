@@ -10,7 +10,7 @@ import {
   useCatch,
 } from "@remix-run/react";
 import prism from "app/styles/prism-darcula.css";
-import styles from "./tailwind.css";
+import tailwind from "~/styles/tailwind.css";
 import Layout from "~/components/layout";
 import React from "react";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/solid";
@@ -22,7 +22,7 @@ export const meta: MetaFunction = () => ({
 });
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles },
+  { rel: "stylesheet", href: tailwind },
   { rel: "stylesheet", href: prism },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com" },
