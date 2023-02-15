@@ -8,4 +8,8 @@ module.exports = {
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: "functions/[[path]].js",
   // publicPath: "/build/",
+  future: {
+    unstable_postcss: true,
+    unstable_tailwind: true,
+  },
 };
