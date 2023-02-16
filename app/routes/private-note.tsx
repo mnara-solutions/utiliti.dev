@@ -1,6 +1,17 @@
-export default function Security() {
+import { Outlet } from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/cloudflare";
+
+export const meta: MetaFunction = () => ({
+  title: "Private Note | Utiliti",
+});
+
+export default function PrivateNote() {
   return (
     <>
+      <h1>Private Note</h1>
+
+      <Outlet />
+
       <h2>Security & Privacy</h2>
       <p>
         We aim to make private notes as secure as possible by taking the
