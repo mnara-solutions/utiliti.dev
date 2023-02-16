@@ -45,4 +45,3 @@ Deployment is done automatically when the PR is merged via GitHub Actions.
 - [ ] Make available offline as much as possible
 - [ ] Temporarily store input in localStorage
 - [ ] Better local development instructions since it requires wrangler which requires a cloudflare account.
-- [ ] Remove mistakenly committed .idea folder
