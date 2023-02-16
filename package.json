@@ -27,7 +27,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-json-tree": "^0.18.0",
-    "react-simple-code-editor": "^0.13.1"
+    "react-simple-code-editor": "^0.13.1",
+    "use-keyboard-shortcut": "^1.1.6"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^3.18.0",
