@@ -96,6 +96,7 @@ export default function Index() {
           className="font-mono w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
           placeholder="Write your note here..."
           required={true}
+          maxLength={1048576 /* ~1 MB in characters */}
         ></textarea>
       </div>
 

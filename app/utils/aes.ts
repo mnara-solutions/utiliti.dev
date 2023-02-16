@@ -49,6 +49,11 @@ function base64ToArray(data: string) {
   return Uint8Array.from(atob(data), (c) => c.charCodeAt(0));
 }
 
+/**
+ * Previously this function performed `String.fromCharCode(...data)` which blew through the maximum call stack size,
+ * as the spread operator was building up a stack. Let's make sure we don't do that again.
+ * @param data
+ */
 function arrayToBase64(data: number[]) {
-  return btoa(String.fromCharCode(...data));
+  return btoa(data.reduce((acc, it) => acc + String.fromCharCode(it), ""));
 }
