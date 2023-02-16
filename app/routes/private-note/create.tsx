@@ -5,6 +5,7 @@ import { noteExpiries } from "~/routes/private-note/index";
 export type CreateActionData = {
   readonly id: string;
 };
+
 /**
  * This file is only responsible for saving the ciphertext into Cloudflare KV and returning the id.
  *
