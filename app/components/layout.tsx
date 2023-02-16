@@ -64,7 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               aria-label="Home"
               className="text-white font-mono text-xl"
             >
-              <img src="/assets/logo-text.svg" className="h-6" />
+              <img src="/assets/logo-text.svg" className="h-6" alt="Logo" />
             </Link>
           </div>
 
@@ -112,7 +112,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 aria-label="Home"
                 className="text-white font-mono text-xl"
               >
-                <img src="/assets/logo-text.svg" className="h-6" />
+                <img src="/assets/logo-text.svg" className="h-6" alt="Logo" />
               </Link>
             </div>
             <div className="flex gap-4">
