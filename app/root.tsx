@@ -22,6 +22,7 @@ export const meta: MetaFunction = () => ({
 });
 
 export const links: LinksFunction = () => [
+  { rel: "icon", href: "/assets/logo.svg", type: "image/svg+xml" },
   { rel: "stylesheet", href: tailwind },
   { rel: "stylesheet", href: prism },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
