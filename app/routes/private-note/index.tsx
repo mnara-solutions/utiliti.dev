@@ -123,7 +123,12 @@ export default function Index() {
 
       <div className="flex items-center justify-end px-3 py-2 border-t border-gray-600">
         <div className="flex gap-x-2">
-          <Button type="button" label="Create" onClick={onSubmit} />
+          <Button
+            type="button"
+            label="Create"
+            onClick={onSubmit}
+            disabled={fetcher.state === "submitting"}
+          />
         </div>
       </div>
     </div>
