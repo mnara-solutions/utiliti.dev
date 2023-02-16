@@ -133,6 +133,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white/5"
                 target="_blank"
                 href="https://github.com/mnara-solutions/utiliti.dev"
+                rel="noreferrer"
               >
                 <svg
                   viewBox="0 0 24 24"
