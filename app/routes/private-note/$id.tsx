@@ -5,8 +5,6 @@ import type { Location } from "@remix-run/react";
 import { Link, useLoaderData, useLocation } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import Security from "~/routes/private-note/_security";
-import type { MetaFunction } from "@remix-run/cloudflare";
 import {
   ArrowSmallLeftIcon,
   ArrowSmallRightIcon,
@@ -21,10 +19,6 @@ type LoaderData = {
   readonly expiration: number;
   readonly needsConfirmation: boolean;
 };
-
-export const meta: MetaFunction = () => ({
-  title: "Private Note | Utiliti",
-});
 
 export const loader: LoaderFunction = async ({
   request,
@@ -66,7 +60,7 @@ export const loader: LoaderFunction = async ({
   return {
     ciphertext: note.value,
     needsConfirmation: false,
-    expiration: note?.metadata?.expiration || 0,
+    expiration: deleteAfterRead ? 0 : note?.metadata?.expiration || 0,
   };
 };
 
@@ -98,13 +92,7 @@ export default function PrivateNote() {
   // if this note is supposed to be deleted after it's shown, show a confirmation
   // this also makes it so that tools that inspect URLs do not inadvertently read the node.
   if (loaderData.needsConfirmation) {
-    return (
-      <>
-        <Title />
-        <Confirm location={location} />
-        <Security />
-      </>
-    );
+    return <Confirm location={location} />;
   }
 
   // if we ran into a decryption error, show an error page
@@ -116,40 +104,31 @@ export default function PrivateNote() {
 
   // finally, show the note
   return (
-    <>
-      <Title />
-
-      <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
-        <div className="flex items-center justify-end px-3 py-2 border-b border-gray-600 font-bold">
-          <div>
-            <Copy content={plainText} />
-          </div>
-        </div>
-        <div className="px-4 py-2 bg-zinc-800">
-          <ReadOnlyTextArea value={plainText} />
-        </div>
-        <div className="flex px-3 py-2 border-t border-gray-600 rounded-b-lg text-sm items-center">
-          <InformationCircleIcon className="h-5 w-5 mr-1" aria-hidden="true" />
-          {expiration === 0 ? (
-            <span>
-              This note is now deleted. Copy the content in the note before
-              closing this window.
-            </span>
-          ) : (
-            <span>
-              This note will be deleted on{" "}
-              {new Date(expiration * 1000).toLocaleString()}.
-            </span>
-          )}
+    <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
+      <div className="flex items-center justify-end px-3 py-2 border-b border-gray-600 font-bold">
+        <div>
+          <Copy content={plainText} />
         </div>
       </div>
-      <Security />
-    </>
+      <div className="px-4 py-2 bg-zinc-800">
+        <ReadOnlyTextArea value={plainText} />
+      </div>
+      <div className="flex px-3 py-2 border-t border-gray-600 rounded-b-lg text-sm items-center">
+        <InformationCircleIcon className="h-5 w-5 mr-1" aria-hidden="true" />
+        {expiration === 0 ? (
+          <span>
+            This note is now deleted. Copy the content in the note before
+            closing this window.
+          </span>
+        ) : (
+          <span>
+            This note will be deleted on{" "}
+            {new Date(expiration * 1000).toLocaleString()}.
+          </span>
+        )}
+      </div>
+    </div>
   );
-}
-
-function Title() {
-  return <h1>Private Notes</h1>;
 }
 
 function Confirm({ location }: { readonly location: Location }) {
@@ -175,8 +154,6 @@ function Confirm({ location }: { readonly location: Location }) {
 function Error({ message }: { readonly message: string }) {
   return (
     <>
-      <Title />
-
       <p className="lead">{message}</p>
 
       <div className="not-prose flex flex-col items-start gap-3">
