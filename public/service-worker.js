@@ -7,12 +7,12 @@ const STATIC_ASSETS = ["/build/", "/assets/"];
  * a typescript worker. Look at `remix-pwa` and see how they do it.
  */
 self.addEventListener("fetch", (event) => {
-  const url = new URL(event.request.url);
-
   // we are only caching static assets
   if (
     event.request.method.toLowerCase() !== "get" ||
-    !STATIC_ASSETS.some((publicPath) => url.pathname.startsWith(publicPath))
+    !STATIC_ASSETS.some((publicPath) =>
+      event.request.url.startsWith(publicPath)
+    )
   ) {
     return;
   }
