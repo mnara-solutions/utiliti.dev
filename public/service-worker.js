@@ -18,17 +18,19 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  return event.respondWith(async () => {
-    const cache = await caches.open("assets");
-    const cacheResponse = await cache.match(event.request);
+  event.respondWith(
+    (async () => {
+      const cache = await caches.open("assets");
+      const cacheResponse = await cache.match(event.request);
 
-    if (cacheResponse) {
-      return cacheResponse;
-    }
+      if (cacheResponse) {
+        return cacheResponse;
+      }
 
-    const fetchResponse = await fetch(event.request);
-    await cache.put(event.request, fetchResponse.clone());
+      const fetchResponse = await fetch(event.request);
+      await cache.put(event.request, fetchResponse.clone());
 
-    return fetchResponse;
-  });
+      return fetchResponse;
+    })()
+  );
 });
