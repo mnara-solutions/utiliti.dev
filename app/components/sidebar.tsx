@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 import { Link } from "@remix-run/react";
 import Routes from "~/routes";
 
-const navigation = [
+export const navigation = [
   {
     name: "Utilities",
     children: [

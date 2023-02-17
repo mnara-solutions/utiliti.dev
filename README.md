@@ -40,10 +40,6 @@ Deployment is done automatically when the PR is merged via GitHub Actions.
 
 ## Todo
 
-- [ ] Json tree needs better spacing and buttons to collapse all / open all
-- [ ] Favicon + icon
-- [ ] Implement search functionality and expose in mobile as well
-- [ ] Add GitHub link to top bar
 - [ ] Spinners when processing a large amount of data
 - [ ] SEO
 - [ ] Make available offline as much as possible
