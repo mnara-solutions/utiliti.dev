@@ -8,11 +8,10 @@ const STATIC_ASSETS = ["/build/", "/assets/"];
  */
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
-  const method = event.request.method;
 
   // we are only caching static assets
   if (
-    method.toLowerCase() !== "get" ||
+    event.request.method.toLowerCase() !== "get" ||
     !STATIC_ASSETS.some((publicPath) => url.pathname.startsWith(publicPath))
   ) {
     return;
@@ -20,17 +19,24 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(
     (async () => {
-      const cache = await caches.open("assets");
-      const cacheResponse = await cache.match(event.request);
+      const cached = await caches.match(event.request, {
+        cacheName: "assets",
+        ignoreVary: true,
+        ignoreSearch: true,
+      });
 
-      if (cacheResponse) {
-        return cacheResponse;
+      if (cached) {
+        return cached;
       }
 
-      const fetchResponse = await fetch(event.request);
-      await cache.put(event.request, fetchResponse.clone());
+      const response = await fetch(event.request);
 
-      return fetchResponse;
+      if (response.status === 200) {
+        const cache = await caches.open("assets");
+        await cache.put(event.request, response.clone());
+      }
+
+      return response;
     })()
   );
 });
