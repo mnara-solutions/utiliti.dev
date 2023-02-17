@@ -28,6 +28,10 @@ const navigation = [
         name: "URL",
         url: Routes.URL,
       },
+      {
+        name: "DataUrl",
+        url: Routes.DATAURL,
+      },
     ],
   },
 ];

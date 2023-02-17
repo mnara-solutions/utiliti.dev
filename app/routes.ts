@@ -6,4 +6,5 @@ export default class Routes {
   static readonly JSON = "/json";
   static readonly URL = "/url";
   static readonly BASE64 = "/base64";
+  static readonly DATAURL = "/dataurl";
 }

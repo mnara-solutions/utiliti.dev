@@ -56,6 +56,11 @@ export default function Index() {
             description="Encodes or decodes a string so that it conforms to the URL Specification."
             path={Routes.URL}
           />
+          <PopularUtility
+            name="DataUrl Display"
+            description="Displays a data url, with or without the data prefix."
+            path={Routes.DATAURL}
+          />
         </div>
       </div>
     </>
