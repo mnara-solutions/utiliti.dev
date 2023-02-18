@@ -1,4 +1,3 @@
-const STATIC_ASSETS = ["/build/", "/assets/"];
 const ASSET_CACHE = "assets";
 const DOCUMENT_CACHE = "documents";
 
@@ -15,15 +14,13 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // cache any static assets
-  if (STATIC_ASSETS.some((publicPath) => r.url.startsWith(publicPath))) {
-    return event.respondWith(cacheFirst(r, ASSET_CACHE));
-  }
-
   // cache any documents
   if (r.mode === "navigate") {
     return event.respondWith(networkFirst(r, DOCUMENT_CACHE));
   }
+
+  // cache any static assets
+  return event.respondWith(cacheFirst(r, ASSET_CACHE));
 });
 
 async function cacheFirst(request, cacheName) {
@@ -40,7 +37,7 @@ async function cacheFirst(request, cacheName) {
   const response = await fetch(request);
 
   if (response.status === 200) {
-    const cache = await caches.open(ASSET_CACHE);
+    const cache = await caches.open(cacheName);
     await cache.put(request, response.clone());
   }
 
@@ -50,7 +47,7 @@ async function cacheFirst(request, cacheName) {
 async function networkFirst(request, cacheName) {
   try {
     const response = await fetch(request);
-    const cache = await caches.open(DOCUMENT_CACHE);
+    const cache = await caches.open(cacheName);
     await cache.put(request, response.clone());
 
     return response;
