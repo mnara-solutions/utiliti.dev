@@ -9,56 +9,60 @@ const DOCUMENT_CACHE = "documents";
  * a typescript worker. Look at `remix-pwa` and see how they do it.
  */
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") {
+  const r = event.request;
+
+  if (r.method !== "GET") {
     return;
   }
 
-  event.respondWith((async () => await handleFetch(event))());
+  // cache any static assets
+  if (STATIC_ASSETS.some((publicPath) => r.url.startsWith(publicPath))) {
+    return event.respondWith(cacheFirst(r, ASSET_CACHE));
+  }
+
+  // cache any documents
+  if (r.mode === "navigate") {
+    return event.respondWith(networkFirst(r, DOCUMENT_CACHE));
+  }
 });
 
-async function handleFetch(event) {
-  const r = event.request;
+async function cacheFirst(request, cacheName) {
+  const cached = await caches.match(request, {
+    cacheName: cacheName,
+    ignoreVary: true,
+    ignoreSearch: true,
+  });
 
-  // cache any static assets
-  // serve straight away from a cache
-  if (STATIC_ASSETS.some((publicPath) => r.url.startsWith(publicPath))) {
-    const cached = await caches.match(r, {
-      cacheName: ASSET_CACHE,
-      ignoreVary: true,
-      ignoreSearch: true,
+  if (cached) {
+    return cached;
+  }
+
+  const response = await fetch(request);
+
+  if (response.status === 200) {
+    const cache = await caches.open(ASSET_CACHE);
+    await cache.put(request, response.clone());
+  }
+
+  return response;
+}
+
+async function networkFirst(request, cacheName) {
+  try {
+    const response = await fetch(request);
+    const cache = await caches.open(DOCUMENT_CACHE);
+    await cache.put(request, response.clone());
+
+    return response;
+  } catch (error) {
+    const cached = await caches.match(request, {
+      cacheName: cacheName,
     });
 
     if (cached) {
       return cached;
     }
 
-    const response = await fetch(r);
-
-    if (response.status === 200) {
-      const cache = await caches.open(ASSET_CACHE);
-      await cache.put(r, response.clone());
-    }
-
-    return response;
-  }
-
-  // cache any documents
-  // we attempt to fetch via the network first, and fallback to cache incase offline
-  if (r.mode === "navigate") {
-    try {
-      const response = await fetch(event.request);
-      const cache = await caches.open(DOCUMENT_CACHE);
-      await cache.put(event.request, response.clone());
-
-      return response;
-    } catch (error) {
-      const response = await caches.match(event.request);
-
-      if (response) {
-        return response;
-      }
-
-      throw error;
-    }
+    throw error;
   }
 }
