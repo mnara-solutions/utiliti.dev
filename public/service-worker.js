@@ -20,7 +20,9 @@ self.addEventListener("fetch", (event) => {
   }
 
   // cache any static assets
-  return event.respondWith(cacheFirst(r, ASSET_CACHE));
+  if (!r.url.startsWith("chrome-extension://")) {
+    return event.respondWith(cacheFirst(r, ASSET_CACHE));
+  }
 });
 
 async function cacheFirst(request, cacheName) {
