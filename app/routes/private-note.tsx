@@ -1,9 +1,11 @@
 import { Outlet } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/cloudflare";
+import { metaHelper } from "~/utils/meta";
+import { utilities } from "~/utilities";
+import { PopularUtilities } from "~/components/popular-utilities";
 
-export const meta: MetaFunction = () => ({
-  title: "Private Note | Utiliti",
-});
+export const meta: MetaFunction = () =>
+  metaHelper(utilities.privateNotes.name, utilities.privateNotes.description);
 
 export default function PrivateNote() {
   return (
@@ -17,6 +19,7 @@ export default function PrivateNote() {
         We aim to make private notes as secure as possible by taking the
         following steps:
       </p>
+
       <ul>
         <li>All data is encrypted in the browser before it is sent to us.</li>
         <li>The encryption key is never sent to us.</li>
@@ -32,6 +35,8 @@ export default function PrivateNote() {
           .
         </li>
       </ul>
+
+      <PopularUtilities />
     </>
   );
 }

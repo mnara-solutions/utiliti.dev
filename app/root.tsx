@@ -14,14 +14,26 @@ import tailwind from "~/styles/tailwind.css";
 import Layout from "~/components/layout";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/solid";
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "Utiliti",
-  viewport: "width=device-width,initial-scale=1",
-  "theme-color": "#f97316",
-  "application-TileColor": "#f97316",
-  "application-config": "/assets/browserconfig.xml",
-});
+export const meta: MetaFunction = () => {
+  const title = "Utiliti";
+  const description =
+    "A collection of high quality, secure, and open source utilities.";
+  return {
+    charset: "utf-8",
+    title,
+    description,
+    keywords:
+      "utiliti, json, base64, url, dataurl, private note, secure note, self-destructing note, utilities, offline",
+    viewport: "width=device-width,initial-scale=1",
+    "theme-color": "#f97316",
+    "application-TileColor": "#f97316",
+    "application-config": "/assets/browserconfig.xml",
+    "og:title": title,
+    "og:description": description,
+    "og:type": "website",
+    "og:image": "https://utiliti.dev/assets/android-chrome-512x512.png",
+  };
+};
 
 export const links: LinksFunction = () => [
   { rel: "icon", href: "/assets/logo.svg", type: "image/svg+xml" },

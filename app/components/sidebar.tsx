@@ -1,42 +1,14 @@
 import React from "react";
 import { useLocation } from "react-router";
 import { Link } from "@remix-run/react";
-import Routes from "~/routes";
-
-export const navigation = [
-  {
-    name: "Utilities",
-    children: [
-      {
-        name: "Private Notes",
-        url: Routes.PRIVATE_NOTES,
-      },
-      {
-        name: "JSON",
-        url: Routes.JSON,
-      },
-    ],
-  },
-  {
-    name: "Encoders & Decoders",
-    children: [
-      {
-        name: "Base64",
-        url: Routes.BASE64,
-      },
-      {
-        name: "URL",
-        url: Routes.URL,
-      },
-    ],
-  },
-];
+import { sidebar } from "~/utilities";
 
 export default function Sidebar() {
   const location = useLocation();
+
   return (
     <ul>
-      {navigation.map((it) => (
+      {sidebar.map((it) => (
         <li key={it.name} className="relative mt-6">
           <h2 className="text-xs font-semibold text-white">{it.name}</h2>
           <div className="relative mt-3 pl-2">

@@ -15,10 +15,12 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import type { ShouldExpandNodeInitially } from "react-json-tree/src/types";
+import { metaHelper } from "~/utils/meta";
+import { utilities } from "~/utilities";
+import { PopularUtilities } from "~/components/popular-utilities";
 
-export const meta: MetaFunction = () => ({
-  title: "JSON | Utiliti",
-});
+export const meta: MetaFunction = () =>
+  metaHelper(utilities.json.name, utilities.json.description);
 
 async function encode(text: string): Promise<string> {
   try {
@@ -217,6 +219,8 @@ export default function JSONEncoder() {
           </div>
         )}
       </Transition>
+
+      <PopularUtilities />
     </>
   );
 }
