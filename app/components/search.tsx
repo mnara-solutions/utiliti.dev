@@ -2,9 +2,10 @@ import { Fragment, useCallback, useState } from "react";
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { classNames } from "~/common";
-import { navigation } from "~/components/sidebar";
+import { utilities } from "~/utilities";
+import { useNavigate } from "@remix-run/react";
 
-const utilities = navigation.flatMap((it) => it.children);
+const allUtilities = Object.values(utilities);
 
 interface Props {
   readonly open: boolean;
@@ -13,17 +14,22 @@ interface Props {
 
 export default function Search({ open, setOpen }: Props) {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const filteredUtilities =
     query === ""
       ? []
-      : utilities.filter((it) => {
+      : allUtilities.filter((it) => {
           return it.name.toLowerCase().includes(query.toLowerCase());
         });
 
-  const onChange = useCallback((item: (typeof utilities)[0]) => {
-    window.location.href = item.url;
-  }, []);
+  const onChange = useCallback(
+    (item: (typeof allUtilities)[0]) => {
+      setOpen(false);
+      navigate(item.url);
+    },
+    [navigate, setOpen]
+  );
 
   return (
     <Transition.Root
@@ -76,7 +82,7 @@ export default function Search({ open, setOpen }: Props) {
                   >
                     <li className="p-2">
                       <ul className="text-sm text-gray-400">
-                        {(query === "" ? utilities : filteredUtilities).map(
+                        {(query === "" ? allUtilities : filteredUtilities).map(
                           (it) => (
                             <Combobox.Option
                               key={it.name}

@@ -89,17 +89,17 @@ export default function PrivateNote() {
 
   const expiration = loaderData.expiration;
 
-  // if this note is supposed to be deleted after it's shown, show a confirmation
-  // this also makes it so that tools that inspect URLs do not inadvertently read the node.
-  if (loaderData.needsConfirmation) {
-    return <Confirm location={location} />;
-  }
-
   // if we ran into a decryption error, show an error page
-  if (decryptionError || plainText === null) {
+  if (decryptionError || location.hash.length !== 11) {
     return (
       <Error message="An error occurred while trying to decrypt the note. Double check that the URL is copied exactly and try again." />
     );
+  }
+
+  // if this note is supposed to be deleted after it's shown, show a confirmation
+  // this also makes it so that tools that inspect URLs do not inadvertently read the node.
+  if (loaderData.needsConfirmation || plainText === null) {
+    return <Confirm location={location} />;
   }
 
   // finally, show the note
