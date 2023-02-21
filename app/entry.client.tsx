@@ -20,3 +20,15 @@ if (typeof requestIdleCallback === "function") {
   // https://caniuse.com/requestidlecallback
   setTimeout(hydrate, 1);
 }
+
+// add a service worker, only in production for now
+if (
+  "serviceWorker" in navigator &&
+  window.location.origin === "https://utiliti.dev"
+) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js").catch((error) => {
+      console.error("Service worker registration failed", error);
+    });
+  });
+}
