@@ -12,17 +12,62 @@ import {
 import prism from "app/styles/prism-darcula.css";
 import tailwind from "~/styles/tailwind.css";
 import Layout from "~/components/layout";
-import React from "react";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/solid";
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "Utiliti",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta: MetaFunction = () => {
+  const title = "Utiliti";
+  const description =
+    "A collection of high quality, secure, and open source utilities.";
+  return {
+    charset: "utf-8",
+    title,
+    description,
+    keywords:
+      "utiliti, json, base64, url, dataurl, private note, secure note, self-destructing note, utilities, offline",
+    viewport: "width=device-width,initial-scale=1",
+    "theme-color": "#f97316",
+    "application-TileColor": "#f97316",
+    "application-config": "/assets/browserconfig.xml",
+    "og:title": title,
+    "og:description": description,
+    "og:type": "website",
+    "og:image": "https://utiliti.dev/assets/android-chrome-512x512.png",
+  };
+};
 
 export const links: LinksFunction = () => [
   { rel: "icon", href: "/assets/logo.svg", type: "image/svg+xml" },
+  {
+    rel: "apple-touch-icon",
+    sizes: "180x180",
+    href: "/assets/apple-touch-icon.png",
+  },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "32x32",
+    href: "/assets/favicon-32x32.png",
+  },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "16x16",
+    href: "/assets/favicon-16x16.png",
+  },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "512x512",
+    href: "/assets/android-chrome-512x512.png",
+  },
+  {
+    rel: "icon",
+    type: "image/png",
+    sizes: "192x192",
+    href: "/assets/android-chrome-192x192.png",
+  },
+  { rel: "shortcut icon", href: "/assets/favicon.ico" },
+  { rel: "manifest", href: "/assets/site.webmanifest" },
   { rel: "stylesheet", href: tailwind },
   { rel: "stylesheet", href: prism },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

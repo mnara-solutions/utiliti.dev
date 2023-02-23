@@ -13,6 +13,7 @@ import ReadOnlyTextArea from "~/components/read-only-textarea";
 import Copy from "~/components/copy";
 import { decrypt } from "~/utils/aes";
 import Routes from "~/routes";
+import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 
 type LoaderData = {
   readonly ciphertext: string;
@@ -89,31 +90,31 @@ export default function PrivateNote() {
 
   const expiration = loaderData.expiration;
 
-  // if this note is supposed to be deleted after it's shown, show a confirmation
-  // this also makes it so that tools that inspect URLs do not inadvertently read the node.
-  if (loaderData.needsConfirmation) {
-    return <Confirm location={location} />;
-  }
-
   // if we ran into a decryption error, show an error page
-  if (decryptionError || plainText === null) {
+  if (decryptionError || location.hash.length !== 11) {
     return (
       <Error message="An error occurred while trying to decrypt the note. Double check that the URL is copied exactly and try again." />
     );
   }
 
+  // if this note is supposed to be deleted after it's shown, show a confirmation
+  // this also makes it so that tools that inspect URLs do not inadvertently read the node.
+  if (loaderData.needsConfirmation || plainText === null) {
+    return <Confirm location={location} />;
+  }
+
   // finally, show the note
   return (
-    <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
-      <div className="flex items-center justify-end px-3 py-2 border-b border-gray-600 font-bold">
+    <Box>
+      <BoxTitle title="">
         <div>
           <Copy content={plainText} />
         </div>
-      </div>
-      <div className="px-4 py-2 bg-zinc-800">
+      </BoxTitle>
+      <BoxContent isLast={false}>
         <ReadOnlyTextArea value={plainText} />
-      </div>
-      <div className="flex px-3 py-2 border-t border-gray-600 rounded-b-lg text-sm items-center">
+      </BoxContent>
+      <BoxInfo>
         <InformationCircleIcon className="h-5 w-5 mr-1" aria-hidden="true" />
         {expiration === 0 ? (
           <span>
@@ -126,8 +127,8 @@ export default function PrivateNote() {
             {new Date(expiration * 1000).toLocaleString()}.
           </span>
         )}
-      </div>
-    </div>
+      </BoxInfo>
+    </Box>
   );
 }
 
