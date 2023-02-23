@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import Copy from "~/components/copy";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { Utiliti } from "~/components/utiliti";
-import OutputBox from "~/components/output-box";
+import Box, { BoxContent, BoxTitle } from "~/components/box";
 
 interface Props {
   readonly label: string;
@@ -46,18 +46,16 @@ export default function EncoderDecoder({
         ></textarea>
       )}
       renderOutput={(action, input, output) => (
-        <OutputBox
-          renderTitle={() => (
-            <>
-              <div className="font-bold">Output</div>
-              <div>
-                <Copy content={output} />
-              </div>
-            </>
-          )}
-        >
-          <ReadOnlyTextArea value={output} />
-        </OutputBox>
+        <Box>
+          <BoxTitle title="Output">
+            <div>
+              <Copy content={output} />
+            </div>
+          </BoxTitle>
+          <BoxContent isLast={true}>
+            <ReadOnlyTextArea value={output} />
+          </BoxContent>
+        </Box>
       )}
       renderOptions={renderOptions}
       showLoadFile={showLoadFile}
