@@ -100,7 +100,7 @@ export default function Index() {
           name="input"
           ref={inputRef}
           rows={10}
-          className="font-mono w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+          className="font-mono w-full p-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
           placeholder="Write your note here..."
           required={true}
           maxLength={1048576 /* ~1 MB in characters */}
@@ -164,7 +164,7 @@ function CreatedNote({
         <BoxContent isLast={false}>
           <input
             type="text"
-            className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+            className="w-full p-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
             readOnly={true}
             value={output}
           />

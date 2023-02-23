@@ -38,7 +38,7 @@ export default function EncoderDecoder({
         <textarea
           id="input"
           rows={rows}
-          className="font-mono w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+          className="font-mono w-full p-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
           placeholder="Paste in your content…"
           required={true}
           value={input}

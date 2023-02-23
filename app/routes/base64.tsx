@@ -46,7 +46,7 @@ export default function Base64() {
       rows={10}
       renderOptions={() => (
         <BoxOptions>
-          <div className="flex items-center h-5 w-5">
+          <div className="flex items-center h-5 w-5 ml-2">
             <input
               id="url-safe"
               type="checkbox"
