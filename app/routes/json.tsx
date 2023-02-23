@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
 import Copy from "~/components/copy";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { JSONTree } from "react-json-tree";
 import Code from "~/components/code";
 import { noop } from "~/common";
@@ -26,6 +26,12 @@ async function decode(text: string): Promise<object> {
   } catch (e) {
     return Promise.reject({ message: (e as SyntaxError).message });
   }
+}
+
+enum Action {
+  VIEW = "View",
+  FORMAT = "Format",
+  MINIFY = "Minify",
 }
 
 export default function JSONEncoder() {
@@ -57,15 +63,20 @@ export default function JSONEncoder() {
     setShouldExpand(null);
   }, [expandAfter]);
 
-  const onAction = useCallback(async (action: string, input: string) => {
-    return await decode(input);
-  }, []);
+  const actions = useMemo(
+    () => ({
+      [Action.VIEW]: (input: string) => decode(input),
+      [Action.FORMAT]: (input: string) => decode(input),
+      [Action.MINIFY]: (input: string) => decode(input),
+    }),
+    []
+  );
 
   const renderOutput = useCallback(
-    (action: string, input: string, output: object) => {
+    (a: string, input: string, output: object) => {
       const toCopy = JSON.stringify(output);
 
-      if (action === "Format" || action === "Minify") {
+      if (a === Action.FORMAT || a === Action.MINIFY) {
         return (
           <OutputBox
             renderTitle={() => (
@@ -78,7 +89,7 @@ export default function JSONEncoder() {
             )}
           >
             <Code
-              value={JSON.stringify(output, null, action === "Format" ? 2 : 0)}
+              value={JSON.stringify(output, null, a === "Format" ? 2 : 0)}
               setValue={noop}
               readonly={true}
             />
@@ -156,7 +167,7 @@ export default function JSONEncoder() {
   return (
     <Utiliti
       label="JSON"
-      buttons={["View", "Format", "Minify"]}
+      actions={actions}
       renderInput={(input, setInput) => (
         <Code
           value={input}
@@ -166,7 +177,6 @@ export default function JSONEncoder() {
         />
       )}
       renderOutput={renderOutput}
-      onAction={onAction}
       showLoadFile={true}
     />
   );

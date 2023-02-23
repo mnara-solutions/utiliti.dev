@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useCallback } from "react";
+import { useMemo } from "react";
 import Copy from "~/components/copy";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { Utiliti } from "~/components/utiliti";
@@ -22,17 +22,18 @@ export default function EncoderDecoder({
   renderOptions,
   rows,
 }: Props) {
-  const onAction = useCallback(
-    async (action: string, input: string) => {
-      return await (action === "Encode" ? encode(input) : decode(input));
-    },
-    [encode, decode]
+  const actions = useMemo(
+    () => ({
+      Encode: (input: string) => encode(input),
+      Decode: (input: string) => decode(input),
+    }),
+    [decode, encode]
   );
 
   return (
     <Utiliti
       label={label}
-      buttons={["Encode", "Decode"]}
+      actions={actions}
       renderInput={(input, setInput) => (
         <textarea
           id="input"
@@ -59,7 +60,6 @@ export default function EncoderDecoder({
         </OutputBox>
       )}
       renderOptions={renderOptions}
-      onAction={onAction}
       showLoadFile={showLoadFile}
     />
   );

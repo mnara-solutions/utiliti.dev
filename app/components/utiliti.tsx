@@ -5,11 +5,11 @@ import { Transition } from "@headlessui/react";
 import { PopularUtilities } from "~/components/popular-utilities";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
-import OutputBox from "~/components/output-box";
 
 interface Props<T> {
   readonly label: string;
-  readonly buttons: string[];
+  // thought about using a `Map` here since it guarantees order, but we give up "DX"
+  readonly actions: Record<string, (input: string) => Promise<T>>;
   readonly renderInput: (
     input: string,
     setInput: (input: string) => void
@@ -20,7 +20,6 @@ interface Props<T> {
     output: T
   ) => ReactNode;
   readonly renderOptions?: () => ReactNode;
-  readonly onAction: (action: string, input: string) => Promise<T>;
   readonly showLoadFile: Boolean;
 }
 
@@ -29,8 +28,7 @@ export function Utiliti<T>({
   renderInput,
   renderOutput,
   renderOptions,
-  buttons,
-  onAction,
+  actions,
   showLoadFile,
 }: Props<T>) {
   const [action, setAction] = useState<string | null>(null);
@@ -40,9 +38,15 @@ export function Utiliti<T>({
 
   const onClick = useCallback(
     async (action: string, input: string) => {
+      const fn = actions[action];
+
+      if (!fn) {
+        return;
+      }
+
       setAction(action);
 
-      onAction(action, input)
+      fn(input)
         .then((it) => {
           setOutput(it);
           setError(null);
@@ -52,7 +56,7 @@ export function Utiliti<T>({
           setOutput(null);
         });
     },
-    [onAction]
+    [actions]
   );
 
   return (
@@ -83,8 +87,12 @@ export function Utiliti<T>({
             )}
           </div>
           <div className="flex gap-x-2">
-            {buttons.map((b) => (
-              <Button key={b} onClick={() => onClick(b, input)} label={b} />
+            {Object.keys(actions).map((action) => (
+              <Button
+                key={action}
+                onClick={() => onClick(action, input)}
+                label={action}
+              />
             ))}
           </div>
         </div>
