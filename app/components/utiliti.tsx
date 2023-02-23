@@ -6,27 +6,41 @@ import { PopularUtilities } from "~/components/popular-utilities";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
 
-interface Props {
+interface Props<T> {
   readonly label: string;
   readonly buttons: string[];
-  readonly renderInput: (input: string) => ReactNode;
-  readonly onAction: (action: string, input: string) => Promise<ReactNode>;
+  readonly renderInput: (
+    input: string,
+    setInput: (input: string) => void
+  ) => ReactNode;
+  readonly renderOutput: (
+    action: string,
+    input: string,
+    output: T
+  ) => ReactNode;
+  readonly renderOptions?: () => ReactNode;
+  readonly onAction: (action: string, input: string) => Promise<T>;
   readonly showLoadFile: Boolean;
 }
 
-export function Utiliti({
+export function Utiliti<T>({
   label,
   renderInput,
+  renderOutput,
+  renderOptions,
   buttons,
   onAction,
   showLoadFile,
-}: Props) {
+}: Props<T>) {
+  const [action, setAction] = useState<string | null>(null);
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState<ReactNode | null>(null);
+  const [output, setOutput] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const action = useCallback(
+  const onClick = useCallback(
     async (action: string, input: string) => {
+      setAction(action);
+
       onAction(action, input)
         .then((it) => {
           setOutput(it);
@@ -51,9 +65,12 @@ export function Utiliti({
             <Copy content={input} />
           </div>
         </div>
+
         <div className="px-4 py-2 bg-zinc-800 max-h-96 overflow-auto">
-          {renderInput(input)}
+          {renderInput(input, setInput)}
         </div>
+
+        {renderOptions && renderOptions()}
 
         <div className="flex items-center justify-between px-3 py-2 border-t border-gray-600">
           <div>
@@ -66,7 +83,7 @@ export function Utiliti({
           </div>
           <div className="flex gap-x-2">
             {buttons.map((b) => (
-              <Button key={b} onClick={() => action(b, input)} label={b} />
+              <Button key={b} onClick={() => onClick(b, input)} label={b} />
             ))}
           </div>
         </div>
@@ -88,7 +105,7 @@ export function Utiliti({
             <span className="font-medium">Error: </span> {error}
           </div>
         ) : (
-          output
+          action && output && renderOutput(action, input, output)
         )}
       </Transition>
 
