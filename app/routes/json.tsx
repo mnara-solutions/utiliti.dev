@@ -15,6 +15,7 @@ import type { ShouldExpandNodeInitially } from "react-json-tree/src/types";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { Utiliti } from "~/components/utiliti";
+import OutputBox from "~/components/output-box";
 
 export const meta: MetaFunction = () =>
   metaHelper(utilities.json.name, utilities.json.description);
@@ -66,64 +67,64 @@ export default function JSONEncoder() {
 
       if (action === "Format" || action === "Minify") {
         return (
-          <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
-            <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600 font-bold">
-              <div>Output</div>
-              <div>
-                <Copy content={toCopy} />
-              </div>
-            </div>
-            <div className="px-4 py-2 bg-zinc-800 rounded-b-lg">
-              <Code
-                value={JSON.stringify(
-                  output,
-                  null,
-                  action === "Format" ? 2 : 0
-                )}
-                setValue={noop}
-                readonly={true}
-              />
-            </div>
-          </div>
+          <OutputBox
+            renderTitle={() => (
+              <>
+                <div className="font-bold">Output</div>
+                <div>
+                  <Copy content={toCopy} />
+                </div>
+              </>
+            )}
+          >
+            <Code
+              value={JSON.stringify(output, null, action === "Format" ? 2 : 0)}
+              setValue={noop}
+              readonly={true}
+            />
+          </OutputBox>
         );
       }
 
       return (
-        <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
-          <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600 font-bold">
-            <div>Output</div>
-            <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
-              <div className="flex items-center space-x-1 sm:pr-4">
-                <IconButton
-                  icon={MinusIcon}
-                  label="Decrement level at which nodes are auto expanded"
-                  onClick={decrementExpandAfter}
-                />
-                <div className="sm:px text-center">{expandAfter}</div>
-                <IconButton
-                  icon={PlusIcon}
-                  label="Increment level at which nodes are auto expanded"
-                  onClick={incrementExpandAfter}
-                />
+        <OutputBox
+          renderTitle={() => (
+            <>
+              <div className="font-bold">Output</div>
+              <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
+                <div className="flex items-center space-x-1 sm:pr-4">
+                  <IconButton
+                    icon={MinusIcon}
+                    label="Decrement level at which nodes are auto expanded"
+                    onClick={decrementExpandAfter}
+                  />
+                  <div className="sm:px text-center">{expandAfter}</div>
+                  <IconButton
+                    icon={PlusIcon}
+                    label="Increment level at which nodes are auto expanded"
+                    onClick={incrementExpandAfter}
+                  />
+                </div>
+                <div className="flex items-center space-x-1 sm:px-4">
+                  <IconButton
+                    icon={ArrowsPointingInIcon}
+                    label="Collapse all nodes"
+                    onClick={collapseALl}
+                  />
+                  <IconButton
+                    icon={ArrowsPointingOutIcon}
+                    label="Expand all nodes"
+                    onClick={expandAll}
+                  />
+                </div>
+                <div className="flex flex-wrap items-center space-x-1 sm:pl-4">
+                  <Copy content={toCopy} />
+                </div>
               </div>
-              <div className="flex items-center space-x-1 sm:px-4">
-                <IconButton
-                  icon={ArrowsPointingInIcon}
-                  label="Collapse all nodes"
-                  onClick={collapseALl}
-                />
-                <IconButton
-                  icon={ArrowsPointingOutIcon}
-                  label="Expand all nodes"
-                  onClick={expandAll}
-                />
-              </div>
-              <div className="flex flex-wrap items-center space-x-1 sm:pl-4">
-                <Copy content={toCopy} />
-              </div>
-            </div>
-          </div>
-          <div className="px-4 py-2 bg-zinc-800 rounded-b-lg not-prose text-sm font-mono">
+            </>
+          )}
+        >
+          <div className="font-mono text-sm">
             <JSONTree
               key={`tree-${shouldExpand}-${expandAfter}`}
               data={output}
@@ -138,7 +139,7 @@ export default function JSONEncoder() {
               }}
             />
           </div>
-        </div>
+        </OutputBox>
       );
     },
     [

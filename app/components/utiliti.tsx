@@ -5,6 +5,7 @@ import { Transition } from "@headlessui/react";
 import { PopularUtilities } from "~/components/popular-utilities";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
+import OutputBox from "~/components/output-box";
 
 interface Props<T> {
   readonly label: string;

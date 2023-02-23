@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import Copy from "~/components/copy";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { Utiliti } from "~/components/utiliti";
+import OutputBox from "~/components/output-box";
 
 interface Props {
   readonly label: string;
@@ -37,27 +38,25 @@ export default function EncoderDecoder({
           id="input"
           rows={rows}
           className="font-mono w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
-          placeholder="Paste in the URL..."
+          placeholder="Paste in your content…"
           required={true}
           value={input}
           onChange={(e) => setInput(e.target.value)}
         ></textarea>
       )}
       renderOutput={(action, input, output) => (
-        <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
-          <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600 font-bold">
-            <div>Output</div>
-            <div>
-              <Copy content={output} />
-            </div>
-          </div>
-          <div className="px-4 py-2 bg-zinc-800 rounded-b-lg">
-            <label htmlFor="input" className="sr-only">
-              Your output
-            </label>
-            <ReadOnlyTextArea value={output} />
-          </div>
-        </div>
+        <OutputBox
+          renderTitle={() => (
+            <>
+              <div className="font-bold">Output</div>
+              <div>
+                <Copy content={output} />
+              </div>
+            </>
+          )}
+        >
+          <ReadOnlyTextArea value={output} />
+        </OutputBox>
       )}
       renderOptions={renderOptions}
       onAction={onAction}
