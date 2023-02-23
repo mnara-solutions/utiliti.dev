@@ -15,7 +15,7 @@ import type { ShouldExpandNodeInitially } from "react-json-tree/src/types";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { Utiliti } from "~/components/utiliti";
-import OutputBox from "~/components/output-box";
+import Box, { BoxContent, BoxTitle } from "~/components/box";
 
 export const meta: MetaFunction = () =>
   metaHelper(utilities.json.name, utilities.json.description);
@@ -78,64 +78,58 @@ export default function JSONEncoder() {
 
       if (a === Action.FORMAT || a === Action.MINIFY) {
         return (
-          <OutputBox
-            renderTitle={() => (
-              <>
-                <div className="font-bold">Output</div>
-                <div>
-                  <Copy content={toCopy} />
-                </div>
-              </>
-            )}
-          >
-            <Code
-              value={JSON.stringify(output, null, a === "Format" ? 2 : 0)}
-              setValue={noop}
-              readonly={true}
-            />
-          </OutputBox>
+          <Box>
+            <BoxTitle title="Output">
+              <div>
+                <Copy content={toCopy} />
+              </div>
+            </BoxTitle>
+            <BoxContent isLast={true}>
+              <Code
+                value={JSON.stringify(output, null, a === "Format" ? 2 : 0)}
+                setValue={noop}
+                readonly={true}
+              />
+            </BoxContent>
+          </Box>
         );
       }
 
       return (
-        <OutputBox
-          renderTitle={() => (
-            <>
-              <div className="font-bold">Output</div>
-              <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
-                <div className="flex items-center space-x-1 sm:pr-4">
-                  <IconButton
-                    icon={MinusIcon}
-                    label="Decrement level at which nodes are auto expanded"
-                    onClick={decrementExpandAfter}
-                  />
-                  <div className="sm:px text-center">{expandAfter}</div>
-                  <IconButton
-                    icon={PlusIcon}
-                    label="Increment level at which nodes are auto expanded"
-                    onClick={incrementExpandAfter}
-                  />
-                </div>
-                <div className="flex items-center space-x-1 sm:px-4">
-                  <IconButton
-                    icon={ArrowsPointingInIcon}
-                    label="Collapse all nodes"
-                    onClick={collapseALl}
-                  />
-                  <IconButton
-                    icon={ArrowsPointingOutIcon}
-                    label="Expand all nodes"
-                    onClick={expandAll}
-                  />
-                </div>
-                <div className="flex flex-wrap items-center space-x-1 sm:pl-4">
-                  <Copy content={toCopy} />
-                </div>
+        <Box>
+          <BoxTitle title="Output">
+            <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
+              <div className="flex items-center space-x-1 sm:pr-4">
+                <IconButton
+                  icon={MinusIcon}
+                  label="Decrement level at which nodes are auto expanded"
+                  onClick={decrementExpandAfter}
+                />
+                <div className="sm:px text-center">{expandAfter}</div>
+                <IconButton
+                  icon={PlusIcon}
+                  label="Increment level at which nodes are auto expanded"
+                  onClick={incrementExpandAfter}
+                />
               </div>
-            </>
-          )}
-        >
-          <div className="font-mono text-sm">
+              <div className="flex items-center space-x-1 sm:px-4">
+                <IconButton
+                  icon={ArrowsPointingInIcon}
+                  label="Collapse all nodes"
+                  onClick={collapseALl}
+                />
+                <IconButton
+                  icon={ArrowsPointingOutIcon}
+                  label="Expand all nodes"
+                  onClick={expandAll}
+                />
+              </div>
+              <div className="flex flex-wrap items-center space-x-1 sm:pl-4">
+                <Copy content={toCopy} />
+              </div>
+            </div>
+          </BoxTitle>
+          <BoxContent isLast={true} className="font-mono text-sm">
             <JSONTree
               key={`tree-${shouldExpand}-${expandAfter}`}
               data={output}
@@ -149,8 +143,8 @@ export default function JSONEncoder() {
                 base03: "#6a8759", // item string expanded
               }}
             />
-          </div>
-        </OutputBox>
+          </BoxContent>
+        </Box>
       );
     },
     [

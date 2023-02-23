@@ -4,6 +4,7 @@ import EncoderDecoder from "~/components/encoder-decoder";
 import { useCallback, useState } from "react";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import { BoxOptions } from "~/components/box";
 
 export const meta: MetaFunction = () =>
   metaHelper(utilities.base64.name, utilities.base64.description);
@@ -44,8 +45,8 @@ export default function Base64() {
       showLoadFile={true}
       rows={10}
       renderOptions={() => (
-        <div className="flex px-5 py-2 border-t border-gray-600 bg-zinc-800/50">
-          <div className="flex items-center h-5 w-5">
+        <BoxOptions>
+          <div className="flex items-center h-5 w-5 ml-2">
             <input
               id="url-safe"
               type="checkbox"
@@ -60,7 +61,7 @@ export default function Base64() {
           >
             URL Safe
           </label>
-        </div>
+        </BoxOptions>
       )}
     />
   );

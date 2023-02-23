@@ -5,6 +5,7 @@ import { Transition } from "@headlessui/react";
 import { PopularUtilities } from "~/components/popular-utilities";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
+import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 
 interface Props<T> {
   readonly label: string;
@@ -63,21 +64,17 @@ export function Utiliti<T>({
     <>
       <h1>{label}</h1>
 
-      <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
-        <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600">
-          <div className="font-bold">Input</div>
+      <Box>
+        <BoxTitle title="Input">
           <div>
             <Copy content={input} />
           </div>
-        </div>
+        </BoxTitle>
 
-        <div className="px-4 py-2 bg-zinc-800 max-h-96 overflow-auto">
-          {renderInput(input, setInput)}
-        </div>
+        <BoxContent isLast={false}>{renderInput(input, setInput)}</BoxContent>
 
         {renderOptions && renderOptions()}
-
-        <div className="flex items-center justify-between px-3 py-2 border-t border-gray-600">
+        <BoxButtons>
           <div>
             {showLoadFile && (
               <ReadFile
@@ -95,8 +92,8 @@ export function Utiliti<T>({
               />
             ))}
           </div>
-        </div>
-      </div>
+        </BoxButtons>
+      </Box>
 
       <div className="h-4" />
 

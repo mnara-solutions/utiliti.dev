@@ -7,6 +7,13 @@ import { encrypt } from "~/utils/aes";
 import Routes from "~/routes";
 import Copy from "~/components/copy";
 import type { CreateActionData } from "~/routes/private-note/create";
+import Box, {
+  BoxButtons,
+  BoxContent,
+  BoxInfo,
+  BoxOptions,
+  BoxTitle,
+} from "~/components/box";
 
 export type NoteMetadata = {
   readonly deleteAfterRead: boolean;
@@ -86,21 +93,20 @@ export default function Index() {
 
   // render form to create note
   return (
-    <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
+    <Box>
       <div className="px-4 py-2 bg-zinc-800 rounded-t-lg">
         <textarea
           id="input"
           name="input"
           ref={inputRef}
           rows={10}
-          className="font-mono w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+          className="font-mono w-full p-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
           placeholder="Write your note here..."
           required={true}
           maxLength={1048576 /* ~1 MB in characters */}
         ></textarea>
       </div>
-
-      <div className="flex px-5 py-2 items-center border-t border-gray-600 bg-zinc-800/50">
+      <BoxOptions>
         <label
           htmlFor="small"
           className="block text-sm font-medium text-gray-900 dark:text-white"
@@ -120,9 +126,9 @@ export default function Index() {
             </option>
           ))}
         </select>
-      </div>
-
-      <div className="flex items-center justify-end px-3 py-2 border-t border-gray-600">
+      </BoxOptions>
+      <BoxButtons>
+        <div />
         <div className="flex gap-x-2">
           <Button
             type="button"
@@ -131,8 +137,8 @@ export default function Index() {
             disabled={fetcher.state === "submitting"}
           />
         </div>
-      </div>
-    </div>
+      </BoxButtons>
+    </Box>
   );
 }
 
@@ -149,27 +155,26 @@ function CreatedNote({
 
   return (
     <>
-      <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
-        <div className="flex items-center justify-between px-3 py-2 border-b border-gray-600 font-bold">
-          <div>Success</div>
+      <Box>
+        <BoxTitle title="Success">
           <div>
             <Copy content={output || ""} />
           </div>
-        </div>
-        <div className="px-4 py-2 bg-zinc-800">
+        </BoxTitle>
+        <BoxContent isLast={false}>
           <input
             type="text"
-            className="w-full px-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+            className="w-full p-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
             readOnly={true}
             value={output}
           />
-        </div>
-        <div className="flex px-3 py-2 border-t border-gray-600 rounded-b-lg text-sm items-center">
+        </BoxContent>
+        <BoxInfo>
           <InformationCircleIcon className="h-5 w-5 mr-1" aria-hidden="true" />
           This note will self-destruct{" "}
           {noteExpiries.find((it) => it.id === expiry)?.label}.
-        </div>
-      </div>
+        </BoxInfo>
+      </Box>
 
       <h2>What's Next</h2>
       <p>
