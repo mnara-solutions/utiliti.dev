@@ -4,7 +4,6 @@ import EncoderDecoder from "~/components/encoder-decoder";
 import { useCallback, useState } from "react";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { PopularUtilities } from "~/components/popular-utilities";
 
 export const meta: MetaFunction = () =>
   metaHelper(utilities.base64.name, utilities.base64.description);
@@ -38,34 +37,31 @@ export default function Base64() {
   );
 
   return (
-    <>
-      <EncoderDecoder
-        label="Base64"
-        encode={encode}
-        decode={decode}
-        showLoadFile={true}
-        rows={10}
-        renderOptions={() => (
-          <div className="flex px-5 py-2 border-t border-gray-600 bg-zinc-800/50">
-            <div className="flex items-center h-5 w-5">
-              <input
-                id="url-safe"
-                type="checkbox"
-                checked={urlSafe}
-                className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
-                onChange={(e) => setUrlSafe(e.target.checked)}
-              />
-            </div>
-            <label
-              htmlFor="url-safe"
-              className="ml-2 text-sm font-medium text-gray-300"
-            >
-              URL Safe
-            </label>
+    <EncoderDecoder
+      label="Base64"
+      encode={encode}
+      decode={decode}
+      showLoadFile={true}
+      rows={10}
+      renderOptions={() => (
+        <div className="flex px-5 py-2 border-t border-gray-600 bg-zinc-800/50">
+          <div className="flex items-center h-5 w-5">
+            <input
+              id="url-safe"
+              type="checkbox"
+              checked={urlSafe}
+              className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
+              onChange={(e) => setUrlSafe(e.target.checked)}
+            />
           </div>
-        )}
-      />
-      <PopularUtilities />
-    </>
+          <label
+            htmlFor="url-safe"
+            className="ml-2 text-sm font-medium text-gray-300"
+          >
+            URL Safe
+          </label>
+        </div>
+      )}
+    />
   );
 }
