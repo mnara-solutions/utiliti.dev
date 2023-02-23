@@ -21,7 +21,7 @@ interface Props<T> {
     output: T
   ) => ReactNode;
   readonly renderOptions?: () => ReactNode;
-  readonly showLoadFile: Boolean;
+  readonly showLoadFile?: Boolean;
 }
 
 export function Utiliti<T>({

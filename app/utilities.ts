@@ -26,12 +26,17 @@ export const utilities = {
       "Encodes or decodes a string so that it conforms to the URL Specification.",
     url: Routes.URL,
   },
+  dataurl: {
+    name: "DataURL",
+    description: "Displays a data url, with or without the data prefix.",
+    url: Routes.DATAURL,
+  },
 };
 
 export const sidebar = [
   {
     name: "Utilities",
-    children: [utilities.privateNotes, utilities.json],
+    children: [utilities.privateNotes, utilities.json, utilities.dataurl],
   },
   {
     name: "Encoders & Decoders",

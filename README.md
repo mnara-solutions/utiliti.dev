@@ -40,7 +40,7 @@ Deployment is done automatically when the PR is merged via GitHub Actions.
 
 ## Todo
 
+- [ ] Windows scrollbars look really bad for a dark website
 - [ ] Spinners when processing a large amount of data
-- [ ] SEO
 - [ ] Temporarily store input in localStorage
 - [ ] Better local development instructions since it requires wrangler which requires a cloudflare account.
