@@ -16,6 +16,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import Search from "~/components/search";
 import useKeyboardShortcut from "use-keyboard-shortcut";
 
+const keyboardShortcutOptions = {
+  overrideSystem: true,
+  ignoreInputFields: true,
+  repeatOnHold: false,
+};
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -41,17 +47,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, [location.pathname, sidebarOpen, setSidebarOpen]);
 
   // on command + k, open search bar
-  useKeyboardShortcut(
-    ["Meta", "K"],
-    () => {
-      toggleSearch();
-    },
-    {
-      overrideSystem: false,
-      ignoreInputFields: true,
-      repeatOnHold: false,
-    }
-  );
+  useKeyboardShortcut(["Meta", "K"], toggleSearch, keyboardShortcutOptions);
+  useKeyboardShortcut(["Control", "K"], toggleSearch, keyboardShortcutOptions);
 
   return (
     <div className="lg:ml-72 xl:ml-80">
