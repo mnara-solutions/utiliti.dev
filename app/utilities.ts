@@ -45,7 +45,12 @@ export const utilities: Record<
 export const sidebar = [
   {
     name: "Utilities",
-    children: [utilities.privateNotes, utilities.json, utilities.dataurl, utilities.wordCounter],
+    children: [
+      utilities.privateNotes,
+      utilities.json,
+      utilities.dataurl,
+      utilities.wordCounter,
+    ],
   },
   {
     name: "Encoders & Decoders",
