@@ -20,25 +20,25 @@ function isImage(dataUrl: string, fileType: string): Promise<boolean> {
 async function display(text: string): Promise<string> {
   const error = { message: "Does not appear to be a valid Data URL." };
 
-  try {
-    if (text.substring(0, 5) === "data:") {
-      return text;
-    } else {
-      const fileTypes = [
-        "image/jpeg",
-        "image/png",
-        "image/webp",
-        "image/avif",
-        "image/gif",
-        "image/svg+xml",
-      ];
-      for (let i = 0; i < fileTypes.length; i++) {
-        if (await isImage(text, fileTypes[i]))
-          return `data:${fileTypes[i]};base64,${text}`;
-      }
+  if (text.substring(0, 5) === "data:") {
+    return text;
+  }
 
-      return Promise.reject(error);
+  try {
+    const fileTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/avif",
+      "image/gif",
+      "image/svg+xml",
+    ];
+    for (let i = 0; i < fileTypes.length; i++) {
+      if (await isImage(text, fileTypes[i]))
+        return `data:${fileTypes[i]};base64,${text}`;
     }
+
+    return Promise.reject(error);
   } catch (e) {
     return Promise.reject(error);
   }
