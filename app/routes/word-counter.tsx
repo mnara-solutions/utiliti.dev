@@ -1,6 +1,6 @@
 import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
-import { MetaFunction } from "@remix-run/cloudflare";
+import type { MetaFunction } from "@remix-run/cloudflare";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -42,7 +42,6 @@ function decode(input: string) {
 
     if (value >= 0xd800 && value <= 0xdbff && counter < length) {
       // It's a high surrogate, and there is a next character.
-
       const extra = input.charCodeAt(counter++);
 
       if ((extra & 0xfc00) == 0xdc00) {
@@ -51,7 +50,6 @@ function decode(input: string) {
       } else {
         // It's an unmatched surrogate; only append this code unit, in case the
         // next code unit is the high surrogate of a surrogate pair.
-
         output.push(value);
         counter--;
       }
@@ -72,7 +70,7 @@ function count(input: string): Info {
   const trimmed = input.trim();
 
   return {
-    sentences: (trimmed.match(/[.?!…]+./g) || []).length + 1,
+    sentences: trimmed ? (trimmed.match(/[.?!…]+./g) || []).length + 1 : 0,
     words: (trimmed.replace(/['";:,.?¿\-!¡]+/g, "").match(/\S+/g) || []).length,
     characters: decode(trimmed.replace(/\s/g, "")).length,
     all: decode(input).length,
@@ -132,8 +130,20 @@ export default function WordCounter() {
         </BoxContent>
 
         <BoxInfo>
-          {info.words.toLocaleString()} words {info.all.toLocaleString()}{" "}
-          characters
+          <div className="flex w-full justify-between">
+            <div>
+              {info.sentences.toLocaleString()} sentence
+              {info.sentences === 1 ? "" : "s"}
+            </div>
+            <div>
+              {info.words.toLocaleString()} word
+              {info.words === 1 ? "" : "s"}
+            </div>
+            <div>
+              {info.all.toLocaleString()} character
+              {info.all === 1 ? "" : "s"}
+            </div>
+          </div>
         </BoxInfo>
       </Box>
     </>
