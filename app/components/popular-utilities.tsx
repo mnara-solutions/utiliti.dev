@@ -3,8 +3,24 @@ import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import { utilities } from "~/utilities";
 
+/**
+ * Uses the Fisher-Yates algorithm to reorder the elements of an array.
+ *
+ * @param arr
+ */
+function shuffle<T>(arr: T[]) {
+  let m = arr.length;
+
+  while (m) {
+    const i = Math.floor(Math.random() * m--);
+    [arr[m], arr[i]] = [arr[i], arr[m]];
+  }
+
+  return arr;
+}
+
 export function PopularUtilities() {
-  const popular = Object.values(utilities).slice(0, 4);
+  const popular = shuffle(Object.values(utilities)).slice(0, 4);
 
   return (
     <div className="xl:max-w-none">
