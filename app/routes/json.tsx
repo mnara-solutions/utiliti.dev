@@ -85,11 +85,13 @@ export default function JSONEncoder() {
               </div>
             </BoxTitle>
             <BoxContent isLast={true}>
-              <Code
-                value={JSON.stringify(output, null, a === "Format" ? 2 : 0)}
-                setValue={noop}
-                readonly={true}
-              />
+              <div className="px-3 py-2">
+                <Code
+                  value={JSON.stringify(output, null, a === "Format" ? 2 : 0)}
+                  setValue={noop}
+                  readonly={true}
+                />
+              </div>
             </BoxContent>
           </Box>
         );
@@ -163,12 +165,14 @@ export default function JSONEncoder() {
       label="JSON"
       actions={actions}
       renderInput={(input, setInput) => (
-        <Code
-          value={input}
-          setValue={setInput}
-          minHeight="12rem"
-          readonly={false}
-        />
+        <div className="px-3 py-2">
+          <Code
+            value={input}
+            setValue={setInput}
+            minHeight="12rem"
+            readonly={false}
+          />
+        </div>
       )}
       renderOutput={renderOutput}
       showLoadFile={true}

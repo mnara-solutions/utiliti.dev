@@ -32,7 +32,7 @@ export function BoxContent({
   return (
     <div
       className={classNames(
-        "px-3 py-2 bg-zinc-800 max-h-96 overflow-auto not-prose",
+        "bg-zinc-800 max-h-96 overflow-auto not-prose",
         isLast && "rounded-b-lg",
         className
       )}

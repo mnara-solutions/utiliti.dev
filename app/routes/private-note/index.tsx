@@ -94,13 +94,13 @@ export default function Index() {
   // render form to create note
   return (
     <Box>
-      <div className="px-4 py-2 bg-zinc-800 rounded-t-lg">
+      <div className="bg-zinc-800 rounded-t-lg">
         <textarea
           id="input"
           name="input"
           ref={inputRef}
           rows={10}
-          className="font-mono w-full p-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+          className="font-mono w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
           placeholder="Write your note here..."
           required={true}
           maxLength={1048576 /* ~1 MB in characters */}
