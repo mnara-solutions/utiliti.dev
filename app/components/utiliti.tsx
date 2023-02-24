@@ -106,7 +106,7 @@ export function Utiliti<T>({
         {error ? (
           <Box>
             <BoxTitle title="Error" />
-            <BoxContent isLast={true} className="text-red-400">
+            <BoxContent isLast={true} className="px-3 py-2 text-red-400">
               {error}
             </BoxContent>
           </Box>

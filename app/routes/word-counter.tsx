@@ -125,7 +125,7 @@ export default function WordCounter() {
           <textarea
             ref={inputRef}
             rows={20}
-            className="w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 break-words"
+            className="block w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 break-words"
             placeholder="Start typing or paste in your text here…"
             onChange={onChange}
           ></textarea>

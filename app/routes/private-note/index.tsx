@@ -100,7 +100,7 @@ export default function Index() {
           name="input"
           ref={inputRef}
           rows={10}
-          className="font-mono w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+          className="block font-mono w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
           placeholder="Write your note here..."
           required={true}
           maxLength={1048576 /* ~1 MB in characters */}
