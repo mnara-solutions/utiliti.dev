@@ -29,6 +29,11 @@ export const utilities: Record<
       "Encodes or decodes a string so that it conforms to the URL Specification.",
     url: Routes.URL,
   },
+  dataurl: {
+    name: "DataURL",
+    description: "Displays a data url, with or without the data prefix.",
+    url: Routes.DATAURL,
+  },
   wordCounter: {
     name: "Word Counter",
     description:
@@ -40,7 +45,7 @@ export const utilities: Record<
 export const sidebar = [
   {
     name: "Utilities",
-    children: [utilities.privateNotes, utilities.json, utilities.wordCounter],
+    children: [utilities.privateNotes, utilities.json, utilities.dataurl, utilities.wordCounter],
   },
   {
     name: "Encoders & Decoders",
