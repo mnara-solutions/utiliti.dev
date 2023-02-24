@@ -3,7 +3,7 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { Utiliti } from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 export const meta: MetaFunction = () =>
   metaHelper(utilities.dataurl.name, utilities.dataurl.description);
@@ -48,29 +48,39 @@ export default function DataUrl() {
     []
   );
 
+  const renderInput = useCallback(
+    (input: string, setInput: (value: string) => void) => (
+      <textarea
+        id="input"
+        rows={10}
+        className="font-mono w-full p-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+        placeholder="Paste in your Data URL…"
+        required={true}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
+    ),
+    []
+  );
+
+  const renderOutput = useCallback(
+    (action: string, input: string, output: string) => (
+      <Box>
+        <BoxTitle title="Output"></BoxTitle>
+        <BoxContent isLast={true} className="max-h-full flex justify-center">
+          <img className="max-w-full" alt="Output" src={output} />
+        </BoxContent>
+      </Box>
+    ),
+    []
+  );
+
   return (
     <Utiliti
       label="DataURL"
       actions={actions}
-      renderInput={(input, setInput) => (
-        <textarea
-          id="input"
-          rows={10}
-          className="font-mono w-full p-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
-          placeholder="Paste in your Data URL…"
-          required={true}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        ></textarea>
-      )}
-      renderOutput={(action, input, output) => (
-        <Box>
-          <BoxTitle title="Output"></BoxTitle>
-          <BoxContent isLast={true} className="max-h-full flex justify-center">
-            <img className="max-w-full" alt="Output" src={output} />
-          </BoxContent>
-        </Box>
-      )}
+      renderInput={renderInput}
+      renderOutput={renderOutput}
     />
   );
 }
