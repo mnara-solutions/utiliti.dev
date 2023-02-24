@@ -19,7 +19,7 @@ export default function ReadOnlyTextArea({ value }: Props) {
     <textarea
       ref={ref}
       rows={1}
-      className="font-mono w-full p-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+      className="block font-mono w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 overflow-x-hidden"
       readOnly={true}
       value={value}
     />

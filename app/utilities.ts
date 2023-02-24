@@ -4,7 +4,10 @@ import Routes from "~/routes";
  * This file serves as an index of all available utilities and the content gets re-used in places like the sidebar
  * and the popular utilities component.
  */
-export const utilities = {
+export const utilities: Record<
+  string,
+  { readonly name: string; readonly description: string; readonly url: string }
+> = {
   privateNotes: {
     name: "Private Notes",
     description: "Share private notes securely via a link.",
@@ -31,12 +34,23 @@ export const utilities = {
     description: "Displays a data url, with or without the data prefix.",
     url: Routes.DATAURL,
   },
+  wordCounter: {
+    name: "Word Counter",
+    description:
+      "Counts the number of words, characters and other information about text.",
+    url: Routes.WORD_COUNTER,
+  },
 };
 
 export const sidebar = [
   {
     name: "Utilities",
-    children: [utilities.privateNotes, utilities.json, utilities.dataurl],
+    children: [
+      utilities.privateNotes,
+      utilities.json,
+      utilities.dataurl,
+      utilities.wordCounter,
+    ],
   },
   {
     name: "Encoders & Decoders",

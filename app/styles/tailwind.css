@@ -1,3 +1,7 @@
+:root {
+  color-scheme: dark;
+}
+
 @media (min-width: 1024px) {
   .prose :where(.prose > *):not(:where([class~="not-prose"] *)) {
     max-width: 40rem;

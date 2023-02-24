@@ -14,8 +14,8 @@ export function BoxTitle({
   children,
 }: PropsWithChildren<{ title: string }>) {
   return (
-    <div className="px-2 py-2 flex items-center justify-between border-b border-gray-600">
-      <div className="font-bold px-1">{title}</div>
+    <div className="px-3 py-2 flex items-center justify-between border-b border-gray-600">
+      <div className="font-bold">{title}</div>
       {children}
     </div>
   );
@@ -32,7 +32,7 @@ export function BoxContent({
   return (
     <div
       className={classNames(
-        "px-2 py-2 bg-zinc-800 max-h-96 overflow-auto not-prose",
+        "bg-zinc-800 max-h-96 overflow-auto not-prose",
         isLast && "rounded-b-lg",
         className
       )}
@@ -44,7 +44,7 @@ export function BoxContent({
 
 export function BoxButtons({ children }: PropsWithChildren<{}>) {
   return (
-    <div className="px-2 py-2 flex items-center justify-between border-t border-gray-600">
+    <div className="px-3 py-2 flex items-center justify-between border-t border-gray-600">
       {children}
     </div>
   );
@@ -52,7 +52,7 @@ export function BoxButtons({ children }: PropsWithChildren<{}>) {
 
 export function BoxOptions({ children }: PropsWithChildren<{}>) {
   return (
-    <div className="px-2 py-2 flex border-t border-gray-600 bg-zinc-800/50 items-center">
+    <div className="px-3 py-2 flex border-t border-gray-600 bg-zinc-800/50 items-center">
       {children}
     </div>
   );
@@ -60,7 +60,7 @@ export function BoxOptions({ children }: PropsWithChildren<{}>) {
 
 export function BoxInfo({ children }: PropsWithChildren<{}>) {
   return (
-    <div className="px-2 py-2 flex border-t border-gray-600 rounded-b-lg text-sm items-center">
+    <div className="px-3 py-2 flex border-t border-gray-600 rounded-b-lg text-sm items-center">
       {children}
     </div>
   );

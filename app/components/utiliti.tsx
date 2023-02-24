@@ -104,12 +104,12 @@ export function Utiliti<T>({
         enterTo="opacity-100"
       >
         {error ? (
-          <div
-            className="p-4 mb-4 text-sm rounded-lg bg-zinc-700 text-red-500"
-            role="alert"
-          >
-            <span className="font-medium">Error: </span> {error}
-          </div>
+          <Box>
+            <BoxTitle title="Error" />
+            <BoxContent isLast={true} className="px-3 py-2 text-red-400">
+              {error}
+            </BoxContent>
+          </Box>
         ) : (
           action && output && renderOutput(action, input, output)
         )}
