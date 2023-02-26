@@ -53,7 +53,7 @@ export default function DataUrl() {
       <textarea
         id="input"
         rows={10}
-        className="font-mono w-full p-0 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+        className="block px-3 py-2 font-mono w-fulltext-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
         placeholder="Paste in your Data URL…"
         required={true}
         value={input}
