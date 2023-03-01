@@ -1,5 +1,6 @@
 import React from "react";
 import PopularUtilities from "~/components/popular-utilities";
+import GoogleAd from "~/components/google-ad";
 
 export default function Index() {
   return (
@@ -31,6 +32,8 @@ export default function Index() {
       </ul>
 
       <PopularUtilities />
+
+      <GoogleAd />
     </>
   );
 }

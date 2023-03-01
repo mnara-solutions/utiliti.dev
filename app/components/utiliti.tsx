@@ -6,6 +6,7 @@ import PopularUtilities from "~/components/popular-utilities";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
+import GoogleAd from "~/components/google-ad";
 
 interface Props<T> {
   readonly label: string;
@@ -116,6 +117,8 @@ export function Utiliti<T>({
       </Transition>
 
       <PopularUtilities />
+
+      <GoogleAd />
     </>
   );
 }
