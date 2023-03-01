@@ -2,7 +2,7 @@ import { Outlet } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/cloudflare";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { PopularUtilities } from "~/components/popular-utilities";
+import PopularUtilities from "~/components/popular-utilities";
 
 export const meta: MetaFunction = () =>
   metaHelper(utilities.privateNotes.name, utilities.privateNotes.description);

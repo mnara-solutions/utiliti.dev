@@ -1,5 +1,5 @@
 import React from "react";
-import { PopularUtilities } from "~/components/popular-utilities";
+import PopularUtilities from "~/components/popular-utilities";
 
 export default function Index() {
   return (

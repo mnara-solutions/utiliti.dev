@@ -2,7 +2,7 @@ import Copy from "~/components/copy";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
-import { PopularUtilities } from "~/components/popular-utilities";
+import PopularUtilities from "~/components/popular-utilities";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";

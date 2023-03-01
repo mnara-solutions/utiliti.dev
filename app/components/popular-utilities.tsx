@@ -2,6 +2,7 @@ import { Link } from "@remix-run/react";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import { utilities } from "~/utilities";
+import { ClientOnly } from "~/components/client-only";
 
 /**
  * Uses the Fisher-Yates algorithm to reorder the elements of an array.
@@ -19,7 +20,28 @@ function shuffle<T>(arr: T[]) {
   return arr;
 }
 
-export function PopularUtilities() {
+/**
+ * Since we are using a random() function to show popular utilities, remix fails to match server side
+ * rendered content with what the client does and throws a bunch of errors. We wrap it with <ClientOnly />
+ * to only render fully on the client side.
+ *
+ * @constructor
+ */
+export default function PopularUtilities() {
+  return (
+    <ClientOnly
+      fallback={
+        <div className="xl:max-w-none">
+          <h2 className="mt-16">Popular Utilities</h2>
+        </div>
+      }
+    >
+      {() => <InnerPopularUtilities />}
+    </ClientOnly>
+  );
+}
+
+function InnerPopularUtilities() {
   const popular = shuffle(Object.values(utilities)).slice(0, 4);
 
   return (
