@@ -1,9 +1,8 @@
 import type { LoaderFunction } from "@remix-run/router";
 import { redirect } from "@remix-run/router";
 import type { NoteMetadata } from "~/routes/private-note/index";
-import type { Location } from "@remix-run/react";
 import { Link, useLoaderData, useLocation } from "@remix-run/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import {
   ArrowSmallLeftIcon,
@@ -14,6 +13,7 @@ import Copy from "~/components/copy";
 import { decrypt } from "~/utils/aes";
 import Routes from "~/routes";
 import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
+import { useHydrated } from "~/hooks/use-hydrated";
 
 type LoaderData = {
   readonly ciphertext: string;
@@ -68,16 +68,32 @@ export const loader: LoaderFunction = async ({
 export default function PrivateNote() {
   const loaderData = useLoaderData<LoaderData>();
   const location = useLocation();
+  const hydrated = useHydrated();
 
   const [plainText, setPlainText] = useState<string | null>(null);
   const [decryptionError, setDecryptionError] = useState(false);
+
+  // We are going to capture the `key` on load, and then remove it from the URL. This is to prevent
+  // the key from leaking via browser history. More details: https://github.com/mnara-solutions/utiliti.dev/issues/12
+  // This only works because remix will fetch the note when the confirm button is clicked without reloading
+  // the document (only if javascript is enabled, which is kind of necessary for this website).
+  const key = useRef(location.hash.slice(1));
+  useEffect(() => {
+    if (location.hash.length > 0) {
+      history.replaceState(
+        {},
+        document.title,
+        Routes.PRIVATE_NOTES + "#redacted"
+      );
+    }
+  }, [location]);
 
   useEffect(() => {
     if (!loaderData.ciphertext) {
       return;
     }
 
-    decrypt(loaderData.ciphertext, location.hash.slice(1))
+    decrypt(loaderData.ciphertext, key.current)
       .then((it) => setPlainText(it))
       .catch((it) => {
         console.error(
@@ -86,12 +102,12 @@ export default function PrivateNote() {
         );
         setDecryptionError(true);
       });
-  }, [loaderData.ciphertext, location.hash]);
+  }, [loaderData.ciphertext]);
 
   const expiration = loaderData.expiration;
 
   // if we ran into a decryption error, show an error page
-  if (decryptionError || location.hash.length !== 11) {
+  if (decryptionError || (hydrated && key.current.length !== 10)) {
     return (
       <Error message="An error occurred while trying to decrypt the note. Double check that the URL is copied exactly and try again." />
     );
@@ -100,7 +116,7 @@ export default function PrivateNote() {
   // if this note is supposed to be deleted after it's shown, show a confirmation
   // this also makes it so that tools that inspect URLs do not inadvertently read the node.
   if (loaderData.needsConfirmation || plainText === null) {
-    return <Confirm location={location} />;
+    return <Confirm />;
   }
 
   // finally, show the note
@@ -132,7 +148,7 @@ export default function PrivateNote() {
   );
 }
 
-function Confirm({ location }: { readonly location: Location }) {
+function Confirm() {
   return (
     <>
       <p className="lead">
@@ -142,7 +158,7 @@ function Confirm({ location }: { readonly location: Location }) {
       <div className="not-prose my-6">
         <Link
           className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
-          to={`${location.pathname}?confirm=true${location.hash}`}
+          to={`?confirm=true`}
         >
           Show the note
           <ArrowSmallRightIcon className="h-4 w-4 -mr-1" aria-hidden="true" />
