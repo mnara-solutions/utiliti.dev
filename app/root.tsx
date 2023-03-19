@@ -92,11 +92,6 @@ function Document({ children }: { children: React.ReactNode }) {
       <head>
         <Meta />
         <Links />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7171176134175232"
-          crossOrigin="anonymous"
-        ></script>
       </head>
       <body className="antialiased bg-zinc-900">
         <Layout>{children}</Layout>

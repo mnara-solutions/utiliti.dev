@@ -2,21 +2,22 @@ import { useEffect } from "react";
 import { ClientOnly } from "~/components/client-only";
 
 export default function WrappedGoogleAd() {
-  return (
-    <ClientOnly>
-      {() => <GoogleAd />}
-    </ClientOnly>
-  );
+  return <ClientOnly>{() => <GoogleAd />}</ClientOnly>;
 }
 
 function GoogleAd() {
   useEffect(() => {
     // @ts-ignore
-    (adsbygoogle = window.adsbygoogle || []).push({});
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
 
   return (
     <div className="xl:max-w-none not-prose mt-16">
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7171176134175232"
+        crossOrigin="anonymous"
+      ></script>
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}
