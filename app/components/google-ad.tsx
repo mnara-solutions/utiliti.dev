@@ -1,6 +1,15 @@
 import { useEffect } from "react";
+import { ClientOnly } from "~/components/client-only";
 
-export default function GoogleAd() {
+export default function WrappedGoogleAd() {
+  return (
+    <ClientOnly>
+      {() => <GoogleAd />}
+    </ClientOnly>
+  );
+}
+
+function GoogleAd() {
   useEffect(() => {
     // @ts-ignore
     (adsbygoogle = window.adsbygoogle || []).push({});
