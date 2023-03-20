@@ -2,11 +2,10 @@ import Copy from "~/components/copy";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
-import PopularUtilities from "~/components/popular-utilities";
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
-import GoogleAd from "~/components/google-ad";
+import ContentWrapper from "~/components/content-wrapper";
 
 interface Props<T> {
   readonly label: string;
@@ -62,7 +61,7 @@ export function Utiliti<T>({
   );
 
   return (
-    <>
+    <ContentWrapper>
       <h1>{label}</h1>
 
       <Box>
@@ -115,10 +114,6 @@ export function Utiliti<T>({
           action && output && renderOutput(action, input, output)
         )}
       </Transition>
-
-      <PopularUtilities />
-
-      <GoogleAd />
-    </>
+    </ContentWrapper>
   );
 }
