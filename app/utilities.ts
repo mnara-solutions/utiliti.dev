@@ -40,6 +40,11 @@ export const utilities: Record<
       "Counts the number of words, characters and other information about text.",
     url: Routes.WORD_COUNTER,
   },
+  loremIpsum: {
+    name: "Lorem Ipsum",
+    description: "Generate Lorem Ipsum placeholder text.",
+    url: Routes.LOREM_IPSUM,
+  },
 };
 
 export const sidebar = [
@@ -55,5 +60,9 @@ export const sidebar = [
   {
     name: "Encoders & Decoders",
     children: [utilities.base64, utilities.url],
+  },
+  {
+    name: "Random Generators",
+    children: [utilities.loremIpsum],
   },
 ];

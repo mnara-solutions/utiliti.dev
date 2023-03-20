@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
-import React from "react";
+import React, { memo } from "react";
 import { utilities } from "~/utilities";
 import { ClientOnly } from "~/components/client-only";
 
@@ -20,6 +20,8 @@ function shuffle<T>(arr: T[]) {
   return arr;
 }
 
+export default memo(PopularUtilities);
+
 /**
  * Since we are using a random() function to show popular utilities, remix fails to match server side
  * rendered content with what the client does and throws a bunch of errors. We wrap it with <ClientOnly />
@@ -27,7 +29,7 @@ function shuffle<T>(arr: T[]) {
  *
  * @constructor
  */
-export default function PopularUtilities() {
+function PopularUtilities() {
   return (
     <ClientOnly
       fallback={

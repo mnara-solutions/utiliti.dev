@@ -8,4 +8,5 @@ export default class Routes {
   static readonly BASE64 = "/base64";
   static readonly DATAURL = "/dataurl";
   static readonly WORD_COUNTER = "/word-counter";
+  static readonly LOREM_IPSUM = "/lorem-ipsum";
 }
