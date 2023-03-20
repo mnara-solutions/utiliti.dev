@@ -1,4 +1,5 @@
-import { ChangeEventHandler, useState } from "react";
+import type { ChangeEventHandler } from "react";
+import { useState } from "react";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import Copy from "~/components/copy";
@@ -48,14 +49,7 @@ function endPunctuation() {
   return ".";
 }
 
-function createRandomSentence(
-  withLoremIpsum: boolean,
-  avgWordsPerSentence: number
-): string {
-  if (withLoremIpsum) {
-    return "Lorem ipsum odor amet, consectetuer adipiscing elit.";
-  }
-
+function createSentence(avgWordsPerSentence: number): string {
   const stDev = getStandardDeviation(avgWordsPerSentence, 0.25);
   const sentenceLength = positiveRandom(
     avgWordsPerSentence - stDev,
@@ -73,7 +67,7 @@ function createRandomSentence(
   );
 }
 
-function createRandomParagraph(
+function createParagraph(
   firstParagraph: boolean,
   avgWordsPerSentence: number,
   avgSentencesPerParagraph: number,
@@ -86,10 +80,9 @@ function createRandomParagraph(
   );
 
   return Array.from(Array(paragraphLength), (_, i) =>
-    createRandomSentence(
-      i === 0 && firstParagraph && startWithLoremIpsum,
-      avgWordsPerSentence
-    )
+    i === 0 && firstParagraph && startWithLoremIpsum
+      ? "Lorem ipsum odor amet, consectetuer adipiscing elit."
+      : createSentence(avgWordsPerSentence)
   ).join(" ");
 }
 
@@ -109,7 +102,7 @@ function generateLoremIpsum(
   startWithLoremIpsum: boolean
 ): string[] {
   return Array.from(Array(paragraphs), (_, i) =>
-    createRandomParagraph(
+    createParagraph(
       i === 0,
       avgWordsPerSentence,
       avgSentencesPerParagraph,
@@ -194,6 +187,7 @@ export default function LoremIpsum() {
 
       <Box>
         <BoxTitle title="Settings" />
+
         <BoxContent isLast={true} className="px-3 py-2 flex flex-col gap-y-2">
           <Slider
             id="paragraphs"
@@ -212,6 +206,7 @@ export default function LoremIpsum() {
             max={20}
             onChange={setAwps}
           />
+
           <Slider
             id="aspp"
             label={`Average Sentences per Paragraph (${aspp})`}
@@ -240,6 +235,7 @@ export default function LoremIpsum() {
                 <Copy content={output.join("\n\n")} />
               </div>
             </BoxTitle>
+
             <div className="bg-zinc-800 rounded-b-lg px-3 py-0.5">
               {output.map((p, i) => (
                 <p key={i}>{p}</p>
