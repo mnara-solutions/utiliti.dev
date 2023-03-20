@@ -1,10 +1,9 @@
 import React from "react";
-import PopularUtilities from "~/components/popular-utilities";
-import GoogleAd from "~/components/google-ad";
+import ContentWrapper from "~/components/content-wrapper";
 
 export default function Index() {
   return (
-    <>
+    <ContentWrapper>
       <h1>Utiliti</h1>
       <p className="lead">
         A collection of{" "}
@@ -30,10 +29,6 @@ export default function Index() {
         </li>
         <li>No tracking.</li>
       </ul>
-
-      <PopularUtilities />
-
-      <GoogleAd />
-    </>
+    </ContentWrapper>
   );
 }
