@@ -30,13 +30,14 @@ function GoogleAd() {
 
   return (
     <div className="xl:max-w-none not-prose mt-16">
-      <ins
-        className="adsbygoogle"
-        style={{ display: "block" }}
-        data-ad-format="autorelaxed"
-        data-ad-client="ca-pub-9826263890932106"
-        data-ad-slot="5018769606"
-      ></ins>
+      {/* disable ad until utiliti is approved */}
+      {/*<ins*/}
+      {/*  className="adsbygoogle"*/}
+      {/*  style={{ display: "block" }}*/}
+      {/*  data-ad-format="autorelaxed"*/}
+      {/*  data-ad-client="ca-pub-9826263890932106"*/}
+      {/*  data-ad-slot="5018769606"*/}
+      {/*></ins>*/}
     </div>
   );
 }
