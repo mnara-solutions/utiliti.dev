@@ -5,3 +5,6 @@ node_modules
 /functions/\[\[path\]\].js.map
 /public/build
 .env
+/test-results/
+/playwright-report/
+/playwright/.cache/
