@@ -10,7 +10,8 @@
     "typecheck": "tsc",
     "wrangler": "wrangler pages dev ./public -k PRIVATE_NOTES",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --ignore-path .gitignore .",
-    "prettier": "prettier --write --ignore-path .gitignore ."
+    "prettier": "prettier --write --ignore-path .gitignore .",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@floating-ui/react": "^0.22.0",
@@ -32,8 +33,10 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^3.18.0",
+    "@playwright/test": "^1.31.2",
     "@remix-run/dev": "^1.14.3",
     "@remix-run/eslint-config": "^1.14.3",
+    "@remix-run/testing": "^1.14.3",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
     "@types/prismjs": "^1.26.0",

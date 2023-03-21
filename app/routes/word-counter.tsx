@@ -5,6 +5,7 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { throttle } from "~/utils/throttle";
+import ContentWrapper from "~/components/content-wrapper";
 
 export const meta: MetaFunction = () =>
   metaHelper(utilities.wordCounter.name, utilities.wordCounter.description);
@@ -109,7 +110,7 @@ export default function WordCounter() {
   }, [calculate, throttledCalculate]);
 
   return (
-    <>
+    <ContentWrapper>
       <h1>Word Counter</h1>
 
       <Box>
@@ -146,6 +147,6 @@ export default function WordCounter() {
           </div>
         </BoxInfo>
       </Box>
-    </>
+    </ContentWrapper>
   );
 }
