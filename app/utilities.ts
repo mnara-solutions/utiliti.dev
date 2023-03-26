@@ -36,14 +36,24 @@ export const utilities: Record<
   },
   wordCounter: {
     name: "Word Counter",
-    description:
-      "Counts the number of words, characters and other information about text.",
+    description: "Counts the number of words and other information about text.",
     url: Routes.WORD_COUNTER,
   },
   loremIpsum: {
     name: "Lorem Ipsum",
     description: "Generate Lorem Ipsum placeholder text.",
     url: Routes.LOREM_IPSUM,
+  },
+  uuid: {
+    name: "UUID",
+    description: "Generate random Universal Unique Identifiers.",
+    url: Routes.UUID,
+  },
+  cuid: {
+    name: "CUID",
+    description:
+      "Generate random collision resistant IDs optimized for horizontal scaling.",
+    url: Routes.CUID,
   },
 };
 
@@ -63,6 +73,6 @@ export const sidebar = [
   },
   {
     name: "Random Generators",
-    children: [utilities.loremIpsum],
+    children: [utilities.loremIpsum, utilities.uuid, utilities.cuid],
   },
 ];
