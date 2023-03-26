@@ -32,13 +32,25 @@ export default function UuidGenerator() {
     <ContentWrapper>
       <h1>UUID</h1>
 
+      <p>
+        Generate random Universally Unique IDentifiers (UUID) that match the{" "}
+        <a
+          href="https://www.ietf.org/rfc/rfc4122.txt"
+          target="_blank"
+          rel="noreferrer"
+        >
+          RFC4122
+        </a>{" "}
+        specification.
+      </p>
+
       <Box>
         <BoxTitle title="">
           <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
             <div className="flex items-center space-x-1 sm:pr-4">
               <select
                 defaultValue={4}
-                className="block text-sm ml-2 border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
+                className="block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
                 onChange={onChangeVersion}
               >
                 <option value={1}>v1</option>
@@ -54,7 +66,7 @@ export default function UuidGenerator() {
                   max={500}
                   value={number}
                   onChange={onChangeNumber}
-                  className="block text-sm ml-2 border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
+                  className="block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
                 />
               </div>
             </div>

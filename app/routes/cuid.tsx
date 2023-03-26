@@ -37,7 +37,14 @@ export default function UuidGenerator() {
       <h1>CUID v2</h1>
       <p>
         Secure, collision-resistant ids optimized for horizontal scaling and
-        performance.
+        performance.{" "}
+        <a
+          href="https://github.com/paralleldrive/cuid2"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Learn More.
+        </a>
       </p>
 
       <Box>
@@ -68,7 +75,7 @@ export default function UuidGenerator() {
                   max={500}
                   value={number}
                   onChange={onChangeNumber}
-                  className="block text-sm ml-2 border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
+                  className="block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
                 />
               </div>
             </div>
