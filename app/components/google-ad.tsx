@@ -7,6 +7,7 @@ export default function WrappedGoogleAd() {
   return null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function GoogleAd() {
   const adsLoaded = useRef(false);
   useEffect(() => {
