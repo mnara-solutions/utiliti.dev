@@ -55,6 +55,17 @@ export const utilities: Record<
       "Generate random collision resistant IDs optimized for horizontal scaling.",
     url: Routes.CUID,
   },
+  nsLookup: {
+    name: "NS Lookup",
+    description: "Find DNS records for a domain name.",
+    url: Routes.NS_LOOKUP,
+  },
+  whois: {
+    name: "Whois",
+    description:
+      "Find information about where the domain was registered and by who.",
+    url: Routes.WHOIS,
+  },
 };
 
 export const sidebar = [
@@ -74,5 +85,9 @@ export const sidebar = [
   {
     name: "Random Generators",
     children: [utilities.loremIpsum, utilities.uuid, utilities.cuid],
+  },
+  {
+    name: "DNS",
+    children: [utilities.nsLookup, utilities.whois],
   },
 ];
