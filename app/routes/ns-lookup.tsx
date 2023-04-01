@@ -92,14 +92,14 @@ export const action: ActionFunction = async ({
   context,
 }): Promise<Response[]> => {
   const formData = await request.formData();
-  const url = formData.get("url") as string;
-  const a = getDnsDetail(url, "a");
-  const aaaa = getDnsDetail(url, "aaaa");
-  const cname = getDnsDetail(url, "cname");
-  const txt = getDnsDetail(url, "txt");
-  const spf = getDnsDetail(url, "spf");
-  const ns = getDnsDetail(url, "ns");
-  const mx = getDnsDetail(url, "mx");
+  const domain = formData.get("domain") as string;
+  const a = getDnsDetail(domain, "a");
+  const aaaa = getDnsDetail(domain, "aaaa");
+  const cname = getDnsDetail(domain, "cname");
+  const txt = getDnsDetail(domain, "txt");
+  const spf = getDnsDetail(domain, "spf");
+  const ns = getDnsDetail(domain, "ns");
+  const mx = getDnsDetail(domain, "mx");
 
   return Promise.all([a, aaaa, cname, txt, spf, ns, mx]);
 };
@@ -142,7 +142,7 @@ export default function NsLookup() {
           <input
             type="search"
             id="domain"
-            name="url"
+            name="domain"
             className="block w-full p-4 pl-10 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 bg-zinc-700 border-zinc-600 placeholder-gray-400 text-white"
             placeholder="utiliti.dev"
             required={true}
@@ -156,13 +156,12 @@ export default function NsLookup() {
         </div>
       </Form>
 
-      <div className="h-4" />
-
       <Transition
         show={!!data}
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"
         enterTo="opacity-100"
+        className="not-prose mt-16"
       >
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-400">
@@ -214,7 +213,7 @@ export default function NsLookup() {
                             </th>
                             <td className="px-6 py-4">{r.TTL}</td>
                             <td className="px-6 py-4">{r.data}</td>
-                            <td>
+                            <td className="px-6">
                               <Copy content={r.data} />
                             </td>
                           </tr>

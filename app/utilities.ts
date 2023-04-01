@@ -60,6 +60,12 @@ export const utilities: Record<
     description: "Find DNS records for a domain name.",
     url: Routes.NS_LOOKUP,
   },
+  whois: {
+    name: "Whois",
+    description:
+      "Find information about where the domain was registered and by who.",
+    url: Routes.WHOIS,
+  },
 };
 
 export const sidebar = [
@@ -82,6 +88,6 @@ export const sidebar = [
   },
   {
     name: "DNS",
-    children: [utilities.nsLookup],
+    children: [utilities.nsLookup, utilities.whois],
   },
 ];
