@@ -1,16 +1,17 @@
 import { Outlet } from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/cloudflare";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import ContentWrapper from "~/components/content-wrapper";
 
-export const meta: MetaFunction = () =>
-  metaHelper(utilities.privateNotes.name, utilities.privateNotes.description);
+export const meta = metaHelper(
+  utilities.privateNotes.name,
+  utilities.privateNotes.description
+);
 
-export default function PrivateNote() {
+export default function Index() {
   return (
     <ContentWrapper>
-      <h1>Private Note</h1>
+      <h1>Private Notes</h1>
 
       <Outlet />
 
@@ -24,9 +25,9 @@ export default function PrivateNote() {
         <li>All data is encrypted in the browser before it is sent to us.</li>
         <li>The encryption key is never sent to us.</li>
         <li>
-          All the code is available on{" "}
+          Technical implementation detail and code is available on{" "}
           <a
-            href="https://github.com/mnara-solutions/utiliti.dev/tree/main/app/routes/private-note"
+            href="https://github.com/mnara-solutions/utiliti.dev/blob/main/private-note.md"
             target="_blank"
             rel="noreferrer"
           >

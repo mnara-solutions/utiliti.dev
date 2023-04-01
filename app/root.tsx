@@ -1,5 +1,6 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare";
+import type { LinksFunction, V2_MetaFunction } from "@remix-run/cloudflare";
 import {
+  isRouteErrorResponse,
   Link,
   Links,
   LiveReload,
@@ -7,32 +8,36 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useCatch,
+  useRouteError,
 } from "@remix-run/react";
 import prism from "app/styles/prism-darcula.css";
 import tailwind from "~/styles/tailwind.css";
 import Layout from "~/components/layout";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/solid";
 
-export const meta: MetaFunction = () => {
+export const meta: V2_MetaFunction = () => {
   const title = "Utiliti";
   const description =
     "A collection of high quality, secure, and open source utilities.";
-  return {
-    charset: "utf-8",
-    title,
-    description,
-    keywords:
-      "utiliti, json, base64, url, dataurl, private note, secure note, self-destructing note, utilities, offline",
-    viewport: "width=device-width,initial-scale=1",
-    "theme-color": "#f97316",
-    "application-TileColor": "#f97316",
-    "application-config": "/assets/browserconfig.xml",
-    "og:title": title,
-    "og:description": description,
-    "og:type": "website",
-    "og:image": "https://utiliti.dev/assets/android-chrome-512x512.png",
-  };
+  return [
+    { title },
+    { name: "description", content: description },
+    {
+      name: "keywords",
+      content:
+        "utiliti, json, base64, url, dataurl, private note, secure note, self-destructing note, utilities, offline",
+    },
+    { name: "theme-color", content: "#f97316" },
+    { name: "application-TileColor", content: "#f97316" },
+    { name: "application-config", content: "/assets/browserconfig.xml" },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:type", content: "website" },
+    {
+      property: "og:image",
+      content: "https://utiliti.dev/assets/android-chrome-512x512.png",
+    },
+  ];
 };
 
 export const links: LinksFunction = () => [
@@ -90,6 +95,8 @@ function Document({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
       </head>
@@ -103,56 +110,31 @@ function Document({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function CatchBoundary() {
-  const caught = useCatch();
+export function ErrorBoundary() {
+  const error = useRouteError();
+  let title = "An uncaught exception occurred.";
+  let message = "Oops! Something bad happened.";
 
-  let message;
-  switch (caught.status) {
-    case 401:
-      message = (
-        <p className="lead">
-          Oops! Looks like you tried to visit a page that you do not have access
-          to.
-        </p>
-      );
-      break;
-    case 404:
-      message = (
-        <p className="lead">
-          Oops! Looks like you tried to visit a page that does not exist.
-        </p>
-      );
-      break;
+  if (isRouteErrorResponse(error)) {
+    title = error.statusText;
 
-    default:
-      message = <p className="lead">Oops! Something bad happened.</p>;
+    switch (error.status) {
+      case 401:
+        message =
+          "Oops! Looks like you tried to visit a page that you do not have access to.";
+        break;
+      case 404:
+        message =
+          "Oops! Looks like you tried to visit a page that does not exist.";
+        break;
+    }
   }
 
   return (
     <Document>
-      <h1>{caught.statusText}</h1>
+      <h1>{title}</h1>
 
-      {message}
-
-      <div className="not-prose flex flex-col items-start gap-3 lg:mb-16">
-        <Link
-          className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
-          to="/"
-        >
-          <ArrowSmallLeftIcon className="h-4 w-4 -ml-1" aria-hidden="true" />
-          Home
-        </Link>
-      </div>
-    </Document>
-  );
-}
-
-export function ErrorBoundary({ error }: { error: Error }) {
-  return (
-    <Document>
-      <h1>An Error Occurred</h1>
-
-      <p className="lead">An uncaught exception occurred.</p>
+      <p className="lead">{message}</p>
 
       <div className="not-prose flex flex-col items-start gap-3 lg:mb-16">
         <Link

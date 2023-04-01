@@ -1,6 +1,6 @@
 import type { ActionFunction } from "@remix-run/router";
 import { createId } from "@paralleldrive/cuid2";
-import { noteExpiries } from "~/routes/private-note/index";
+import { noteExpiries } from "~/routes/private-note._index";
 
 export type CreateActionData = {
   readonly id: string;

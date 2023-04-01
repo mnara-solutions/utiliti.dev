@@ -1,4 +1,3 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
 import Copy from "~/components/copy";
 import { useCallback, useMemo, useState } from "react";
 import { JSONTree } from "react-json-tree";
@@ -17,8 +16,7 @@ import { utilities } from "~/utilities";
 import { Utiliti } from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 
-export const meta: MetaFunction = () =>
-  metaHelper(utilities.json.name, utilities.json.description);
+export const meta = metaHelper(utilities.json.name, utilities.json.description);
 
 async function decode(text: string): Promise<object> {
   try {

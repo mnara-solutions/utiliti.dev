@@ -1,12 +1,13 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { Utiliti } from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import { useCallback, useMemo } from "react";
 
-export const meta: MetaFunction = () =>
-  metaHelper(utilities.dataurl.name, utilities.dataurl.description);
+export const meta = metaHelper(
+  utilities.dataurl.name,
+  utilities.dataurl.description
+);
 
 function isImage(dataUrl: string, fileType: string): Promise<boolean> {
   return new Promise((resolve) => {

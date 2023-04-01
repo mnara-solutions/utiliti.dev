@@ -1,5 +1,4 @@
 import ContentWrapper from "~/components/content-wrapper";
-import type { MetaFunction } from "@remix-run/cloudflare";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -11,8 +10,10 @@ import { Transition } from "@headlessui/react";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
 
-export const meta: MetaFunction = () =>
-  metaHelper(utilities.whois.name, utilities.whois.description);
+export const meta = metaHelper(
+  utilities.whois.name,
+  utilities.whois.description
+);
 
 type Response = {
   result: {
@@ -58,18 +59,6 @@ export default function Whois() {
     <ContentWrapper>
       <h1>Whois</h1>
 
-      <p>
-        Uses Cloudflare's{" "}
-        <a
-          href="https://developers.cloudflare.com/api/operations/whois-record-get-whois-record"
-          target="_blank"
-          rel="noreferrer"
-        >
-          API
-        </a>{" "}
-        to return Whois information about the domain.
-      </p>
-
       <Form method="post">
         <label
           htmlFor="domain"
@@ -106,7 +95,7 @@ export default function Whois() {
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"
         enterTo="opacity-100"
-        className="not-prose mt-16"
+        className="not-prose mt-4"
       >
         {data && !data.success && (
           <Box>
@@ -142,6 +131,30 @@ export default function Whois() {
           </div>
         )}
       </Transition>
+
+      <h2>Description</h2>
+
+      <p>
+        Whenever a domain is registered, the International Corporation for
+        Assigned Names and Numbers (ICANN) requires that these individuals,
+        businesses or organizations provide up-to-date personal contact
+        information to their domain registrars. This information, which may
+        include the name, address, email, phone number and associated IP
+        addresses, is collected and displayed in the ICANN WHOIS Database, which
+        acts similarly to an international address book for the public.
+      </p>
+
+      <p>
+        Utiliti uses Cloudflare's{" "}
+        <a
+          href="https://developers.cloudflare.com/api/operations/whois-record-get-whois-record"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Whois API
+        </a>{" "}
+        to return information about the domain name.
+      </p>
     </ContentWrapper>
   );
 }
