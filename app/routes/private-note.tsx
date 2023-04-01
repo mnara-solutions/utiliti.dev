@@ -11,7 +11,7 @@ export const meta = metaHelper(
 export default function Index() {
   return (
     <ContentWrapper>
-      <h1>Private Note</h1>
+      <h1>Private Notes</h1>
 
       <Outlet />
 
@@ -25,9 +25,9 @@ export default function Index() {
         <li>All data is encrypted in the browser before it is sent to us.</li>
         <li>The encryption key is never sent to us.</li>
         <li>
-          All the code is available on{" "}
+          Technical implementation detail and code is available on{" "}
           <a
-            href="https://github.com/mnara-solutions/utiliti.dev/tree/main/app/routes/private-note"
+            href="https://github.com/mnara-solutions/utiliti.dev/blob/main/private-note.md"
             target="_blank"
             rel="noreferrer"
           >

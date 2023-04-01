@@ -106,6 +106,7 @@ export default function PrivateNote() {
           "Error occurred while trying to decrypt the ciphertext.",
           it
         );
+
         setDecryptionError(true);
       });
   }, [loaderData.ciphertext]);

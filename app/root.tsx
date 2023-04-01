@@ -21,15 +21,12 @@ export const meta: V2_MetaFunction = () => {
     "A collection of high quality, secure, and open source utilities.";
   return [
     { title },
-    { charset: "utf-8" },
-
     { name: "description", content: description },
     {
       name: "keywords",
       content:
         "utiliti, json, base64, url, dataurl, private note, secure note, self-destructing note, utilities, offline",
     },
-    { name: "viewport", content: "width=device-width,initial-scale=1" },
     { name: "theme-color", content: "#f97316" },
     { name: "application-TileColor", content: "#f97316" },
     { name: "application-config", content: "/assets/browserconfig.xml" },
@@ -98,6 +95,8 @@ function Document({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
       </head>
