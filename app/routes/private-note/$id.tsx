@@ -1,7 +1,13 @@
 import type { LoaderFunction } from "@remix-run/router";
 import { redirect } from "@remix-run/router";
 import type { NoteMetadata } from "~/routes/private-note/index";
-import { Link, useLoaderData, useLocation } from "@remix-run/react";
+import {
+  isRouteErrorResponse,
+  Link,
+  useLoaderData,
+  useLocation,
+  useRouteError,
+} from "@remix-run/react";
 import React, { useEffect, useRef, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import {
@@ -186,9 +192,14 @@ function Error({ message }: { readonly message: string }) {
   );
 }
 
-// nested catch boundary to catch the 404 thrown in the loader
-export function CatchBoundary() {
-  return (
-    <Error message="The note you are looking was either not found or was deleted." />
-  );
+export function ErrorBoundary() {
+  const routeError = useRouteError();
+
+  if (isRouteErrorResponse(routeError)) {
+    return (
+      <Error message="The note you are looking was either not found or was deleted." />
+    );
+  }
+
+  return <Error message="Oops! Something bad happened." />;
 }
