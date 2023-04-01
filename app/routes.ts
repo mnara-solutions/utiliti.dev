@@ -11,4 +11,5 @@ export default class Routes {
   static readonly LOREM_IPSUM = "/lorem-ipsum";
   static readonly UUID = "/uuid";
   static readonly CUID = "/cuid";
+  static readonly NS_LOOKUP = "/ns-lookup";
 }

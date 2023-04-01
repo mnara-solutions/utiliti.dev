@@ -5,6 +5,12 @@ import { useCallback, useState } from "react";
 import Copy from "~/components/copy";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { init } from "@paralleldrive/cuid2";
+import type { MetaFunction } from "@remix-run/cloudflare";
+import { metaHelper } from "~/utils/meta";
+import { utilities } from "~/utilities";
+
+export const meta: MetaFunction = () =>
+  metaHelper(utilities.cuid.name, utilities.cuid.description);
 
 export default function UuidGenerator() {
   const [number, setNumber] = useState(1);
