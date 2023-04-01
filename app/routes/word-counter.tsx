@@ -1,14 +1,15 @@
 import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
-import type { MetaFunction } from "@remix-run/cloudflare";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { throttle } from "~/utils/throttle";
 import ContentWrapper from "~/components/content-wrapper";
 
-export const meta: MetaFunction = () =>
-  metaHelper(utilities.wordCounter.name, utilities.wordCounter.description);
+export const meta = metaHelper(
+  utilities.wordCounter.name,
+  utilities.wordCounter.description
+);
 
 interface Info {
   readonly sentences: number;

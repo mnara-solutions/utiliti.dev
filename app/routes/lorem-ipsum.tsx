@@ -4,7 +4,6 @@ import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import Copy from "~/components/copy";
 import { ClientOnly } from "~/components/client-only";
-import type { MetaFunction } from "@remix-run/cloudflare";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 
@@ -177,8 +176,10 @@ function Slider({
   );
 }
 
-export const meta: MetaFunction = () =>
-  metaHelper(utilities.loremIpsum.name, utilities.loremIpsum.description);
+export const meta = metaHelper(
+  utilities.loremIpsum.name,
+  utilities.loremIpsum.description
+);
 
 export default function LoremIpsum() {
   const [paragraphs, setParagraphs] = useState(5);

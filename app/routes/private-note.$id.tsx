@@ -1,6 +1,6 @@
 import type { LoaderFunction } from "@remix-run/router";
 import { redirect } from "@remix-run/router";
-import type { NoteMetadata } from "~/routes/private-note/index";
+import type { NoteMetadata } from "~/routes/private-note._index";
 import {
   isRouteErrorResponse,
   Link,

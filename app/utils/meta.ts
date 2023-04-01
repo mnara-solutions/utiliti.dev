@@ -1,15 +1,15 @@
-import type { HtmlMetaDescriptor } from "@remix-run/server-runtime/dist/routeModules";
+import type { V2_MetaFunction } from "@remix-run/cloudflare";
 
 export function metaHelper(
   titlePrefix: string,
   description: string
-): HtmlMetaDescriptor {
+): V2_MetaFunction {
   const title = `${titlePrefix} | Utiliti`;
 
-  return {
-    title,
-    description,
-    "og:title": title,
-    "og:description": description,
-  };
+  return () => [
+    { title },
+    { meta: "description", content: description },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+  ];
 }

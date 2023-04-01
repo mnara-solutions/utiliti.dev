@@ -1,13 +1,14 @@
 import { Outlet } from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/cloudflare";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import ContentWrapper from "~/components/content-wrapper";
 
-export const meta: MetaFunction = () =>
-  metaHelper(utilities.privateNotes.name, utilities.privateNotes.description);
+export const meta = metaHelper(
+  utilities.privateNotes.name,
+  utilities.privateNotes.description
+);
 
-export default function PrivateNote() {
+export default function Index() {
   return (
     <ContentWrapper>
       <h1>Private Note</h1>

@@ -1,4 +1,4 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare";
+import type { LinksFunction, V2_MetaFunction } from "@remix-run/cloudflare";
 import {
   isRouteErrorResponse,
   Link,
@@ -15,25 +15,32 @@ import tailwind from "~/styles/tailwind.css";
 import Layout from "~/components/layout";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/solid";
 
-export const meta: MetaFunction = () => {
+export const meta: V2_MetaFunction = () => {
   const title = "Utiliti";
   const description =
     "A collection of high quality, secure, and open source utilities.";
-  return {
-    charset: "utf-8",
-    title,
-    description,
-    keywords:
-      "utiliti, json, base64, url, dataurl, private note, secure note, self-destructing note, utilities, offline",
-    viewport: "width=device-width,initial-scale=1",
-    "theme-color": "#f97316",
-    "application-TileColor": "#f97316",
-    "application-config": "/assets/browserconfig.xml",
-    "og:title": title,
-    "og:description": description,
-    "og:type": "website",
-    "og:image": "https://utiliti.dev/assets/android-chrome-512x512.png",
-  };
+  return [
+    { title },
+    { charset: "utf-8" },
+
+    { name: "description", content: description },
+    {
+      name: "keywords",
+      content:
+        "utiliti, json, base64, url, dataurl, private note, secure note, self-destructing note, utilities, offline",
+    },
+    { name: "viewport", content: "width=device-width,initial-scale=1" },
+    { name: "theme-color", content: "#f97316" },
+    { name: "application-TileColor", content: "#f97316" },
+    { name: "application-config", content: "/assets/browserconfig.xml" },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:type", content: "website" },
+    {
+      property: "og:image",
+      content: "https://utiliti.dev/assets/android-chrome-512x512.png",
+    },
+  ];
 };
 
 export const links: LinksFunction = () => [

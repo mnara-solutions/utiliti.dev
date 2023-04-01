@@ -1,4 +1,3 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
 import * as b64 from "base64-encoding";
 import EncoderDecoder from "~/components/encoder-decoder";
 import { useCallback, useState } from "react";
@@ -6,8 +5,10 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { BoxOptions } from "~/components/box";
 
-export const meta: MetaFunction = () =>
-  metaHelper(utilities.base64.name, utilities.base64.description);
+export const meta = metaHelper(
+  utilities.base64.name,
+  utilities.base64.description
+);
 
 async function decode(text: string): Promise<string> {
   try {
