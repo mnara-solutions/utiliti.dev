@@ -15,7 +15,7 @@ export default function Index() {
 
       <Outlet />
 
-      <h2>Security & Privacy</h2>
+      <h2 className="mt-16">Security & Privacy</h2>
       <p>
         We aim to make private notes as secure as possible by taking the
         following steps:

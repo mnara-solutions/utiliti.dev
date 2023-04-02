@@ -76,7 +76,7 @@ export default function PrivateNote() {
   const location = useLocation();
   const hydrated = useHydrated();
 
-  const [plainText, setPlainText] = useState<string | null>(null);
+  const [plainText, setPlainText] = useState("");
   const [decryptionError, setDecryptionError] = useState(false);
 
   // We are going to capture the `key` on load, and then remove it from the URL. This is to prevent
@@ -122,7 +122,7 @@ export default function PrivateNote() {
 
   // if this note is supposed to be deleted after it's shown, show a confirmation
   // this also makes it so that tools that inspect URLs do not inadvertently read the node.
-  if (loaderData.needsConfirmation || plainText === null) {
+  if (loaderData.needsConfirmation) {
     return <Confirm />;
   }
 

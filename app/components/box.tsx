@@ -1,9 +1,17 @@
 import type { PropsWithChildren } from "react";
 import { classNames } from "~/common";
 
-export default function Box({ children }: PropsWithChildren<{}>) {
+export default function Box({
+  children,
+  className,
+}: PropsWithChildren<{ className?: string }>) {
   return (
-    <div className="w-full mb-4 border rounded-lg bg-zinc-700 border-zinc-600">
+    <div
+      className={classNames(
+        "w-full border rounded-lg bg-zinc-700 border-zinc-600",
+        className
+      )}
+    >
       {children}
     </div>
   );

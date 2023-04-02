@@ -232,11 +232,9 @@ export default function LoremIpsum() {
         </BoxContent>
       </Box>
 
-      <div className="h-4" />
-
       <ClientOnly>
         {() => (
-          <Box>
+          <Box className="mt-6">
             <BoxTitle title="Output">
               <div>
                 <Copy content={output.join("\n\n")} />

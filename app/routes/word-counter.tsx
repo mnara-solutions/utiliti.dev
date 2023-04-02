@@ -2,7 +2,7 @@ import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { throttle } from "~/utils/throttle";
 import ContentWrapper from "~/components/content-wrapper";
 
@@ -148,6 +148,13 @@ export default function WordCounter() {
           </div>
         </BoxInfo>
       </Box>
+
+      <h2 className="mt-16">Description</h2>
+
+      <p>
+        A utility that allows you to easily see how many characters, words, and
+        sentences you have typed.
+      </p>
     </ContentWrapper>
   );
 }

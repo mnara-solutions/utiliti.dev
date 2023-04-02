@@ -176,7 +176,7 @@ function CreatedNote({
         </BoxInfo>
       </Box>
 
-      <h2>What's Next</h2>
+      <h2 className="mt-16">What's Next</h2>
       <p>
         You have created a private note that you can easily share with anyone
         you want with the link above.

@@ -59,6 +59,28 @@ export default function Whois() {
     <ContentWrapper>
       <h1>Whois</h1>
 
+      <p>
+        Whenever a domain is registered, the International Corporation for
+        Assigned Names and Numbers (ICANN) requires that these individuals,
+        businesses or organizations provide up-to-date personal contact
+        information to their domain registrars. This information, which may
+        include the name, address, email, phone number and associated IP
+        addresses, is collected and displayed in the ICANN WHOIS Database, which
+        acts similarly to an international address book for the public.
+      </p>
+
+      <p>
+        Utiliti uses Cloudflare's{" "}
+        <a
+          href="https://developers.cloudflare.com/api/operations/whois-record-get-whois-record"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Whois API
+        </a>{" "}
+        to return information about the domain name.
+      </p>
+
       <Form method="post">
         <label
           htmlFor="domain"
@@ -95,7 +117,7 @@ export default function Whois() {
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"
         enterTo="opacity-100"
-        className="not-prose mt-4"
+        className="not-prose mt-6"
       >
         {data && !data.success && (
           <Box>
@@ -131,30 +153,6 @@ export default function Whois() {
           </div>
         )}
       </Transition>
-
-      <h2>Description</h2>
-
-      <p>
-        Whenever a domain is registered, the International Corporation for
-        Assigned Names and Numbers (ICANN) requires that these individuals,
-        businesses or organizations provide up-to-date personal contact
-        information to their domain registrars. This information, which may
-        include the name, address, email, phone number and associated IP
-        addresses, is collected and displayed in the ICANN WHOIS Database, which
-        acts similarly to an international address book for the public.
-      </p>
-
-      <p>
-        Utiliti uses Cloudflare's{" "}
-        <a
-          href="https://developers.cloudflare.com/api/operations/whois-record-get-whois-record"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Whois API
-        </a>{" "}
-        to return information about the domain name.
-      </p>
     </ContentWrapper>
   );
 }

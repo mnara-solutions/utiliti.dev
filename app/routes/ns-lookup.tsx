@@ -114,6 +114,18 @@ export default function NsLookup() {
     <ContentWrapper>
       <h1>NS Lookup</h1>
 
+      <p>
+        Uses Cloudflare's DNS-over-HTTPS (DOH){" "}
+        <a
+          href="https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/dns-json/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          endpoint
+        </a>{" "}
+        to return information about the domains DNS records.
+      </p>
+
       <Form method="post">
         <label
           htmlFor="domain"
@@ -150,7 +162,7 @@ export default function NsLookup() {
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"
         enterTo="opacity-100"
-        className="not-prose mt-4"
+        className="not-prose mt-6"
       >
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-400">
@@ -213,20 +225,6 @@ export default function NsLookup() {
           </table>
         </div>
       </Transition>
-
-      <h2>Description</h2>
-
-      <p>
-        Uses Cloudflare's DNS-over-HTTPS (DOH){" "}
-        <a
-          href="https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/dns-json/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          endpoint
-        </a>{" "}
-        to return information about the domains DNS records.
-      </p>
     </ContentWrapper>
   );
 }

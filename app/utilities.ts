@@ -36,7 +36,8 @@ export const utilities: Record<
   },
   wordCounter: {
     name: "Word Counter",
-    description: "Counts the number of words and other information about text.",
+    description:
+      "Counts the number of characters, words and sentences in your text.",
     url: Routes.WORD_COUNTER,
   },
   loremIpsum: {

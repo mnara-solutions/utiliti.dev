@@ -95,13 +95,12 @@ export function Utiliti<T>({
         </BoxButtons>
       </Box>
 
-      <div className="h-4" />
-
       <Transition
         show={output != null || error != null}
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"
         enterTo="opacity-100"
+        className="mt-6"
       >
         {error ? (
           <Box>
