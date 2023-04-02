@@ -6,8 +6,10 @@ import IconButton from "~/components/icon-button";
 interface Props {
   readonly accept: string;
   readonly onLoad: (value: string) => void;
+  readonly type?: "text" | "dataURL";
 }
-export default function ReadFile({ accept, onLoad }: Props) {
+
+export default function ReadFile({ accept, onLoad, type = "text" }: Props) {
   const onButtonClick = useCallback(
     () => document.getElementById("file-input")?.click(),
     []
@@ -34,9 +36,17 @@ export default function ReadFile({ accept, onLoad }: Props) {
       reader.addEventListener("load", function (e) {
         onLoad((e.target?.result || "").toString());
       });
-      reader.readAsText(file);
+
+      switch (type) {
+        case "text":
+          reader.readAsText(file);
+          break;
+        case "dataURL":
+          reader.readAsDataURL(file);
+          break;
+      }
     },
-    [onLoad]
+    [onLoad, type]
   );
 
   return (
