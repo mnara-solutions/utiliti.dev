@@ -76,7 +76,7 @@ export default function PrivateNote() {
   const location = useLocation();
   const hydrated = useHydrated();
 
-  const [plainText, setPlainText] = useState("");
+  const [plainText, setPlainText] = useState<null | string>(null);
   const [decryptionError, setDecryptionError] = useState(false);
 
   // We are going to capture the `key` on load, and then remove it from the URL. This is to prevent
@@ -131,25 +131,30 @@ export default function PrivateNote() {
     <Box>
       <BoxTitle title="">
         <div>
-          <Copy content={plainText} />
+          <Copy content={plainText || ""} />
         </div>
       </BoxTitle>
       <BoxContent isLast={false}>
-        <ReadOnlyTextArea value={plainText} />
+        {plainText === null ? (
+          <ReadOnlyTextArea value="Decrypting…" />
+        ) : (
+          <ReadOnlyTextArea value={plainText} />
+        )}
       </BoxContent>
       <BoxInfo>
         <InformationCircleIcon className="h-5 w-5 mr-1" aria-hidden="true" />
-        {expiration === 0 ? (
-          <span>
-            This note is now deleted. Copy the content in the note before
-            closing this window.
-          </span>
-        ) : (
-          <span>
-            This note will be deleted on{" "}
-            {new Date(expiration * 1000).toLocaleString()}.
-          </span>
-        )}
+        {plainText !== null &&
+          (expiration === 0 ? (
+            <span>
+              This note is now deleted. Copy the content in the note before
+              closing this window.
+            </span>
+          ) : (
+            <span>
+              This note will be deleted on{" "}
+              {new Date(expiration * 1000).toLocaleString()}.
+            </span>
+          ))}
       </BoxInfo>
     </Box>
   );
