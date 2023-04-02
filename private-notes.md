@@ -1,6 +1,13 @@
 # Private Notes
 
-There are lots of websites that allow you to send private notes to each other. We aim to differentiate itself by being end-to-end encrypted and open source.
+We provide a utility that allows you to send anyone a private note via a URL. The features we deemed a requirement for a secure experience were:
+
+- End-to-end encryption so that it is impossible to know the contents of the note without having the URL.
+- Automatic expiry of the note so that even if the link gets compromised, the content will have been deleted.
+
+## Use cases
+
+- The most common use case is for sharing credentials via email. If you are going to do this, we urge you to set the note to self-destruct after the receiver reads it.
 
 ## Implementation Details
 

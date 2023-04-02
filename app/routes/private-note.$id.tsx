@@ -8,7 +8,7 @@ import {
   useLocation,
   useRouteError,
 } from "@remix-run/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import {
   ArrowSmallLeftIcon,
@@ -94,7 +94,7 @@ export default function PrivateNote() {
     }
   }, [location]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!loaderData.ciphertext) {
       return;
     }

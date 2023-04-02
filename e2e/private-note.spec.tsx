@@ -32,7 +32,7 @@ test("Immediately expiring private note", async ({ page }) => {
   await page.getByText("Show the note").click();
 
   // ensure we can read the note
-  await expect(await page.locator("textarea").inputValue()).toEqual(noteText);
+  await expect(page.getByText(noteText)).toBeVisible();
   await expect(
     page.getByText(
       "This note is now deleted. Copy the content in the note before closing this window."
@@ -72,7 +72,7 @@ test("A note that is expiring in 1 hour", async ({ page }) => {
   await page.goto(noteUrl);
 
   // ensure we can read the note
-  await expect(await page.locator("textarea").inputValue()).toEqual(noteText);
+  await expect(page.getByText(noteText)).toBeVisible();
   await expect(page.getByText("This note will be deleted on")).toBeVisible();
 
   // ensure page url does not have the secret key
@@ -80,5 +80,5 @@ test("A note that is expiring in 1 hour", async ({ page }) => {
 
   // reload the note and ensure it is still visible
   await page.goto(noteUrl);
-  await expect(await page.locator("textarea").inputValue()).toEqual(noteText);
+  await expect(page.getByText(noteText)).toBeVisible();
 });
