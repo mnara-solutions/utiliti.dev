@@ -1,8 +1,12 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { Utiliti } from "~/components/utiliti";
-import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { useCallback, useMemo } from "react";
+import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
+import { useCallback, useState } from "react";
+import ContentWrapper from "~/components/content-wrapper";
+import Copy from "~/components/copy";
+import ReadFile from "~/components/read-file";
+import Button from "~/components/button";
+import { Transition } from "@headlessui/react";
 
 export const meta = metaHelper(
   utilities.dataurl.name,
@@ -42,46 +46,89 @@ async function display(text: string): Promise<string> {
 }
 
 export default function DataUrl() {
-  const actions = useMemo(
-    () => ({
-      Display: (input: string) => display(input),
-    }),
-    []
-  );
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const renderInput = useCallback(
-    (input: string, setInput: (value: string) => void) => (
-      <textarea
-        id="input"
-        rows={10}
-        className="block px-3 py-2 font-mono w-full text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
-        placeholder="Paste in your Data URL…"
-        required={true}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-    ),
-    []
-  );
+  const onClick = useCallback(async () => {
+    display(input)
+      .then((it) => {
+        setOutput(it);
+        setError(null);
+      })
+      .catch((e) => {
+        setError(e.message);
+        setOutput(null);
+      });
+  }, [input]);
 
-  const renderOutput = useCallback(
-    (action: string, input: string, output: string) => (
-      <Box>
-        <BoxTitle title="Output"></BoxTitle>
-        <BoxContent isLast={true} className="max-h-full flex justify-center">
-          <img className="max-w-full" alt="Output" src={output} />
-        </BoxContent>
-      </Box>
-    ),
-    []
-  );
+  const onLoad = useCallback((dataUrl: string) => {
+    setInput(dataUrl);
+    setOutput(dataUrl);
+  }, []);
 
   return (
-    <Utiliti
-      label="DataURL"
-      actions={actions}
-      renderInput={renderInput}
-      renderOutput={renderOutput}
-    />
+    <ContentWrapper>
+      <h1>DataURL</h1>
+
+      <Box>
+        <BoxTitle title="Input">
+          <div>
+            <Copy content={input} />
+          </div>
+        </BoxTitle>
+
+        <BoxContent isLast={false}>
+          <textarea
+            id="input"
+            rows={10}
+            className="block px-3 py-2 font-mono w-full text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+            placeholder="Paste in your Data URL…"
+            required={true}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </BoxContent>
+
+        <BoxButtons>
+          <div>
+            <ReadFile accept="image/*" onLoad={onLoad} type="dataURL" />
+          </div>
+          <div className="flex gap-x-2">
+            <Button onClick={onClick} label="Display" />
+          </div>
+        </BoxButtons>
+      </Box>
+
+      <div className="h-4" />
+
+      <Transition
+        show={output != null || error != null}
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+      >
+        {error ? (
+          <Box>
+            <BoxTitle title="Error" />
+            <BoxContent isLast={true} className="px-3 py-2 text-red-400">
+              {error}
+            </BoxContent>
+          </Box>
+        ) : (
+          output && (
+            <Box>
+              <BoxTitle title="Output"></BoxTitle>
+              <BoxContent
+                isLast={true}
+                className="max-h-full flex justify-center"
+              >
+                <img className="max-w-full" alt="Output" src={output} />
+              </BoxContent>
+            </Box>
+          )
+        )}
+      </Transition>
+    </ContentWrapper>
   );
 }
