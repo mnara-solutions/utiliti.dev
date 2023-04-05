@@ -27,7 +27,7 @@ export default function Index() {
         <li>
           Technical implementation detail and code is available on{" "}
           <a
-            href="https://github.com/mnara-solutions/utiliti.dev/blob/main/private-note.md"
+            href="https://github.com/mnara-solutions/utiliti.dev/blob/main/private-notes.md"
             target="_blank"
             rel="noreferrer"
           >
