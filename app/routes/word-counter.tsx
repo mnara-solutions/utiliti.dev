@@ -171,15 +171,19 @@ export default function WordCounter() {
     }
 
     const handler = () => {
-      const selection = window.getSelection()?.toString();
+      const selection = window.getSelection();
+      const text =
+        (selection?.focusNode === inputRef?.current?.parentNode &&
+          selection?.toString()) ||
+        "";
 
-      if (selection) {
-        setInfo(count(selection.toString()));
+      if (text) {
+        setInfo(count(text));
       } else if (hadSelected.current) {
         setInfo(count(inputRef?.current?.value || ""));
       }
 
-      hadSelected.current = !!selection;
+      hadSelected.current = !!text;
     };
 
     document.addEventListener("mouseup", handler);
