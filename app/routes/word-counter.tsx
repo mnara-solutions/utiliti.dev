@@ -14,6 +14,8 @@ import ContentWrapper from "~/components/content-wrapper";
 import { Transition } from "@headlessui/react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/tooltip";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
+import { useLocalStorage } from "~/hooks/use-local-storage";
+import { useHydrated } from "~/hooks/use-hydrated";
 
 export const meta = metaHelper(
   utilities.wordCounter.name,
@@ -121,9 +123,11 @@ function formatTime(words: number, speed: number) {
   return `${Math.floor(num / 60)} min ${Math.floor(num % 60)} sec`;
 }
 export default function WordCounter() {
+  const hydrated = useHydrated();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const hadSelected = useRef(false);
-  const [info, setInfo] = useState<Info>(count(""));
+  const [content, setContent] = useLocalStorage("word-counter", "");
+  const [info, setInfo] = useState<Info>(count(content));
 
   const calculate = useCallback(() => {
     if (!inputRef.current) {
@@ -140,6 +144,12 @@ export default function WordCounter() {
     [calculate]
   );
 
+  const throttledSetContent = useMemo(
+    () => throttle(setContent, 1000),
+    [setContent]
+  );
+
+  // text change handler
   const onChange = useCallback(() => {
     if (!inputRef.current) {
       return;
@@ -150,11 +160,13 @@ export default function WordCounter() {
     } else {
       calculate();
     }
-  }, [calculate, throttledCalculate]);
+
+    throttledSetContent(inputRef.current.value || "");
+  }, [calculate, throttledCalculate, throttledSetContent]);
 
   // on highlight of text, only perform logic on selection
   useEffect(() => {
-    if (!inputRef.current) {
+    if (!inputRef.current || !hydrated) {
       return;
     }
 
@@ -173,15 +185,21 @@ export default function WordCounter() {
     document.addEventListener("mouseup", handler);
 
     return () => document.removeEventListener("mouseup", handler);
-  }, [setInfo]);
+  }, [setInfo, hydrated]);
+
+  // easy way to disable server side rendering, which causes lots of issues due to saved state in localStorage
+  if (!hydrated) {
+    return;
+  }
 
   return (
     <ContentWrapper>
       <h1>Word Counter</h1>
 
       <p>
-        A utility that allows you to easily see how many characters, words, and
-        sentences you have typed.
+        A utility that allows you to easily see analytical information about the
+        content you have typed. Pro-tip: Highlight a sub-section of your text to
+        narrow down which text the utility analyzes.
       </p>
 
       <Box>
@@ -198,6 +216,7 @@ export default function WordCounter() {
             className="block w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 break-words"
             placeholder="Start typing or paste in your text here…"
             onChange={onChange}
+            defaultValue={content}
           ></textarea>
         </BoxContent>
 
