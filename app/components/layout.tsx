@@ -14,7 +14,7 @@ import { Link, useLocation } from "@remix-run/react";
 import Sidebar from "~/components/sidebar";
 import { Dialog, Transition } from "@headlessui/react";
 import Search from "~/components/search";
-import useKeyboardShortcut from "use-keyboard-shortcut";
+// import useKeyboardShortcut from "use-keyboard-shortcut";
 
 const keyboardShortcutOptions = {
   overrideSystem: true,
@@ -47,8 +47,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, [location.pathname, sidebarOpen, setSidebarOpen]);
 
   // on command + k, open search bar
-  useKeyboardShortcut(["Meta", "K"], toggleSearch, keyboardShortcutOptions);
-  useKeyboardShortcut(["Control", "K"], toggleSearch, keyboardShortcutOptions);
+  // useKeyboardShortcut(["Meta", "K"], toggleSearch, keyboardShortcutOptions);
+  // useKeyboardShortcut(["Control", "K"], toggleSearch, keyboardShortcutOptions);
 
   return (
     <div className="lg:ml-72 xl:ml-80">

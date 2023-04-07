@@ -4,6 +4,7 @@ node_modules
 /functions/\[\[path\]\].js
 /functions/\[\[path\]\].js.map
 /public/build
+/build
 .env
 .dev.vars
 /test-results/

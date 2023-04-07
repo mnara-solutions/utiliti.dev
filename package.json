@@ -11,7 +11,9 @@
     "wrangler": "wrangler pages dev ./public -k PRIVATE_NOTES",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --ignore-path .gitignore .",
     "prettier": "prettier --write --ignore-path .gitignore .",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "node:dev": "remix dev",
+    "node:start": "remix-serve build"
   },
   "dependencies": {
     "@floating-ui/react": "^0.22.0",
@@ -20,9 +22,12 @@
     "@paralleldrive/cuid2": "^2.2.0",
     "@remix-run/cloudflare": "^1.15",
     "@remix-run/cloudflare-pages": "^1.15",
+    "@remix-run/node": "^1.15.0",
     "@remix-run/react": "^1.15",
+    "@remix-run/serve": "^1.15.0",
     "base64-encoding": "^0.15.0-alpha.0",
     "cross-env": "^7.0.3",
+    "isbot": "^3.6.8",
     "prettier": "^2.8.7",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
@@ -35,7 +40,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^3.18.0",
     "@playwright/test": "^1.32.1",
-    "@remix-run/dev": "^1.15",
+    "@remix-run/dev": "^1.15.0",
     "@remix-run/eslint-config": "^1.15",
     "@remix-run/testing": "^1.15",
     "@tailwindcss/forms": "^0.5.3",
