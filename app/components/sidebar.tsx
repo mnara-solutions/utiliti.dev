@@ -9,7 +9,7 @@ export default function Sidebar() {
   return (
     <ul>
       {sidebar.map((it) => (
-        <li key={it.name} className="relative mt-6">
+        <li key={it.name} className="relative mt-6 focus:outline-none">
           <h2 className="text-xs font-semibold text-white">{it.name}</h2>
           <div className="relative mt-3 pl-2">
             <div className="absolute inset-y-0 left-2 w-px bg-white/5"></div>

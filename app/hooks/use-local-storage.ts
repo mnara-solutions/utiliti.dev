@@ -1,16 +1,23 @@
 import { useState } from "react";
 
-export function useLocalStorage(
+export function useLocalStorage<T>(
   key: string,
-  initialValue: string
-): [string, (v: string) => void] {
+  initialValue: T,
+  json: boolean = false
+): [T, (v: T) => void] {
   const [storedValue, setStoredValue] = useState(() => {
     if (typeof window === "undefined") {
       return initialValue;
     }
 
     try {
-      return window.localStorage.getItem(key) || initialValue;
+      const value = window.localStorage.getItem(key);
+
+      if (!value) {
+        return initialValue;
+      }
+
+      return json ? JSON.parse(value) : value;
     } catch (error) {
       console.log(error);
 
@@ -18,12 +25,15 @@ export function useLocalStorage(
     }
   });
 
-  const setValue = (value: string) => {
+  const setValue = (value: T) => {
     try {
       setStoredValue(value);
 
       if (typeof window !== "undefined") {
-        window.localStorage.setItem(key, value);
+        window.localStorage.setItem(
+          key,
+          json ? JSON.stringify(value) : (value as string)
+        );
       }
     } catch (error) {
       console.log(error);

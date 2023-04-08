@@ -76,14 +76,18 @@ function decode(input: string) {
   return output;
 }
 
-function topWords(input: string): { word: string; count: number }[] {
+function topWords(
+  input: string,
+  filterCommonWords: boolean
+): { word: string; count: number }[] {
   // unique words
-  const words: string[] = (input.toLowerCase().match(/\w+/g) || []).filter(
-    (it) => !commonWords.has(it)
-  );
+  const words: string[] = input.toLowerCase().match(/[\w'-]+/g) || [];
+  const filteredWords = filterCommonWords
+    ? words.filter((it) => !commonWords.has(it))
+    : words;
 
   // count the words
-  const countHash = words.reduce<Record<string, number>>((acc, it) => {
+  const countHash = filteredWords.reduce<Record<string, number>>((acc, it) => {
     acc[it] = (acc[it] || 0) + 1;
 
     return acc;
@@ -95,21 +99,35 @@ function topWords(input: string): { word: string; count: number }[] {
     .map((it) => ({ word: it, count: countHash[it] }));
 }
 
+interface Options {
+  readonly filterCommonWords: boolean;
+}
+
 /**
  * Taken from https://github.com/RadLikeWhoa/Countable/blob/master/Countable.js#L149-L152.
  *
  * @param input
+ * @param options
  */
-function count(input: string): Info {
+function count(input: string, { filterCommonWords = true }: Options): Info {
   const trimmed = input.trim();
+  const cleaned = trimmed
+    .replace(/\s-+/g, " ")
+    .replace(/-+\s/g, " ")
+    .replace(/’/g, "'")
+    .replace(/‘/g, "'")
+    .replace(/“/g, '"')
+    .replace(/”/g, '"')
+    .replace(/–/g, "-")
+    .replace(/…/g, "...");
 
   return {
-    sentences: trimmed ? (trimmed.match(/[.?!…]+./g) || []).length + 1 : 0,
-    words: (trimmed.replace(/['";:,.?¿\-!¡]+/g, "").match(/\S+/g) || []).length,
-    characters: decode(trimmed.replace(/\s/g, "")).length,
+    sentences: cleaned ? (cleaned.match(/[.?!…]+./g) || []).length + 1 : 0,
+    words: (cleaned.replace(/['";:,.?¿\-!¡]+/g, "").match(/\S+/g) || []).length,
+    characters: decode(cleaned.replace(/\s/g, "")).length,
     all: decode(input).length,
-    topWords: topWords(input),
-    paragraphs: trimmed.match(/(\n\n?|^).+?(?=\n?\n?|$)/g)?.length || 0,
+    topWords: topWords(cleaned, filterCommonWords),
+    paragraphs: cleaned.match(/(\n\n?|^).+?(?=\n?\n?|$)/g)?.length || 0,
   };
 }
 
@@ -127,7 +145,12 @@ export default function WordCounter() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const hadSelected = useRef(false);
   const [content, setContent] = useLocalStorage("word-counter", "");
-  const [info, setInfo] = useState<Info>(count(content));
+  const [options, setOptions] = useLocalStorage<Options>(
+    "word-counter-options",
+    { filterCommonWords: true },
+    true
+  );
+  const [info, setInfo] = useState<Info>(count(content, options));
 
   const calculate = useCallback(() => {
     if (!inputRef.current) {
@@ -136,8 +159,8 @@ export default function WordCounter() {
 
     const input = inputRef.current.value;
 
-    setInfo(count(input));
-  }, []);
+    setInfo(count(input, options));
+  }, [options]);
 
   const throttledCalculate = useMemo(
     () => throttle(calculate, 1000),
@@ -171,25 +194,27 @@ export default function WordCounter() {
     }
 
     const handler = () => {
-      const selection = window.getSelection();
-      const text =
-        (selection?.focusNode === inputRef?.current?.parentNode &&
-          selection?.toString()) ||
-        "";
-
-      if (text) {
-        setInfo(count(text));
-      } else if (hadSelected.current) {
-        setInfo(count(inputRef?.current?.value || ""));
+      if (!inputRef.current) {
+        return;
       }
 
-      hadSelected.current = !!text;
+      const start = inputRef.current.selectionStart;
+      const end = inputRef.current.selectionEnd;
+      const hasSelection = start != end;
+
+      if (hasSelection) {
+        setInfo(count(inputRef.current.value.substring(start, end), options));
+      } else if (hadSelected.current) {
+        setInfo(count(inputRef?.current?.value || "", options));
+      }
+
+      hadSelected.current = hasSelection;
     };
 
     document.addEventListener("mouseup", handler);
 
     return () => document.removeEventListener("mouseup", handler);
-  }, [setInfo, hydrated]);
+  }, [setInfo, hydrated, options]);
 
   // easy way to disable server side rendering, which causes lots of issues due to saved state in localStorage
   if (!hydrated) {
@@ -216,8 +241,7 @@ export default function WordCounter() {
         <BoxContent isLast={false} className="max-h-full">
           <textarea
             ref={inputRef}
-            rows={20}
-            className="block w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 break-words"
+            className="block w-full h-56 lg:h-96 lg:text-sm px-3 py-2 border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 break-words"
             placeholder="Start typing or paste in your text here…"
             onChange={onChange}
             defaultValue={content}
@@ -249,8 +273,8 @@ export default function WordCounter() {
         enterTo="opacity-100"
         className="mt-6"
       >
-        <div className="mt-6 flex">
-          <div className="flex flex-col w-1/2 border rounded-lg bg-zinc-700 border-zinc-600 mr-3">
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
+          <div className="flex flex-col w-full border rounded-lg bg-zinc-700 border-zinc-600">
             <div className="px-3 py-2 border-b border-gray-600 font-bold">
               Detail
             </div>
@@ -321,10 +345,36 @@ export default function WordCounter() {
             </div>
           </div>
 
-          <div className="flex flex-col w-1/2 border rounded-lg bg-zinc-700 border-zinc-600 ml-3">
-            <div className="px-3 py-2 border-b border-gray-600 font-bold">
-              Top Words
-            </div>
+          <div className="flex flex-col w-full border rounded-lg bg-zinc-700 border-zinc-600">
+            <BoxTitle title="Top Words">
+              <div className="flex">
+                <div className="flex items-center h-5 w-5 ml-2">
+                  <input
+                    id="filter-common-words"
+                    type="checkbox"
+                    checked={options.filterCommonWords}
+                    className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
+                    onChange={(e) => {
+                      const newOptions = {
+                        ...options,
+                        filterCommonWords: e.target.checked,
+                      };
+                      setOptions(newOptions);
+                      setInfo(
+                        count(inputRef?.current?.value || "", newOptions)
+                      );
+                    }}
+                  />
+                </div>
+                <label
+                  htmlFor="filter-common-words"
+                  className="ml-2 text-sm font-medium text-gray-300"
+                >
+                  Filter Common Words
+                </label>
+              </div>
+            </BoxTitle>
+
             <div className="flex grow bg-zinc-800 not-prose rounded-b-lg">
               <div className="w-full">
                 <table className="w-full">
