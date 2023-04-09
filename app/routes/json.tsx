@@ -6,7 +6,7 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { Utiliti } from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { JsonOutput } from "~/components/json-output";
+import { JsonViewerOutput } from "~/components/json-viewer-output";
 
 export const meta = metaHelper(utilities.json.name, utilities.json.description);
 
@@ -59,7 +59,7 @@ export default function JSONEncoder() {
         );
       }
 
-      return <JsonOutput toCopy={toCopy} output={output} />;
+      return <JsonViewerOutput toCopy={toCopy} output={output} />;
     },
     []
   );

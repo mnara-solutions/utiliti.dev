@@ -11,12 +11,15 @@ import {
 import type { ShouldExpandNodeInitially } from "react-json-tree/src/types";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 
-interface JsonOutputProps {
+interface JsonViewerOutputProps {
   toCopy: string;
   output: Object;
 }
 
-export const JsonOutput: React.FC<JsonOutputProps> = ({ toCopy, output }) => {
+export const JsonViewerOutput: React.FC<JsonViewerOutputProps> = ({
+  toCopy,
+  output,
+}) => {
   const [shouldExpand, setShouldExpand] = useState<boolean | null>(null);
   const [expandAfter, setExpandAfter] = useState(3);
 
