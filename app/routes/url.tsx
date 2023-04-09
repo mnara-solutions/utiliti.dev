@@ -2,11 +2,8 @@ import { EncoderDecoderOutput } from "~/components/encoder-decoder-output";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { useCallback, useMemo } from "react";
-import Copy from "~/components/copy";
-import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { Utiliti } from "~/components/utiliti";
-import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { URLJsonFormatData } from "~/types/url";
+import type { URLJsonFormatData } from "~/types/url";
 import { JsonViewerOutput } from "~/components/json-viewer-output";
 
 export const meta = metaHelper(utilities.url.name, utilities.url.description);
@@ -53,7 +50,7 @@ export default function URLRoute() {
       Decode: (input: string) => decode(input),
       toJson: (input: string) => toJson(input),
     }),
-    [decode, encode, toJson]
+    []
   );
 
   const renderOutput = useCallback(

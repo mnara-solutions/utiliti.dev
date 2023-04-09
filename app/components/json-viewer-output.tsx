@@ -109,6 +109,7 @@ export const JsonViewerOutput: React.FC<JsonViewerOutputProps> = ({
     shouldExpand,
     shouldExpandNodeInitially,
     output,
+    toCopy,
   ]);
 
   return renderOutput;

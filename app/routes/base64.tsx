@@ -58,7 +58,7 @@ export default function Base64() {
       Encode: (input: string) => encode(input),
       Decode: (input: string) => decode(input),
     }),
-    [decode, encode]
+    [encode]
   );
 
   return (
