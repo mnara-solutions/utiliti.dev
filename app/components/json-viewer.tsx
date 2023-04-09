@@ -81,7 +81,8 @@ export default function JsonViewer({ json }: Props) {
           </div>
         </div>
       </BoxTitle>
-      <BoxContent isLast={true} className="font-mono text-sm">
+
+      <BoxContent isLast={true} className="font-mono text-sm pl-2">
         <JSONTree
           key={`tree-${shouldExpand}-${expandAfter}`}
           data={json}

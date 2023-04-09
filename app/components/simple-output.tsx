@@ -6,7 +6,7 @@ interface Props {
   readonly output: string;
 }
 
-export function SimpleOutput({ output }: Props) {
+export default function SimpleOutput({ output }: Props) {
   return (
     <Box>
       <BoxTitle title="Output">

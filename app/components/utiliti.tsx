@@ -24,7 +24,7 @@ interface Props<T> {
   readonly showLoadFile?: Boolean;
 }
 
-export function Utiliti<T>({
+export default function Utiliti<T>({
   label,
   renderInput,
   renderOutput,

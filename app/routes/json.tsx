@@ -4,7 +4,7 @@ import Code from "~/components/code";
 import { noop } from "~/common";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { Utiliti } from "~/components/utiliti";
+import Utiliti from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import JsonViewer from "~/components/json-viewer";
 

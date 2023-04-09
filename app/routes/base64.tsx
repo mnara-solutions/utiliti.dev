@@ -1,10 +1,10 @@
 import * as b64 from "base64-encoding";
-import { SimpleOutput } from "~/components/simple-output";
+import SimpleOutput from "~/components/simple-output";
 import { useCallback, useMemo, useState } from "react";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { BoxOptions } from "~/components/box";
-import { Utiliti } from "~/components/utiliti";
+import Utiliti from "~/components/utiliti";
 
 export const meta = metaHelper(
   utilities.base64.name,
@@ -66,7 +66,7 @@ export default function Base64() {
       renderInput={(input, setInput) => (
         <textarea
           id="input"
-          rows={3}
+          rows={10}
           className="block font-mono w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
           placeholder="Paste in your content…"
           required={true}
