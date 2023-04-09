@@ -3,29 +3,43 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { useCallback, useMemo } from "react";
 import { Utiliti } from "~/components/utiliti";
-import type { URLJsonFormatData } from "~/types/url";
 import { JsonViewerOutput } from "~/components/json-viewer-output";
 
 export const meta = metaHelper(utilities.url.name, utilities.url.description);
 
+interface JsonURL {
+  readonly hash: string;
+  readonly host: string;
+  readonly hostname: string;
+  readonly href: string;
+  readonly origin: string;
+  readonly pathname: string;
+  readonly port: string;
+  readonly protocol: string;
+  readonly search: string;
+  readonly searchParams: Record<string, string>;
+  readonly username: string;
+  readonly password: string;
+}
+
 enum Action {
-  toJson = "toJson",
-  Encode = "Encode",
-  Decode = "Decode",
+  VIEW = "View",
+  ENCODE = "Encode",
+  DECODE = "Decode",
 }
 
-function encode(text: string): string {
-  return encodeURI(text);
+function encode(text: string): Promise<string | JsonURL> {
+  return Promise.resolve(encodeURI(text));
 }
 
-function decode(text: string): string {
-  return decodeURI(text);
+function decode(text: string): Promise<string | JsonURL> {
+  return Promise.resolve(decodeURI(text));
 }
 
-function toJson(text: string) {
+function toJson(text: string): Promise<string | JsonURL> {
   const url = new URL(text);
 
-  const data: URLJsonFormatData = {
+  return Promise.resolve({
     hash: url.hash,
     host: url.host,
     hostname: url.hostname,
@@ -38,29 +52,31 @@ function toJson(text: string) {
     search: url.search,
     searchParams: Object.fromEntries(url.searchParams),
     username: url.username,
-  };
-
-  return data;
+  });
 }
 
 export default function URLRoute() {
   const actions = useMemo(
     () => ({
-      Encode: (input: string) => encode(input),
-      Decode: (input: string) => decode(input),
-      toJson: (input: string) => toJson(input),
+      [Action.VIEW]: (input: string) => toJson(input),
+      [Action.ENCODE]: (input: string) => encode(input),
+      [Action.DECODE]: (input: string) => decode(input),
     }),
     []
   );
 
   const renderOutput = useCallback(
-    (a: string, input: string, output: string) => {
-      if (a === Action.Encode || a === Action.Decode) {
+    (a: string, input: string, output: string | JsonURL) => {
+      if (
+        (a === Action.ENCODE || a === Action.DECODE) &&
+        typeof output === "string"
+      ) {
         return <EncoderDecoderOutput output={output} />;
       }
 
-      const toCopy = JSON.stringify(output);
-      return <JsonViewerOutput toCopy={toCopy} output={output} />;
+      return (
+        <JsonViewerOutput toCopy={JSON.stringify(output)} output={output} />
+      );
     },
     []
   );

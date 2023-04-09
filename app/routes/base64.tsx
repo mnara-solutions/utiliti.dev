@@ -12,8 +12,8 @@ export const meta = metaHelper(
 );
 
 enum Action {
-  Encode = "Encode",
-  Decode = "Decode",
+  ENCODE = "Encode",
+  DECODE = "Decode",
 }
 
 async function decode(text: string): Promise<string> {
@@ -31,9 +31,7 @@ export default function Base64() {
 
   const renderOutput = useCallback(
     (a: string, input: string, output: string) => {
-      if (a === Action.Encode || a === Action.Decode) {
-        return <EncoderDecoderOutput output={output} />;
-      }
+      return <EncoderDecoderOutput output={output} />;
     },
     []
   );
@@ -55,8 +53,8 @@ export default function Base64() {
 
   const actions = useMemo(
     () => ({
-      Encode: (input: string) => encode(input),
-      Decode: (input: string) => decode(input),
+      [Action.ENCODE]: (input: string) => encode(input),
+      [Action.DECODE]: (input: string) => decode(input),
     }),
     [encode]
   );

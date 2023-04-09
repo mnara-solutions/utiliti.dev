@@ -10,7 +10,7 @@ import ContentWrapper from "~/components/content-wrapper";
 interface Props<T> {
   readonly label: string;
   // thought about using a `Map` here since it guarantees order, but we give up "DX"
-  readonly actions: Record<string, (input: string) => string | Object>;
+  readonly actions: Record<string, (input: string) => Promise<T>>;
   readonly renderInput: (
     input: string,
     setInput: (input: string) => void
@@ -39,22 +39,23 @@ export function Utiliti<T>({
 
   const onClick = useCallback(
     async (action: string, input: string) => {
-      try {
-        const fn = actions[action];
+      const fn = actions[action];
 
-        if (!fn) {
-          return;
-        }
-
-        setAction(action);
-
-        const it = await fn(input);
-        setOutput(it as T);
-        setError(null);
-      } catch (e) {
-        setError((e as Error).message);
-        setOutput(null);
+      if (!fn) {
+        return;
       }
+
+      setAction(action);
+
+      fn(input)
+        .then((it) => {
+          setOutput(it);
+          setError(null);
+        })
+        .catch((e) => {
+          setError(e.message);
+          setOutput(null);
+        });
     },
     [actions]
   );
