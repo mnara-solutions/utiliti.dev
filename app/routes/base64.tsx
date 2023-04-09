@@ -1,5 +1,5 @@
 import * as b64 from "base64-encoding";
-import { EncoderDecoderOutput } from "~/components/encoder-decoder-output";
+import { SimpleOutput } from "~/components/simple-output";
 import { useCallback, useMemo, useState } from "react";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
@@ -31,7 +31,7 @@ export default function Base64() {
 
   const renderOutput = useCallback(
     (a: string, input: string, output: string) => {
-      return <EncoderDecoderOutput output={output} />;
+      return <SimpleOutput output={output} />;
     },
     []
   );

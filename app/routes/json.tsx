@@ -6,7 +6,7 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { Utiliti } from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { JsonViewerOutput } from "~/components/json-viewer-output";
+import JsonViewer from "~/components/json-viewer";
 
 export const meta = metaHelper(utilities.json.name, utilities.json.description);
 
@@ -36,14 +36,12 @@ export default function JSONEncoder() {
 
   const renderOutput = useCallback(
     (a: string, input: string, output: object) => {
-      const toCopy = JSON.stringify(output);
-
       if (a === Action.FORMAT || a === Action.MINIFY) {
         return (
           <Box>
             <BoxTitle title="Output">
               <div>
-                <Copy content={toCopy} />
+                <Copy content={JSON.stringify(output)} />
               </div>
             </BoxTitle>
             <BoxContent isLast={true}>
@@ -59,7 +57,7 @@ export default function JSONEncoder() {
         );
       }
 
-      return <JsonViewerOutput toCopy={toCopy} output={output} />;
+      return <JsonViewer json={output} />;
     },
     []
   );

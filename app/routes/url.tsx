@@ -1,9 +1,9 @@
-import { EncoderDecoderOutput } from "~/components/encoder-decoder-output";
+import { SimpleOutput } from "~/components/simple-output";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { useCallback, useMemo } from "react";
 import { Utiliti } from "~/components/utiliti";
-import { JsonViewerOutput } from "~/components/json-viewer-output";
+import JsonViewer from "~/components/json-viewer";
 
 export const meta = metaHelper(utilities.url.name, utilities.url.description);
 
@@ -71,12 +71,10 @@ export default function URLRoute() {
         (a === Action.ENCODE || a === Action.DECODE) &&
         typeof output === "string"
       ) {
-        return <EncoderDecoderOutput output={output} />;
+        return <SimpleOutput output={output} />;
       }
 
-      return (
-        <JsonViewerOutput toCopy={JSON.stringify(output)} output={output} />
-      );
+      return <JsonViewer json={output} />;
     },
     []
   );

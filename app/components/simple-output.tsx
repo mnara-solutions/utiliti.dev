@@ -3,10 +3,10 @@ import ReadOnlyTextArea from "~/components/read-only-textarea";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 
 interface Props {
-  output: string;
+  readonly output: string;
 }
 
-export function EncoderDecoderOutput({ output }: Props) {
+export function SimpleOutput({ output }: Props) {
   return (
     <Box>
       <BoxTitle title="Output">
