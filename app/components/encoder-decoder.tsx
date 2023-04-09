@@ -1,23 +1,33 @@
-import type { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
 import { useMemo } from "react";
 import Copy from "~/components/copy";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { Utiliti } from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
+import { URLJsonFormatData } from "~/types/url";
+import { JsonOutput } from "./json-output";
 
 interface Props {
   readonly label: string;
-  readonly encode: (text: string) => Promise<string>;
-  readonly decode: (text: string) => Promise<string>;
+  readonly encode: (text: string) => string;
+  readonly decode: (text: string) => string;
+  readonly toJson: (text: string) => URLJsonFormatData;
   readonly showLoadFile: Boolean;
   readonly renderOptions?: () => ReactNode;
   readonly rows: number;
+}
+
+enum Action {
+  Encode = "Encode",
+  Decode = "Decode",
+  toJson = "toJson",
 }
 
 export default function EncoderDecoder({
   label,
   encode,
   decode,
+  toJson,
   showLoadFile,
   renderOptions,
   rows,
@@ -26,8 +36,32 @@ export default function EncoderDecoder({
     () => ({
       Encode: (input: string) => encode(input),
       Decode: (input: string) => decode(input),
+      toJson: (input: string) => toJson(input),
     }),
-    [decode, encode]
+    [decode, encode, toJson]
+  );
+
+  const renderOutput = useCallback(
+    (a: string, input: string, output: string) => {
+      if (a === Action.Encode || a === Action.Decode) {
+        return (
+          <Box>
+            <BoxTitle title="Output">
+              <div>
+                <Copy content={output} />
+              </div>
+            </BoxTitle>
+            <BoxContent isLast={true}>
+              <ReadOnlyTextArea value={output} />
+            </BoxContent>
+          </Box>
+        );
+      }
+
+      const toCopy = JSON.stringify(output);
+      return <JsonOutput toCopy={toCopy} output={output} />;
+    },
+    []
   );
 
   return (
@@ -45,18 +79,7 @@ export default function EncoderDecoder({
           onChange={(e) => setInput(e.target.value)}
         ></textarea>
       )}
-      renderOutput={(action, input, output) => (
-        <Box>
-          <BoxTitle title="Output">
-            <div>
-              <Copy content={output} />
-            </div>
-          </BoxTitle>
-          <BoxContent isLast={true}>
-            <ReadOnlyTextArea value={output} />
-          </BoxContent>
-        </Box>
-      )}
+      renderOutput={renderOutput}
       renderOptions={renderOptions}
       showLoadFile={showLoadFile}
     />
