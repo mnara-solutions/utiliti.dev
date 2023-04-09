@@ -77,11 +77,9 @@ export const sidebar = [
       utilities.json,
       utilities.dataurl,
       utilities.wordCounter,
+      utilities.url,
+      utilities.base64,
     ],
-  },
-  {
-    name: "Encoders & Decoders",
-    children: [utilities.base64, utilities.url],
   },
   {
     name: "Random Generators",
