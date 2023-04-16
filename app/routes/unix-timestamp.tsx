@@ -11,10 +11,10 @@ import React, {
 import ContentWrapper from "~/components/content-wrapper";
 import Copy from "~/components/copy";
 import { useHydrated } from "~/hooks/use-hydrated";
-import Button from "~/components/button";
 import NumberInput from "~/components/number-input";
 import { format, formatDistanceToNow } from "date-fns";
 import { Transition } from "@headlessui/react";
+import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 
 export const meta = metaHelper(
   utilities.unixTimestamp.name,
@@ -128,11 +128,17 @@ export default function UnixTimestamp() {
       const [date, format] =
         action === "timestamp"
           ? fromTimestamp(timestampRef.current?.value || "")
-          : [new Date(dateRef.current?.valueAsNumber || 0), "unknown"];
+          : [
+              new Date(
+                (dateRef.current?.valueAsNumber || 0) +
+                  initialDate.getTimezoneOffset() * 60 * 1000
+              ),
+              "unknown",
+            ];
 
       setInput({ action, value: date, format });
     },
-    [setInput]
+    [setInput, initialDate]
   );
 
   return (
@@ -143,7 +149,7 @@ export default function UnixTimestamp() {
 
       <Box className="mt-6">
         <BoxTitle title="Input" />
-        <BoxContent isLast={true} className="px-3 py-2">
+        <BoxContent isLast={true} className="px-2 py-2">
           <form
             className="flex items-center"
             onSubmit={(e) => {
@@ -151,19 +157,25 @@ export default function UnixTimestamp() {
               onInputConvert("timestamp");
             }}
           >
-            <div className="w-28">Timestamp</div>
-            <div className="flex grow">
+            <div className="w-28 text-sm">Timestamp</div>
+            <div className="flex grow lg:grow-0">
               <NumberInput
                 ref={timestampRef}
                 name="timestamp"
                 type="number"
                 step="1"
                 defaultValue={Math.round(initialDate.getTime() / 1000)}
-                className="w-52"
+                className="w-52 md:w-56"
               />
             </div>
-            <div>
-              <Button label="Convert" type="submit" />
+            <div className="pl-2">
+              <button
+                type="submit"
+                className="inline-flex justify-center p-2 rounded cursor-pointer text-orange-600 hover:text-white hover:bg-orange-800"
+              >
+                <ArrowsRightLeftIcon className="w-5 h-5" />
+                <span className="sr-only">Convert</span>
+              </button>
             </div>
           </form>
 
@@ -174,20 +186,24 @@ export default function UnixTimestamp() {
               onInputConvert("datetime");
             }}
           >
-            <div className="w-28">Date & Time</div>
-            <div className="flex grow">
+            <div className="w-28 text-sm">Date & Time</div>
+            <div className="flex grow lg:grow-0">
               <input
                 ref={dateRef}
                 type="datetime-local"
-                className="w-52 block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
-                defaultValue={format(initialDate, "yyyy-MM-dd HH:mm")}
+                step={1}
+                className="w-52 md:w-56 block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
+                defaultValue={format(initialDate, "yyyy-MM-dd HH:mm:ss")}
               />
             </div>
-            <div>
-              <Button
-                label="Convert"
-                onClick={() => onInputConvert("datetime")}
-              />
+            <div className="pl-2">
+              <button
+                type="submit"
+                className="inline-flex justify-center p-2 rounded cursor-pointer text-orange-600 hover:text-white hover:bg-orange-800"
+              >
+                <ArrowsRightLeftIcon className="w-5 h-5" />
+                <span className="sr-only">Convert</span>
+              </button>
             </div>
           </form>
         </BoxContent>
