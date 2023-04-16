@@ -113,7 +113,7 @@ export default function UnixTimestamp() {
   const timestampRef = useRef<HTMLInputElement>(null);
   const dateRef = useRef<HTMLInputElement>(null);
   const [input, setInput] = useState<null | {
-    action: string;
+    action: "timestamp" | "datetime";
     value: Date;
     format: string;
   }>(null);
@@ -124,7 +124,7 @@ export default function UnixTimestamp() {
   );
 
   const onInputConvert = useCallback(
-    (action: string) => {
+    (action: "timestamp" | "datetime") => {
       const [date, format] =
         action === "timestamp"
           ? fromTimestamp(timestampRef.current?.value || "")
