@@ -7,6 +7,7 @@ import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { v1, v4 } from "uuid";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import NumberInput from "~/components/number-input";
 
 export const meta = metaHelper(utilities.uuid.name, utilities.uuid.description);
 
@@ -64,13 +65,12 @@ export default function UuidGenerator() {
 
             <div className="flex items-center space-x-1 sm:px-4">
               <div className="sm:px text-center">
-                <input
+                <NumberInput
                   type="number"
                   min={1}
                   max={500}
                   value={number}
                   onChange={onChangeNumber}
-                  className="block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
                 />
               </div>
             </div>

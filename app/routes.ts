@@ -13,4 +13,5 @@ export default class Routes {
   static readonly CUID = "/cuid";
   static readonly NS_LOOKUP = "/ns-lookup";
   static readonly WHOIS = "/whois";
+  static readonly UNIX_TIMESTAMP = "/unix-timestamp";
 }

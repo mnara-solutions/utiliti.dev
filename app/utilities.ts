@@ -67,6 +67,11 @@ export const utilities: Record<
       "Find information about where the domain was registered and by who.",
     url: Routes.WHOIS,
   },
+  unixTimestamp: {
+    name: "Unix Timestamp",
+    description: "Easily convert to and from the unix timestamp.",
+    url: Routes.UNIX_TIMESTAMP,
+  },
 };
 
 export const sidebar = [
@@ -88,5 +93,9 @@ export const sidebar = [
   {
     name: "DNS",
     children: [utilities.nsLookup, utilities.whois],
+  },
+  {
+    name: "Time",
+    children: [utilities.unixTimestamp],
   },
 ];

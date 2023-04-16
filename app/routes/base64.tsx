@@ -67,7 +67,7 @@ export default function Base64() {
         <textarea
           id="input"
           rows={10}
-          className="block font-mono w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+          className="block font-mono w-full px-3 py-2 lg:text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
           placeholder="Paste in your content…"
           required={true}
           value={input}
@@ -77,7 +77,7 @@ export default function Base64() {
       renderOutput={renderOutput}
       showLoadFile={true}
       renderOptions={() => (
-        <BoxOptions>
+        <BoxOptions isLast={false}>
           <div className="flex items-center h-5 w-5 ml-2">
             <input
               id="url-safe"
