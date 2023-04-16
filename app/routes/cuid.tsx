@@ -7,6 +7,7 @@ import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { init } from "@paralleldrive/cuid2";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import NumberInput from "~/components/number-input";
 
 export const meta = metaHelper(utilities.cuid.name, utilities.cuid.description);
 
@@ -60,14 +61,13 @@ export default function UuidGenerator() {
             >
               Length:
             </label>
-            <input
+            <NumberInput
               id="length"
               type="number"
               min={5}
               max={50}
               value={length}
               onChange={onChangeLength}
-              className="block text-sm ml-2 border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
             />
           </div>
           <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
@@ -79,7 +79,6 @@ export default function UuidGenerator() {
                   max={500}
                   value={number}
                   onChange={onChangeNumber}
-                  className="block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
                 />
               </div>
             </div>

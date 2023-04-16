@@ -86,7 +86,7 @@ export default function URLRoute() {
         <textarea
           id="input"
           rows={3}
-          className="block font-mono w-full px-3 py-2 text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+          className="block font-mono w-full px-3 py-2 lg:text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
           placeholder="Paste in your URL…"
           required={true}
           value={input}

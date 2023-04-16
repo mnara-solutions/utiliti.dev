@@ -58,9 +58,17 @@ export function BoxButtons({ children }: PropsWithChildren<{}>) {
   );
 }
 
-export function BoxOptions({ children }: PropsWithChildren<{}>) {
+export function BoxOptions({
+  isLast,
+  children,
+}: PropsWithChildren<{ readonly isLast: Boolean }>) {
   return (
-    <div className="px-3 py-2 flex border-t border-gray-600 bg-zinc-800/50 items-center">
+    <div
+      className={classNames(
+        "px-3 py-2 flex border-t border-gray-600 bg-zinc-800/50 items-center",
+        isLast && "rounded-b-lg"
+      )}
+    >
       {children}
     </div>
   );
