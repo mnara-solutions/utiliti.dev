@@ -16,7 +16,7 @@ export const meta = metaHelper(
 
 function formatSql(input: string): string | null {
   try {
-    return format(input);
+    return format(input, { tabWidth: 2, keywordCase: "upper" });
   } catch (e) {
     // do nothing
   }
