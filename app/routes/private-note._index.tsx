@@ -108,7 +108,7 @@ export default function Index() {
       </div>
       <BoxOptions isLast={false}>
         <label
-          htmlFor="small"
+          htmlFor="expiry"
           className="block text-sm font-medium text-gray-900 dark:text-white"
         >
           Note self-destructs
