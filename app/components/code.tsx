@@ -3,6 +3,7 @@ import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-sql";
 import "prismjs/components/prism-markup";
 
 interface Props {
@@ -10,14 +11,29 @@ interface Props {
   readonly value: string;
   readonly setValue: (value: string) => void;
   readonly minHeight?: string;
+  readonly language?: "sql" | "javascript";
+  readonly placeholder?: string;
 }
-export default function Code({ readonly, value, setValue, minHeight }: Props) {
+
+export default function Code({
+  readonly,
+  value,
+  setValue,
+  minHeight,
+  language = "javascript",
+  placeholder = "Paste some json…",
+}: Props) {
   return (
     <Editor
       value={value}
       onValueChange={setValue}
-      highlight={(code) => highlight(code, languages.js)}
-      placeholder="Paste some json…"
+      highlight={(code) =>
+        highlight(
+          code,
+          language === "javascript" ? languages.js : languages.sql
+        )
+      }
+      placeholder={placeholder}
       style={{
         fontFamily: '"Fira code", monospace',
         minHeight,

@@ -14,4 +14,5 @@ export default class Routes {
   static readonly NS_LOOKUP = "/ns-lookup";
   static readonly WHOIS = "/whois";
   static readonly UNIX_TIMESTAMP = "/unix-timestamp";
+  static readonly SQL_FORMATTER = "/sql-formatter";
 }

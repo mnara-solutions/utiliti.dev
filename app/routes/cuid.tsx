@@ -73,7 +73,8 @@ export default function UuidGenerator() {
           <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
             <div className="flex items-center space-x-1 sm:px-4">
               <div className="sm:px text-center">
-                <input
+                <NumberInput
+                  id="length"
                   type="number"
                   min={1}
                   max={500}

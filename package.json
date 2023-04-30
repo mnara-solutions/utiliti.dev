@@ -30,6 +30,7 @@
     "react-dom": "^18.2.0",
     "react-json-tree": "^0.18.0",
     "react-simple-code-editor": "^0.13.1",
+    "sql-formatter": "^12.2.0",
     "use-keyboard-shortcut": "^1.1.6",
     "uuid": "^9.0.0"
   },
