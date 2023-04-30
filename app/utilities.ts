@@ -72,6 +72,12 @@ export const utilities: Record<
     description: "Easily convert to and from the unix timestamp.",
     url: Routes.UNIX_TIMESTAMP,
   },
+  sqlFormatter: {
+    name: "SQL Formatter",
+    description:
+      "Beautify any SQL query before sharing with others for better readability.",
+    url: Routes.SQL_FORMATTER,
+  },
 };
 
 export const sidebar = [
@@ -84,6 +90,7 @@ export const sidebar = [
       utilities.wordCounter,
       utilities.url,
       utilities.base64,
+      utilities.sqlFormatter,
     ],
   },
   {
