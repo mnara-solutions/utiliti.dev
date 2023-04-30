@@ -74,8 +74,7 @@ export const utilities: Record<
   },
   sqlFormatter: {
     name: "SQL Formatter",
-    description:
-      "Beautify any SQL query before sharing with others for better readability.",
+    description: "Format your SQL queries before sharing them with others.",
     url: Routes.SQL_FORMATTER,
   },
 };
