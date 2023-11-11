@@ -76,7 +76,6 @@ export const links: LinksFunction = () => [
   { rel: "manifest", href: "/assets/site.webmanifest" },
   { rel: "stylesheet", href: tailwind },
   { rel: "stylesheet", href: highlight },
-  // { rel: "stylesheet", href: prism },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com" },
   {
