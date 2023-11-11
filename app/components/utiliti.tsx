@@ -13,12 +13,12 @@ interface Props<T> {
   readonly actions: Record<string, (input: string) => Promise<T>>;
   readonly renderInput: (
     input: string,
-    setInput: (input: string) => void
+    setInput: (input: string) => void,
   ) => ReactNode;
   readonly renderOutput: (
     action: string,
     input: string,
-    output: T
+    output: T,
   ) => ReactNode;
   readonly renderOptions?: () => ReactNode;
   readonly showLoadFile?: Boolean;
@@ -57,7 +57,7 @@ export default function Utiliti<T>({
           setOutput(null);
         });
     },
-    [actions]
+    [actions],
   );
 
   return (

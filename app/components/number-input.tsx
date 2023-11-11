@@ -12,7 +12,7 @@ export default forwardRef<
       type="number"
       className={classNames(
         "block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500",
-        className
+        className,
       )}
       {...rest}
     />

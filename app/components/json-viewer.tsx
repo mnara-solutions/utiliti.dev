@@ -27,13 +27,13 @@ export default function JsonViewer({ json }: Props) {
 
       return level < expandAfter;
     },
-    [shouldExpand, expandAfter]
+    [shouldExpand, expandAfter],
   );
 
   const expandAll = useCallback(() => setShouldExpand(true), [setShouldExpand]);
   const collapseALl = useCallback(
     () => setShouldExpand(false),
-    [setShouldExpand]
+    [setShouldExpand],
   );
 
   const incrementExpandAfter = useCallback(() => {

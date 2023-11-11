@@ -55,13 +55,13 @@ function createSentence(avgWordsPerSentence: number): string {
   const stDev = getStandardDeviation(avgWordsPerSentence, 0.25);
   const sentenceLength = positiveRandom(
     avgWordsPerSentence - stDev,
-    avgWordsPerSentence + stDev
+    avgWordsPerSentence + stDev,
   );
   const midPunc = midPunctuation(sentenceLength);
   const sentence = Array.from(
     Array(sentenceLength),
     (_, i) =>
-      getRandomWord() + (i === midPunc.position ? midPunc.punctuation : "")
+      getRandomWord() + (i === midPunc.position ? midPunc.punctuation : ""),
   ).join(" ");
 
   return (
@@ -73,18 +73,18 @@ function createParagraph(
   firstParagraph: boolean,
   avgWordsPerSentence: number,
   avgSentencesPerParagraph: number,
-  startWithLoremIpsum: boolean
+  startWithLoremIpsum: boolean,
 ): string {
   const stDev = getStandardDeviation(avgSentencesPerParagraph, 0.25);
   const paragraphLength = positiveRandom(
     avgSentencesPerParagraph - stDev,
-    avgSentencesPerParagraph + stDev
+    avgSentencesPerParagraph + stDev,
   );
 
   return Array.from(Array(paragraphLength), (_, i) =>
     i === 0 && firstParagraph && startWithLoremIpsum
       ? "Lorem ipsum odor amet, consectetuer adipiscing elit."
-      : createSentence(avgWordsPerSentence)
+      : createSentence(avgWordsPerSentence),
   ).join(" ");
 }
 
@@ -101,15 +101,15 @@ function generateLoremIpsum(
   paragraphs: number,
   avgSentencesPerParagraph: number,
   avgWordsPerSentence: number,
-  startWithLoremIpsum: boolean
+  startWithLoremIpsum: boolean,
 ): string[] {
   return Array.from(Array(paragraphs), (_, i) =>
     createParagraph(
       i === 0,
       avgWordsPerSentence,
       avgSentencesPerParagraph,
-      startWithLoremIpsum
-    )
+      startWithLoremIpsum,
+    ),
   );
 }
 
@@ -178,7 +178,7 @@ function Slider({
 
 export const meta = metaHelper(
   utilities.loremIpsum.name,
-  utilities.loremIpsum.description
+  utilities.loremIpsum.description,
 );
 
 export default function LoremIpsum() {

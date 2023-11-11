@@ -14,7 +14,7 @@ export default function Button(props: Props) {
       {...buttonProps}
       className={classNames(
         "inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-orange-600 rounded-lg hover:bg-orange-800",
-        className
+        className,
       )}
     >
       {props.label}

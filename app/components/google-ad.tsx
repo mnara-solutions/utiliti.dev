@@ -18,7 +18,7 @@ function GoogleAd() {
     const scriptTag = document.createElement("script");
     scriptTag.setAttribute(
       "src",
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9826263890932106"
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9826263890932106",
     );
     scriptTag.setAttribute("type", "text/javascript");
     scriptTag.setAttribute("async", "async");

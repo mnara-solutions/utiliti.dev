@@ -67,7 +67,7 @@ export default function Index() {
     // encrypt data
     const ciphertext = await encrypt(
       inputRef.current.value,
-      passwordRef.current
+      passwordRef.current,
     );
 
     // submit form
@@ -76,12 +76,12 @@ export default function Index() {
         input: ciphertext,
         expiry,
       },
-      { method: "post", action: Routes.PRIVATE_NOTE_CREATE }
+      { method: "post", action: Routes.PRIVATE_NOTE_CREATE },
     );
   }, [expiry, fetcher]);
 
   // if the form was submitted, and we have action data, a note was created
-  if (fetcher.type === "done" && passwordRef.current) {
+  if (fetcher.state === "idle" && fetcher.data != null && passwordRef.current) {
     return (
       <CreatedNote
         id={fetcher.data.id}

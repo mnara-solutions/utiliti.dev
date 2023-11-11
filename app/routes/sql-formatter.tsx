@@ -1,5 +1,6 @@
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import React, { ChangeEvent, useCallback } from "react";
+import type { ChangeEvent } from "react";
+import React, { useCallback } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import { utilities } from "~/utilities";
 import { metaHelper } from "~/utils/meta";
@@ -10,18 +11,18 @@ import Copy from "~/components/copy";
 import { noop } from "~/common";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import NumberInput from "~/components/number-input";
-import { KeywordCase } from "sql-formatter/lib/src/FormatOptions";
-import { FormatOptionsWithLanguage } from "sql-formatter/lib/src/sqlFormatter";
+import type { KeywordCase } from "sql-formatter/lib/src/FormatOptions";
+import type { FormatOptionsWithLanguage } from "sql-formatter/lib/src/sqlFormatter";
 import { useHydrated } from "~/hooks/use-hydrated";
 
 export const meta = metaHelper(
   utilities.sqlFormatter.name,
-  utilities.sqlFormatter.description
+  utilities.sqlFormatter.description,
 );
 
 function formatSql(
   input: string,
-  options: FormatOptionsWithLanguage
+  options: FormatOptionsWithLanguage,
 ): string | null {
   try {
     return format(input, options);
@@ -37,20 +38,20 @@ export default function SqlFormatter() {
   const [input, setInput] = useLocalStorage("sql-formatter-query", "");
   const [keywordCase, setKeywordCase] = useLocalStorage<KeywordCase>(
     "sql-formatter-kw-case",
-    "upper"
+    "upper",
   );
   const [tabWidth, setTabWidth] = useLocalStorage(
     "sql-formatter-tab-width",
-    "2"
+    "2",
   );
 
   const onChangeTabWidth = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setTabWidth(
-        Math.min(Math.max(parseInt(e.target.value, 10), 1), 8).toString()
+        Math.min(Math.max(parseInt(e.target.value, 10), 1), 8).toString(),
       );
     },
-    [setTabWidth]
+    [setTabWidth],
   );
 
   // @note: this could become a performance issue as input changes quite often

@@ -1,6 +1,6 @@
 export function throttle<T extends unknown[], U>(
   func: (...args: T) => U,
-  throttleMilliseconds = 50
+  throttleMilliseconds = 50,
 ): (this: unknown, ...args: T) => void {
   let timeoutId: number | undefined;
 

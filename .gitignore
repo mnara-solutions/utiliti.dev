@@ -1,8 +1,8 @@
 node_modules
 
 /.cache
-/functions/\[\[path\]\].js
-/functions/\[\[path\]\].js.map
+/.wrangler
+/functions
 /public/build
 .env
 .dev.vars

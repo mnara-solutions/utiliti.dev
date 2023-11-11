@@ -8,7 +8,7 @@ import Utiliti from "~/components/utiliti";
 
 export const meta = metaHelper(
   utilities.base64.name,
-  utilities.base64.description
+  utilities.base64.description,
 );
 
 enum Action {
@@ -33,7 +33,7 @@ export default function Base64() {
     (a: string, input: string, output: string) => {
       return <SimpleOutput output={output} />;
     },
-    []
+    [],
   );
 
   const encode = useCallback(
@@ -48,7 +48,7 @@ export default function Base64() {
         return Promise.reject({ message: (e as DOMException).message });
       }
     },
-    [urlSafe]
+    [urlSafe],
   );
 
   const actions = useMemo(
@@ -56,7 +56,7 @@ export default function Base64() {
       [Action.ENCODE]: (input: string) => encode(input),
       [Action.DECODE]: (input: string) => decode(input),
     }),
-    [encode]
+    [encode],
   );
 
   return (

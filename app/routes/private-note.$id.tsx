@@ -27,12 +27,16 @@ type LoaderData = {
   readonly needsConfirmation: boolean;
 };
 
+interface Env {
+  PRIVATE_NOTES: KVNamespace;
+}
+
 export const loader: LoaderFunction = async ({
   request,
   params,
   context,
 }): Promise<LoaderData | Response> => {
-  const privateNotesNs = context.PRIVATE_NOTES as KVNamespace;
+  const privateNotesNs = (context.env as Env).PRIVATE_NOTES;
   const id = params.id;
 
   // if there is no id present, redirect back to private notes (technically not possible)
@@ -89,7 +93,7 @@ export default function PrivateNote() {
       history.replaceState(
         {},
         document.title,
-        Routes.PRIVATE_NOTES + "#redacted"
+        Routes.PRIVATE_NOTES + "#redacted",
       );
     }
   }, [location]);
@@ -104,7 +108,7 @@ export default function PrivateNote() {
       .catch((it) => {
         console.error(
           "Error occurred while trying to decrypt the ciphertext.",
-          it
+          it,
         );
 
         setDecryptionError(true);

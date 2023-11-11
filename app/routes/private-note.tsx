@@ -5,7 +5,7 @@ import ContentWrapper from "~/components/content-wrapper";
 
 export const meta = metaHelper(
   utilities.privateNotes.name,
-  utilities.privateNotes.description
+  utilities.privateNotes.description,
 );
 
 export default function Index() {

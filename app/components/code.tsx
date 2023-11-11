@@ -1,10 +1,10 @@
 import Editor from "react-simple-code-editor";
-// @ts-ignore
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-import "prismjs/components/prism-sql";
-import "prismjs/components/prism-markup";
+import hljs from "highlight.js/lib/core";
+import javascript from "highlight.js/lib/languages/javascript";
+import sql from "highlight.js/lib/languages/sql";
+
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("sql", sql);
 
 interface Props {
   readonly readonly: boolean;
@@ -23,16 +23,12 @@ export default function Code({
   language = "javascript",
   placeholder = "Paste some json…",
 }: Props) {
+  const CodeEditor = (Editor as any).default;
   return (
-    <Editor
+    <CodeEditor
       value={value}
       onValueChange={setValue}
-      highlight={(code) =>
-        highlight(
-          code,
-          language === "javascript" ? languages.js : languages.sql
-        )
-      }
+      highlight={(code: string) => hljs.highlight(code, { language }).value}
       placeholder={placeholder}
       style={{
         fontFamily: '"Fira code", monospace',

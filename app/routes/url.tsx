@@ -61,7 +61,7 @@ export default function URLRoute() {
       [Action.ENCODE]: (input: string) => encode(input),
       [Action.DECODE]: (input: string) => decode(input),
     }),
-    []
+    [],
   );
 
   const renderOutput = useCallback(
@@ -75,7 +75,7 @@ export default function URLRoute() {
 
       return <JsonViewer json={output} />;
     },
-    []
+    [],
   );
 
   return (

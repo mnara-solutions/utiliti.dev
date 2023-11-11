@@ -10,7 +10,7 @@ import { Transition } from "@headlessui/react";
 
 export const meta = metaHelper(
   utilities.dataurl.name,
-  utilities.dataurl.description
+  utilities.dataurl.description,
 );
 
 function isImage(dataUrl: string, fileType: string): Promise<boolean> {
