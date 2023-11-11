@@ -57,7 +57,7 @@ export default function UuidGenerator() {
           <div className="flex items-center justify-start flex-grow">
             <label
               htmlFor="length"
-              className="block text-sm font-medium text-gray-900 dark:text-white"
+              className="block text-sm font-medium text-gray-900 dark:text-white pr-2"
             >
               Length:
             </label>
