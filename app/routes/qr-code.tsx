@@ -11,6 +11,8 @@ enum Action {
 
 export default function QrCode() {
   const [svg, setSvg] = useState(false);
+  const [background, setBackground] = useState("#ffffff");
+  const [foreground, setForeground] = useState("#000000");
   const componentRef = useRef<HTMLDivElement>(null);
 
   const actions = useMemo(
@@ -56,13 +58,18 @@ export default function QrCode() {
             className="max-h-full flex justify-center py-4"
           >
             <div ref={componentRef}>
-              <Component value={input} size={256} />
+              <Component
+                value={input}
+                size={256}
+                bgColor={background}
+                fgColor={foreground}
+              />
             </div>
           </BoxContent>
         </Box>
       );
     },
-    [download, svg],
+    [background, download, foreground, svg],
   );
 
   return (
@@ -82,21 +89,71 @@ export default function QrCode() {
       )}
       renderOptions={() => (
         <BoxOptions isLast={false}>
-          <div className="flex items-center h-5 w-5 ml-2">
-            <input
-              id="svg"
-              type="checkbox"
-              checked={svg}
-              className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
-              onChange={(e) => setSvg(e.target.checked)}
-            />
+          <div>
+            <div className="flex flex-row pb-1">
+              <div className="flex items-center h-5 w-5">
+                <input
+                  id="svg"
+                  type="checkbox"
+                  checked={svg}
+                  className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 text-orange-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800"
+                  onChange={(e) => setSvg(e.target.checked)}
+                />
+              </div>
+              <label
+                htmlFor="svg"
+                className="ml-2 text-sm font-medium text-gray-300"
+              >
+                SVG
+              </label>
+            </div>
+
+            <div className="flex flex-row pb-1">
+              <div className="flex items-center h-5 w-5">
+                <input
+                  type="color"
+                  className="block bg-zinc-700 rounded"
+                  style={{
+                    width: "1.05rem",
+                    height: "1.05rem",
+                  }}
+                  id="background"
+                  defaultValue={background}
+                  onChange={(e) => setBackground(e.target.value)}
+                  title="Choose your color"
+                />
+              </div>
+              <label
+                htmlFor="background"
+                className="ml-2 text-sm font-medium text-gray-300"
+              >
+                Background
+              </label>
+            </div>
+
+            <div className="flex flex-row pb-1">
+              <div className="flex items-center h-5 w-5">
+                <input
+                  type="color"
+                  className="block bg-zinc-700 rounded"
+                  style={{
+                    width: "1.05rem",
+                    height: "1.05rem",
+                  }}
+                  id="foreground"
+                  defaultValue={foreground}
+                  onChange={(e) => setForeground(e.target.value)}
+                  title="Choose your color"
+                />
+              </div>
+              <label
+                htmlFor="foreground"
+                className="ml-2 text-sm font-medium text-gray-300"
+              >
+                Foreground
+              </label>
+            </div>
           </div>
-          <label
-            htmlFor="svg"
-            className="ml-2 text-sm font-medium text-gray-300"
-          >
-            SVG
-          </label>
         </BoxOptions>
       )}
       renderOutput={renderOutput}

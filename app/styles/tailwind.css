@@ -16,6 +16,20 @@
   margin-right: calc(50% - min(50%, 33rem));
 }
 
+input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+  /*width: 20px;*/
+  /*height: 20px;*/
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 0.25rem;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
