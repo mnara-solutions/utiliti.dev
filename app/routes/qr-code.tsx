@@ -92,7 +92,7 @@ export default function QrCode() {
             />
           </div>
           <label
-            htmlFor="url-safe"
+            htmlFor="svg"
             className="ml-2 text-sm font-medium text-gray-300"
           >
             SVG
@@ -107,21 +107,12 @@ export default function QrCode() {
 
 function svgElementToUri(element: SVGElement) {
   const serializer = new XMLSerializer();
-  let source = serializer.serializeToString(element);
-
-  if (!source.match(/^<svg[^>]+xmlns="http:\/\/www\.w3\.org\/2000\/svg"/)) {
-    source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
-  }
-
-  if (!source.match(/^<svg[^>]+"http:\/\/www\.w3\.org\/1999\/xlink"/)) {
-    source = source.replace(
-      /^<svg/,
-      '<svg xmlns:xlink="http://www.w3.org/1999/xlink"',
-    );
-  }
 
   return (
     "data:image/svg+xml;charset=utf-8," +
-    encodeURIComponent('<?xml version="1.0" standalone="no"?>\r\n' + source)
+    encodeURIComponent(
+      '<?xml version="1.0" standalone="no"?>\r\n' +
+        serializer.serializeToString(element),
+    )
   );
 }
