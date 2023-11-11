@@ -5,7 +5,7 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix dev --manual -c \"npm run start\"",
-    "start": "wrangler pages dev --compatibility-date=2023-06-21 ./public",
+    "start": "wrangler pages dev --kv=PRIVATE_NOTES --compatibility-date=2023-06-21 ./public",
     "typecheck": "tsc",
     "lint": "eslint --ext \".js,.jsx,.ts,.tsx\" --ignore-path .gitignore .",
     "prettier": "prettier --write --ignore-path .gitignore .",

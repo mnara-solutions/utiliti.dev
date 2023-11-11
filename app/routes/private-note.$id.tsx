@@ -27,12 +27,16 @@ type LoaderData = {
   readonly needsConfirmation: boolean;
 };
 
+interface Env {
+  PRIVATE_NOTES: KVNamespace;
+}
+
 export const loader: LoaderFunction = async ({
   request,
   params,
   context,
 }): Promise<LoaderData | Response> => {
-  const privateNotesNs = context.PRIVATE_NOTES as KVNamespace;
+  const privateNotesNs = (context.env as Env).PRIVATE_NOTES;
   const id = params.id;
 
   // if there is no id present, redirect back to private notes (technically not possible)
