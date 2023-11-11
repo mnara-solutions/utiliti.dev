@@ -1,4 +1,5 @@
-import type { LinksFunction, V2_MetaFunction } from "@remix-run/cloudflare";
+import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare";
+import { cssBundleHref } from "@remix-run/css-bundle";
 import {
   isRouteErrorResponse,
   Link,
@@ -10,12 +11,12 @@ import {
   ScrollRestoration,
   useRouteError,
 } from "@remix-run/react";
-import prism from "app/styles/prism-darcula.css";
-import tailwind from "~/styles/tailwind.css";
+import tailwind from "./styles/tailwind.css";
+import highlight from "highlight.js/styles/stackoverflow-dark.css";
 import Layout from "~/components/layout";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/solid";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   const title = "Utiliti";
   const description =
     "A collection of high quality, secure, and open source utilities.";
@@ -74,13 +75,15 @@ export const links: LinksFunction = () => [
   { rel: "shortcut icon", href: "/assets/favicon.ico" },
   { rel: "manifest", href: "/assets/site.webmanifest" },
   { rel: "stylesheet", href: tailwind },
-  { rel: "stylesheet", href: prism },
+  { rel: "stylesheet", href: highlight },
+  // { rel: "stylesheet", href: prism },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com" },
   {
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap",
   },
+  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
 export default function App() {

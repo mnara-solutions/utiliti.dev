@@ -1,9 +1,9 @@
-import type { V2_MetaFunction } from "@remix-run/cloudflare";
+import type { MetaFunction } from "@remix-run/cloudflare";
 
 export function metaHelper(
   titlePrefix: string,
-  description: string
-): V2_MetaFunction {
+  description: string,
+): MetaFunction {
   const title = `${titlePrefix} | Utiliti`;
 
   return () => [
