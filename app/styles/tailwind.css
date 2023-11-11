@@ -19,8 +19,6 @@
 input[type="color"] {
   -webkit-appearance: none;
   border: none;
-  /*width: 20px;*/
-  /*height: 20px;*/
 }
 input[type="color"]::-webkit-color-swatch-wrapper {
   padding: 0;
