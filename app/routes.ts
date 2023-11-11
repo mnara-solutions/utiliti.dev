@@ -15,4 +15,5 @@ export default class Routes {
   static readonly WHOIS = "/whois";
   static readonly UNIX_TIMESTAMP = "/unix-timestamp";
   static readonly SQL_FORMATTER = "/sql-formatter";
+  static readonly QR_CODE = "/qr-code";
 }

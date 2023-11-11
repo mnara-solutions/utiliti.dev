@@ -5,14 +5,13 @@ import ContentWrapper from "~/components/content-wrapper";
 import { utilities } from "~/utilities";
 import { metaHelper } from "~/utils/meta";
 import Code from "~/components/code";
+import type { FormatOptionsWithLanguage, KeywordCase } from "sql-formatter";
 import { format } from "sql-formatter";
 import { Transition } from "@headlessui/react";
 import Copy from "~/components/copy";
 import { noop } from "~/common";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import NumberInput from "~/components/number-input";
-import type { KeywordCase } from "sql-formatter/lib/src/FormatOptions";
-import type { FormatOptionsWithLanguage } from "sql-formatter/lib/src/sqlFormatter";
 import { useHydrated } from "~/hooks/use-hydrated";
 
 export const meta = metaHelper(

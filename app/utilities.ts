@@ -77,6 +77,11 @@ export const utilities: Record<
     description: "Format your SQL queries before sharing them with others.",
     url: Routes.SQL_FORMATTER,
   },
+  qrCode: {
+    name: "QR Code",
+    description: "Easily generate a QR code and download it.",
+    url: Routes.QR_CODE,
+  },
 };
 
 export const sidebar = [
@@ -90,6 +95,7 @@ export const sidebar = [
       utilities.url,
       utilities.base64,
       utilities.sqlFormatter,
+      utilities.qrCode,
     ],
   },
   {

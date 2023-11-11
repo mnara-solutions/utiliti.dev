@@ -120,7 +120,7 @@ export default function DataUrl() {
               <BoxTitle title="Output"></BoxTitle>
               <BoxContent
                 isLast={true}
-                className="max-h-full flex justify-center"
+                className="max-h-full flex justify-center py-4"
               >
                 <img className="max-w-full" alt="Output" src={output} />
               </BoxContent>

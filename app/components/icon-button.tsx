@@ -1,9 +1,14 @@
 import * as React from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
-import type { Placement } from "@floating-ui/core/src/types";
+import type { Placement } from "@floating-ui/react";
 
 interface Props {
-  readonly icon: React.ForwardRefExoticComponent<React.SVGProps<SVGSVGElement>>;
+  readonly icon: React.ForwardRefExoticComponent<
+    React.PropsWithoutRef<React.SVGProps<SVGSVGElement>> & {
+      title?: string;
+      titleId?: string;
+    } & React.RefAttributes<SVGSVGElement>
+  >;
   readonly label: string;
   readonly onClick: () => void;
   readonly tooltipPlacement?: Placement;
