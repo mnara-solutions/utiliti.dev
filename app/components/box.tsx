@@ -9,7 +9,7 @@ export default function Box({
     <div
       className={classNames(
         "w-full border rounded-lg bg-zinc-700 border-zinc-600",
-        className
+        className,
       )}
     >
       {children}
@@ -42,7 +42,7 @@ export function BoxContent({
       className={classNames(
         "bg-zinc-800 max-h-96 overflow-auto not-prose",
         isLast && "rounded-b-lg",
-        className
+        className,
       )}
     >
       {children}
@@ -66,7 +66,7 @@ export function BoxOptions({
     <div
       className={classNames(
         "px-3 py-2 flex border-t border-gray-600 bg-zinc-800/50 items-center",
-        isLast && "rounded-b-lg"
+        isLast && "rounded-b-lg",
       )}
     >
       {children}

@@ -11,7 +11,7 @@ import Copy from "~/components/copy";
 
 export const meta = metaHelper(
   utilities.nsLookup.name,
-  utilities.nsLookup.description
+  utilities.nsLookup.description,
 );
 
 type Response = [
@@ -22,8 +22,8 @@ type Response = [
       type: number;
       TTL: number;
       data: string;
-    }
-  ]
+    },
+  ],
 ];
 
 function getDnsDetail(url: string, type: string): Promise<Response> {
@@ -33,7 +33,7 @@ function getDnsDetail(url: string, type: string): Promise<Response> {
       headers: {
         accept: "application/dns-json",
       },
-    }
+    },
   )
     .then((it) =>
       it.json<{
@@ -47,7 +47,7 @@ function getDnsDetail(url: string, type: string): Promise<Response> {
           {
             name: string;
             type: number;
-          }
+          },
         ];
         Answer: [
           {
@@ -55,9 +55,9 @@ function getDnsDetail(url: string, type: string): Promise<Response> {
             type: number;
             TTL: number;
             data: string;
-          }
+          },
         ];
-      }>()
+      }>(),
     )
     .then((it) => [type, it.Answer]);
 }

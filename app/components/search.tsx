@@ -28,7 +28,7 @@ export default function Search({ open, setOpen }: Props) {
       setOpen(false);
       navigate(item.url);
     },
-    [navigate, setOpen]
+    [navigate, setOpen],
   );
 
   return (
@@ -90,7 +90,7 @@ export default function Search({ open, setOpen }: Props) {
                               className={({ active }) =>
                                 classNames(
                                   "flex cursor-default select-none items-center rounded-md px-3 py-2",
-                                  active && "bg-zinc-800 text-orange-600"
+                                  active && "bg-zinc-800 text-orange-600",
                                 )
                               }
                             >
@@ -107,7 +107,7 @@ export default function Search({ open, setOpen }: Props) {
                                 </>
                               )}
                             </Combobox.Option>
-                          )
+                          ),
                         )}
                       </ul>
                     </li>

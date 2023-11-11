@@ -12,7 +12,7 @@ interface Props {
 export default function ReadFile({ accept, onLoad, type = "text" }: Props) {
   const onButtonClick = useCallback(
     () => document.getElementById("file-input")?.click(),
-    []
+    [],
   );
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +46,7 @@ export default function ReadFile({ accept, onLoad, type = "text" }: Props) {
           break;
       }
     },
-    [onLoad, type]
+    [onLoad, type],
   );
 
   return (

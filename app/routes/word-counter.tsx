@@ -19,7 +19,7 @@ import { useHydrated } from "~/hooks/use-hydrated";
 
 export const meta = metaHelper(
   utilities.wordCounter.name,
-  utilities.wordCounter.description
+  utilities.wordCounter.description,
 );
 
 interface Info {
@@ -78,7 +78,7 @@ function decode(input: string) {
 
 function topWords(
   input: string,
-  filterCommonWords: boolean
+  filterCommonWords: boolean,
 ): { word: string; count: number }[] {
   // unique words
   const words: string[] = input.toLowerCase().match(/[\w'-]+/g) || [];
@@ -148,7 +148,7 @@ export default function WordCounter() {
   const [options, setOptions] = useLocalStorage<Options>(
     "word-counter-options",
     { filterCommonWords: true },
-    true
+    true,
   );
   const [info, setInfo] = useState<Info>(count(content, options));
 
@@ -164,12 +164,12 @@ export default function WordCounter() {
 
   const throttledCalculate = useMemo(
     () => throttle(calculate, 1000),
-    [calculate]
+    [calculate],
   );
 
   const throttledSetContent = useMemo(
     () => throttle(setContent, 1000),
-    [setContent]
+    [setContent],
   );
 
   // text change handler
@@ -361,7 +361,7 @@ export default function WordCounter() {
                       };
                       setOptions(newOptions);
                       setInfo(
-                        count(inputRef?.current?.value || "", newOptions)
+                        count(inputRef?.current?.value || "", newOptions),
                       );
                     }}
                   />

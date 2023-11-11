@@ -31,7 +31,7 @@ export default function JSONEncoder() {
       [Action.FORMAT]: (input: string) => decode(input),
       [Action.MINIFY]: (input: string) => decode(input),
     }),
-    []
+    [],
   );
 
   const renderOutput = useCallback(
@@ -59,7 +59,7 @@ export default function JSONEncoder() {
 
       return <JsonViewer json={output} />;
     },
-    []
+    [],
   );
 
   return (

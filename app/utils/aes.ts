@@ -4,24 +4,24 @@ const decoder = new TextDecoder();
 
 export async function encrypt(
   plaintext: string,
-  password: string
+  password: string,
 ): Promise<string> {
   const key = await generateKey(password);
   const iv = await crypto.getRandomValues(new Uint8Array(12));
   const ciphertext = await crypto.subtle.encrypt(
     { name: ALGORITHM, iv: iv },
     key,
-    encoder.encode(plaintext)
+    encoder.encode(plaintext),
   );
 
   return arrayToBase64(
-    Array.from(iv).concat(Array.from(new Uint8Array(ciphertext)))
+    Array.from(iv).concat(Array.from(new Uint8Array(ciphertext))),
   );
 }
 
 export async function decrypt(
   ciphertext: string,
-  password: string
+  password: string,
 ): Promise<string> {
   const key = await generateKey(password);
   const decoded = base64ToArray(ciphertext);
@@ -29,14 +29,14 @@ export async function decrypt(
   const cipher = decoded.slice(12);
 
   return decoder.decode(
-    await crypto.subtle.decrypt({ name: ALGORITHM, iv: iv }, key, cipher)
+    await crypto.subtle.decrypt({ name: ALGORITHM, iv: iv }, key, cipher),
   );
 }
 
 async function generateKey(password: string): Promise<CryptoKey> {
   const keyData = await crypto.subtle.digest(
     "SHA-256",
-    encoder.encode(password)
+    encoder.encode(password),
   );
 
   return await crypto.subtle.importKey("raw", keyData, ALGORITHM, false, [

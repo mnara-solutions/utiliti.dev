@@ -18,7 +18,7 @@ import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 
 export const meta = metaHelper(
   utilities.unixTimestamp.name,
-  utilities.unixTimestamp.description
+  utilities.unixTimestamp.description,
 );
 
 /**
@@ -120,7 +120,7 @@ export default function UnixTimestamp() {
 
   const initialDate = useMemo(
     () => (hydrated ? new Date() : new Date("2023-04-16")),
-    [hydrated]
+    [hydrated],
   );
 
   const onInputConvert = useCallback(
@@ -131,14 +131,14 @@ export default function UnixTimestamp() {
           : [
               new Date(
                 (dateRef.current?.valueAsNumber || 0) +
-                  initialDate.getTimezoneOffset() * 60 * 1000
+                  initialDate.getTimezoneOffset() * 60 * 1000,
               ),
               "unknown",
             ];
 
       setInput({ action, value: date, format });
     },
-    [setInput, initialDate]
+    [setInput, initialDate],
   );
 
   return (
@@ -236,7 +236,7 @@ export default function UnixTimestamp() {
                       <Row
                         title="Unix Timestamp"
                         value={Math.round(
-                          input.value.getTime() / 1000
+                          input.value.getTime() / 1000,
                         ).toString()}
                       />
                     )}
