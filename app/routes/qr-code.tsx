@@ -4,6 +4,13 @@ import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
 import Box, { BoxContent, BoxOptions, BoxTitle } from "~/components/box";
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import IconButton from "~/components/icon-button";
+import { metaHelper } from "~/utils/meta";
+import { utilities } from "~/utilities";
+
+export const meta = metaHelper(
+  utilities.qrCode.name,
+  utilities.qrCode.description,
+);
 
 enum Action {
   GENERATE = "Generate",
@@ -72,90 +79,100 @@ export default function QrCode() {
     [background, download, foreground, svg],
   );
 
+  const renderOptions = useCallback(
+    () => (
+      <BoxOptions isLast={false}>
+        <div>
+          <div className="flex flex-row pb-1">
+            <div className="flex items-center h-5 w-5">
+              <input
+                id="svg"
+                type="checkbox"
+                checked={svg}
+                className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 text-orange-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800"
+                onChange={(e) => setSvg(e.target.checked)}
+              />
+            </div>
+            <label
+              htmlFor="svg"
+              className="ml-2 text-sm font-medium text-gray-300"
+            >
+              SVG
+            </label>
+          </div>
+
+          <div className="flex flex-row pb-1">
+            <div className="flex items-center h-5 w-5">
+              <input
+                type="color"
+                className="block bg-zinc-700 rounded"
+                style={{
+                  width: "1.05rem",
+                  height: "1.05rem",
+                }}
+                id="background"
+                defaultValue={background}
+                onChange={(e) => setBackground(e.target.value)}
+                title="Choose your color"
+              />
+            </div>
+            <label
+              htmlFor="background"
+              className="ml-2 text-sm font-medium text-gray-300"
+            >
+              Background
+            </label>
+          </div>
+
+          <div className="flex flex-row pb-1">
+            <div className="flex items-center h-5 w-5">
+              <input
+                type="color"
+                className="block bg-zinc-700 rounded"
+                style={{
+                  width: "1.05rem",
+                  height: "1.05rem",
+                }}
+                id="foreground"
+                defaultValue={foreground}
+                onChange={(e) => setForeground(e.target.value)}
+                title="Choose your color"
+              />
+            </div>
+            <label
+              htmlFor="foreground"
+              className="ml-2 text-sm font-medium text-gray-300"
+            >
+              Foreground
+            </label>
+          </div>
+        </div>
+      </BoxOptions>
+    ),
+    [background, foreground, svg],
+  );
+
+  const renderInput = useCallback(
+    (input: string, setInput: (v: string) => void) => (
+      <textarea
+        id="input"
+        rows={3}
+        className="block font-mono w-full px-3 py-2 lg:text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+        placeholder="Paste in your URL…"
+        required={true}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      ></textarea>
+    ),
+    [],
+  );
+
   return (
     <Utiliti
-      label="QR Code"
+      label={utilities.qrCode.name}
       actions={actions}
-      renderInput={(input, setInput) => (
-        <textarea
-          id="input"
-          rows={3}
-          className="block font-mono w-full px-3 py-2 lg:text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
-          placeholder="Paste in your URL…"
-          required={true}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        ></textarea>
-      )}
-      renderOptions={() => (
-        <BoxOptions isLast={false}>
-          <div>
-            <div className="flex flex-row pb-1">
-              <div className="flex items-center h-5 w-5">
-                <input
-                  id="svg"
-                  type="checkbox"
-                  checked={svg}
-                  className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 text-orange-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800"
-                  onChange={(e) => setSvg(e.target.checked)}
-                />
-              </div>
-              <label
-                htmlFor="svg"
-                className="ml-2 text-sm font-medium text-gray-300"
-              >
-                SVG
-              </label>
-            </div>
-
-            <div className="flex flex-row pb-1">
-              <div className="flex items-center h-5 w-5">
-                <input
-                  type="color"
-                  className="block bg-zinc-700 rounded"
-                  style={{
-                    width: "1.05rem",
-                    height: "1.05rem",
-                  }}
-                  id="background"
-                  defaultValue={background}
-                  onChange={(e) => setBackground(e.target.value)}
-                  title="Choose your color"
-                />
-              </div>
-              <label
-                htmlFor="background"
-                className="ml-2 text-sm font-medium text-gray-300"
-              >
-                Background
-              </label>
-            </div>
-
-            <div className="flex flex-row pb-1">
-              <div className="flex items-center h-5 w-5">
-                <input
-                  type="color"
-                  className="block bg-zinc-700 rounded"
-                  style={{
-                    width: "1.05rem",
-                    height: "1.05rem",
-                  }}
-                  id="foreground"
-                  defaultValue={foreground}
-                  onChange={(e) => setForeground(e.target.value)}
-                  title="Choose your color"
-                />
-              </div>
-              <label
-                htmlFor="foreground"
-                className="ml-2 text-sm font-medium text-gray-300"
-              >
-                Foreground
-              </label>
-            </div>
-          </div>
-        </BoxOptions>
-      )}
+      renderInput={renderInput}
+      renderOptions={renderOptions}
       renderOutput={renderOutput}
       showLoadFile={false}
     />
