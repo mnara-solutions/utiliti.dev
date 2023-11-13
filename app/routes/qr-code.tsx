@@ -101,51 +101,17 @@ export default function QrCode() {
             </label>
           </div>
 
-          <div className="flex flex-row pb-1">
-            <div className="flex items-center h-5 w-5">
-              <input
-                type="color"
-                className="block bg-zinc-700 rounded"
-                style={{
-                  width: "1.05rem",
-                  height: "1.05rem",
-                }}
-                id="background"
-                defaultValue={background}
-                onChange={(e) => setBackground(e.target.value)}
-                title="Choose your color"
-              />
-            </div>
-            <label
-              htmlFor="background"
-              className="ml-2 text-sm font-medium text-gray-300"
-            >
-              Background
-            </label>
-          </div>
+          <ColourPicker
+            label="Background"
+            value={background}
+            setter={setBackground}
+          />
 
-          <div className="flex flex-row pb-1">
-            <div className="flex items-center h-5 w-5">
-              <input
-                type="color"
-                className="block bg-zinc-700 rounded"
-                style={{
-                  width: "1.05rem",
-                  height: "1.05rem",
-                }}
-                id="foreground"
-                defaultValue={foreground}
-                onChange={(e) => setForeground(e.target.value)}
-                title="Choose your color"
-              />
-            </div>
-            <label
-              htmlFor="foreground"
-              className="ml-2 text-sm font-medium text-gray-300"
-            >
-              Foreground
-            </label>
-          </div>
+          <ColourPicker
+            label="Foreground"
+            value={foreground}
+            setter={setForeground}
+          />
         </div>
       </BoxOptions>
     ),
@@ -176,6 +142,38 @@ export default function QrCode() {
       renderOutput={renderOutput}
       showLoadFile={false}
     />
+  );
+}
+
+function ColourPicker({
+  label,
+  value,
+  setter,
+}: {
+  readonly label: string;
+  readonly value: string;
+  readonly setter: (v: string) => void;
+}) {
+  return (
+    <div className="flex flex-row pb-1">
+      <div className="flex items-center h-5 w-5">
+        <input
+          type="color"
+          className="block bg-zinc-700 rounded"
+          style={{
+            width: "1.05rem",
+            height: "1.05rem",
+          }}
+          id={label}
+          defaultValue={value}
+          onChange={(e) => setter(e.target.value)}
+          title="Choose your color"
+        />
+      </div>
+      <label htmlFor={label} className="ml-2 text-sm font-medium text-gray-300">
+        {label}
+      </label>
+    </div>
   );
 }
 
