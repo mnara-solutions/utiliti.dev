@@ -7,6 +7,7 @@ import Copy from "~/components/copy";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
+import Dropdown from "~/components/dropdown";
 
 export const meta = metaHelper(
   utilities.dataurl.name,
@@ -93,7 +94,34 @@ export default function DataUrl() {
         </BoxContent>
 
         <BoxButtons>
-          <div>
+          <div className="flex">
+            <Dropdown
+              onOptionChange={setFormat}
+              options={[
+                { id: "jpg", label: "Jpeg" },
+                { id: "png", label: "Png" },
+                { id: "webp", label: "Webp" },
+              ]}
+              defaultValue={format}
+            />
+            {format !== "png" ? (
+              <Dropdown
+                className="ml-2"
+                onOptionChange={setQuality}
+                options={[
+                  { id: "0", label: "Default" },
+                  { id: "1", label: "Full (100%)" },
+                  { id: ".9", label: "Very High (90%)" },
+                  { id: ".8", label: "High (80%)" },
+                  { id: ".75", label: "Good (75%)" },
+                  { id: ".6", label: "Medium (60%)" },
+                  { id: ".5", label: "Low (50%)" },
+                  { id: ".25", label: "Poor (25%)" },
+                ]}
+                defaultValue={quality.toString()}
+              />
+            ) : null}
+
             <ReadFile
               accept="image/*"
               onLoad={onLoad}
@@ -101,26 +129,6 @@ export default function DataUrl() {
               format={format}
               quality={quality}
             />
-            <select onChange={(e) => setFormat(e.target.value)} value={format}>
-              <option value="jpg">Jpeg</option>
-              <option value="png">Png</option>
-              <option value="webp">Webp</option>
-            </select>
-            {format !== "png" ? (
-              <select
-                onChange={(e) => setQuality(e.target.value)}
-                value={quality.toString()}
-              >
-                <option value="0">Default</option>
-                <option value="1">Full (100%)</option>
-                <option value=".9">Very High (90%)</option>
-                <option value=".8">High (80%)</option>
-                <option value=".75">Good (75%)</option>
-                <option value=".6">Medium (60%)</option>
-                <option value=".5">Low (50%)</option>
-                <option value=".25">Poor (25%)</option>
-              </select>
-            ) : null}
           </div>
           <div className="flex gap-x-2">
             <Button onClick={onClick} label="Display" />

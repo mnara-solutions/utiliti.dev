@@ -13,6 +13,7 @@ import { noop } from "~/common";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import NumberInput from "~/components/number-input";
 import { useHydrated } from "~/hooks/use-hydrated";
+import Dropdown from "~/components/dropdown";
 
 export const meta = metaHelper(
   utilities.sqlFormatter.name,
@@ -96,16 +97,17 @@ export default function SqlFormatter() {
               <label htmlFor="keywordCase" className="text-sm hidden md:block">
                 Keyword Case
               </label>
-              <select
+              <Dropdown
                 id="keywordCase"
-                className="block text-sm ml-2 border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 focus:ring-orange-500 focus:border-orange-500"
+                className="ml-2"
                 value={keywordCase}
-                onChange={(e) => setKeywordCase(e.target.value as KeywordCase)}
-              >
-                <option value="preserve">Preserved</option>
-                <option value="upper">Uppercase</option>
-                <option value="lower">Lowercase</option>
-              </select>
+                onOptionChange={(v) => setKeywordCase(v as KeywordCase)}
+                options={[
+                  { id: "preserve", label: "Preserved" },
+                  { id: "upper", label: "Uppercase" },
+                  { id: "lower", label: "Lowercase" },
+                ]}
+              />
             </div>
           </div>
         </BoxTitle>
