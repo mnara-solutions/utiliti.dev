@@ -88,30 +88,39 @@ export default function DataUrl() {
             placeholder="Paste in your Data URL…"
             required={true}
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={(e) => setInput(e.target.value)}
           />
         </BoxContent>
 
         <BoxButtons>
           <div>
-            <ReadFile accept="image/*" onLoad={onLoad} type="dataURL" format={format} quality={quality} />
-            <select onChange={e => setFormat(e.target.value)} value={format}>
+            <ReadFile
+              accept="image/*"
+              onLoad={onLoad}
+              type="dataURL"
+              format={format}
+              quality={quality}
+            />
+            <select onChange={(e) => setFormat(e.target.value)} value={format}>
               <option value="jpg">Jpeg</option>
               <option value="png">Png</option>
               <option value="webp">Webp</option>
             </select>
-            { format !== 'png' ? (
-                <select onChange={e => setQuality(e.target.value)} value={quality.toString()}>
-                  <option value="0">Default</option>
-                  <option value="1">Full (100%)</option>
-                  <option value=".9">Very High (90%)</option>
-                  <option value=".8">High (80%)</option>
-                  <option value=".75">Good (75%)</option>
-                  <option value=".6">Medium (60%)</option>
-                  <option value=".5">Low (50%)</option>
-                  <option value=".25">Poor (25%)</option>
-                </select>
-              ) : null}
+            {format !== "png" ? (
+              <select
+                onChange={(e) => setQuality(e.target.value)}
+                value={quality.toString()}
+              >
+                <option value="0">Default</option>
+                <option value="1">Full (100%)</option>
+                <option value=".9">Very High (90%)</option>
+                <option value=".8">High (80%)</option>
+                <option value=".75">Good (75%)</option>
+                <option value=".6">Medium (60%)</option>
+                <option value=".5">Low (50%)</option>
+                <option value=".25">Poor (25%)</option>
+              </select>
+            ) : null}
           </div>
           <div className="flex gap-x-2">
             <Button onClick={onClick} label="Display" />
