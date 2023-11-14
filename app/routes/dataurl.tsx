@@ -94,7 +94,7 @@ export default function DataUrl() {
         </BoxContent>
 
         <BoxButtons>
-          <div className="flex">
+          <div className="flex gap-x-2">
             <Dropdown
               onOptionChange={setFormat}
               options={[
@@ -106,7 +106,6 @@ export default function DataUrl() {
             />
             {format !== "png" ? (
               <Dropdown
-                className="ml-2"
                 onOptionChange={setQuality}
                 options={[
                   { id: "0", label: "Default" },
