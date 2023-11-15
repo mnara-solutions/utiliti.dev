@@ -50,9 +50,17 @@ export function BoxContent({
   );
 }
 
-export function BoxButtons({ children }: PropsWithChildren<{}>) {
+export function BoxButtons({
+  children,
+  className,
+}: PropsWithChildren<{ readonly className?: string | undefined }>) {
   return (
-    <div className="px-3 py-2 flex items-center justify-between border-t border-gray-600">
+    <div
+      className={classNames(
+        "px-3 py-2 flex items-center justify-between border-t border-gray-600",
+        className,
+      )}
+    >
       {children}
     </div>
   );

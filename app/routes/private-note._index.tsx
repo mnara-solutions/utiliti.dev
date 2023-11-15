@@ -14,6 +14,7 @@ import Box, {
   BoxOptions,
   BoxTitle,
 } from "~/components/box";
+import Dropdown from "~/components/dropdown";
 
 export type NoteMetadata = {
   readonly deleteAfterRead: boolean;
@@ -107,25 +108,17 @@ export default function Index() {
         ></textarea>
       </div>
       <BoxOptions isLast={false}>
-        <label
-          htmlFor="expiry"
-          className="block text-sm font-medium text-gray-900 dark:text-white"
-        >
+        <label htmlFor="expiry" className="block text-sm font-medium">
           Note self-destructs
         </label>
-        <select
+        <Dropdown
           id="expiry"
           name="expiry"
-          className="block text-sm ml-2 border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
+          className="ml-2"
           defaultValue={expiry}
-          onChange={(e) => setExpiry(e.target.value)}
-        >
-          {noteExpiries.map((it) => (
-            <option key={it.id} value={it.id}>
-              {it.label}
-            </option>
-          ))}
-        </select>
+          onOptionChange={setExpiry}
+          options={noteExpiries}
+        />
       </BoxOptions>
       <BoxButtons>
         <div />

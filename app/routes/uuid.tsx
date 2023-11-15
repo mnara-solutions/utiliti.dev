@@ -8,6 +8,7 @@ import { v1, v4 } from "uuid";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import NumberInput from "~/components/number-input";
+import Dropdown from "~/components/dropdown";
 
 export const meta = metaHelper(utilities.uuid.name, utilities.uuid.description);
 
@@ -23,8 +24,8 @@ export default function UuidGenerator() {
   );
 
   const onChangeVersion = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => {
-      setVersion(parseInt(e.target.value, 10));
+    (v: string) => {
+      setVersion(parseInt(v, 10));
     },
     [setVersion],
   );
@@ -53,14 +54,14 @@ export default function UuidGenerator() {
         <BoxTitle title="">
           <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
             <div className="flex items-center space-x-1 sm:pr-4">
-              <select
+              <Dropdown
                 defaultValue={4}
-                className="block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
-                onChange={onChangeVersion}
-              >
-                <option value={1}>v1</option>
-                <option value={4}>v4</option>
-              </select>
+                options={[
+                  { id: "1", label: "v1" },
+                  { id: "4", label: "v4" },
+                ]}
+                onOptionChange={onChangeVersion}
+              />
             </div>
 
             <div className="flex items-center space-x-1 sm:px-4">
