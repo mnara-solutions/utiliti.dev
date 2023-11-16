@@ -40,6 +40,11 @@ export const utilities: Record<
       "Counts the number of characters, words and sentences in your text.",
     url: Routes.WORD_COUNTER,
   },
+  markdownToHtml: {
+    name: "Markdown to HTML",
+    description: "Converts Markdown to HTML.",
+    url: Routes.MARKDOWN_TO_HTML,
+  },
   loremIpsum: {
     name: "Lorem Ipsum",
     description: "Generate Lorem Ipsum placeholder text.",
@@ -90,6 +95,7 @@ export const sidebar = [
     children: [
       utilities.privateNotes,
       utilities.json,
+      utilities.markdownToHtml,
       utilities.dataurl,
       utilities.wordCounter,
       utilities.url,
