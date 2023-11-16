@@ -28,7 +28,7 @@ function convert(markdown: string): Promise<object> {
 }
 
 function minimize(html: string): string {
-  return html.replace(/\s\s+/, " ").replace(/[\r\n]/, "");
+  return html.replace(/\s\s+/g, " ").replace(/[\r\n]/g, "");
 }
 
 export default function MarkdownToHtml() {
