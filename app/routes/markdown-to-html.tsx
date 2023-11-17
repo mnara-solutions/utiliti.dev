@@ -2,8 +2,8 @@ import Copy from "~/components/copy";
 import { useCallback, useMemo } from "react";
 import Code from "~/components/code";
 import { noop } from "~/common";
-// import { metaHelper } from "~/utils/meta";
-// import { utilities } from "~/utilities";
+import { metaHelper } from "~/utils/meta";
+import { utilities } from "~/utilities";
 import Utiliti from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import { marked } from "marked";
@@ -11,16 +11,17 @@ import DOMPurify from "dompurify";
 
 import styles from "../styles/html-viewer.css";
 import type { LinksFunction } from "@remix-run/cloudflare";
+
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
-// export const meta = metaHelper(
-//   utilities.markdown.name,
-//   utilities.markdown.description,
-// );
+export const meta = metaHelper(
+  utilities.markdownToHtml.name,
+  utilities.markdownToHtml.description,
+);
 
 enum Action {
   PREVIEW = "Preview",
-  HTML = "Html",
+  HTML = "HTML",
   MINIFY = "Minify",
 }
 
@@ -76,7 +77,7 @@ export default function MarkdownToHtml() {
 
   return (
     <Utiliti
-      label="MarkdownToHtml"
+      label="Markdown To HTML"
       actions={actions}
       renderInput={(input, setInput) => (
         <div className="px-3 py-2">
