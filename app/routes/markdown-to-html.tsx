@@ -9,6 +9,10 @@ import Box, { BoxContent, BoxTitle } from "~/components/box";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 
+import styles from "../styles/html-viewer.css";
+import type { LinksFunction } from "@remix-run/cloudflare";
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+
 // export const meta = metaHelper(
 //   utilities.markdown.name,
 //   utilities.markdown.description,
@@ -57,7 +61,10 @@ export default function MarkdownToHtml() {
               {a === Action.HTML || a === Action.MINIFY ? (
                 <Code value={html} setValue={noop} readonly={true} />
               ) : (
-                <div dangerouslySetInnerHTML={{ __html: html }} />
+                <div
+                  id="html-viewer"
+                  dangerouslySetInnerHTML={{ __html: html }}
+                />
               )}
             </div>
           </BoxContent>
