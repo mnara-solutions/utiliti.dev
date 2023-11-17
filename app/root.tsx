@@ -101,6 +101,18 @@ function Document({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9826263890932106"
+          crossOrigin="anonymous"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                (adsbygoogle = window.adsbygoogle || []).push({});
+              `,
+          }}
+        />
       </head>
       <body className="antialiased bg-zinc-900">
         <Layout>{children}</Layout>
