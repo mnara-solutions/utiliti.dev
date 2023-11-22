@@ -15,7 +15,7 @@ interface Props {
   readonly value: string;
   readonly setValue: (value: string) => void;
   readonly minHeight?: string;
-  readonly language?: "sql" | "javascript" | "markdown" | xml;
+  readonly language?: "sql" | "javascript" | "markdown" | "xml";
   readonly placeholder?: string;
 }
 
