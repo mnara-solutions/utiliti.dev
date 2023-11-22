@@ -3,17 +3,19 @@ import hljs from "highlight.js/lib/core";
 import javascript from "highlight.js/lib/languages/javascript";
 import sql from "highlight.js/lib/languages/sql";
 import markdown from "highlight.js/lib/languages/markdown";
+import xml from "highlight.js/lib/languages/xml";
 
 hljs.registerLanguage("javascript", javascript);
 hljs.registerLanguage("sql", sql);
 hljs.registerLanguage("markdown", markdown);
+hljs.registerLanguage("xml", xml);
 
 interface Props {
   readonly readonly: boolean;
   readonly value: string;
   readonly setValue: (value: string) => void;
   readonly minHeight?: string;
-  readonly language?: "sql" | "javascript" | "markdown";
+  readonly language?: "sql" | "javascript" | "markdown" | xml;
   readonly placeholder?: string;
 }
 

@@ -8,7 +8,6 @@ import Utiliti from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
-
 import styles from "../styles/html-viewer.css";
 import type { LinksFunction } from "@remix-run/cloudflare";
 
@@ -25,11 +24,10 @@ enum Action {
   MINIFY = "Minify",
 }
 
-function convert(markdown: string): Promise<object> {
-  return new Promise((r) => {
-    const html = marked(markdown);
-    r(DOMPurify.sanitize(html) as unknown as object);
-  });
+async function convert(markdown: string): Promise<string> {
+  const html = marked(markdown);
+
+  return DOMPurify.sanitize(html).toString();
 }
 
 function minimize(html: string): string {
@@ -39,17 +37,15 @@ function minimize(html: string): string {
 export default function MarkdownToHtml() {
   const actions = useMemo(
     () => ({
-      [Action.PREVIEW]: (input: string) => convert(input),
-      [Action.HTML]: (input: string) => convert(input),
-      [Action.MINIFY]: (input: string) => convert(input),
+      [Action.PREVIEW]: convert,
+      [Action.HTML]: convert,
+      [Action.MINIFY]: async (input: string) => minimize(await convert(input)),
     }),
     [],
   );
 
   const renderOutput = useCallback(
-    (a: string, input: string, output: object) => {
-      let html = output.toString();
-      html = a === Action.MINIFY ? minimize(html) : html;
+    (a: string, input: string, output: string) => {
       return (
         <Box>
           <BoxTitle title="Output">
@@ -60,11 +56,16 @@ export default function MarkdownToHtml() {
           <BoxContent isLast={true}>
             <div className="px-3 py-2">
               {a === Action.HTML || a === Action.MINIFY ? (
-                <Code value={html} setValue={noop} readonly={true} />
+                <Code
+                  value={output}
+                  setValue={noop}
+                  language="xml"
+                  readonly={true}
+                />
               ) : (
                 <div
                   id="html-viewer"
-                  dangerouslySetInnerHTML={{ __html: html }}
+                  dangerouslySetInnerHTML={{ __html: output }}
                 />
               )}
             </div>
@@ -86,7 +87,7 @@ export default function MarkdownToHtml() {
             setValue={setInput}
             minHeight="12rem"
             language="markdown"
-            placeholder="Markdown Here"
+            placeholder="Paste some markdown…"
             readonly={false}
           />
         </div>
