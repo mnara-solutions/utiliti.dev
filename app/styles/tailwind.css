@@ -2,6 +2,10 @@
   color-scheme: dark;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 @media (min-width: 1024px) {
   .prose :where(.prose > *):not(:where([class~="not-prose"] *)) {
     max-width: 40rem;
