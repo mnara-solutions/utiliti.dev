@@ -33,7 +33,7 @@ export default function QrCode() {
 
   const renderOutput = useCallback(
     (a: string, input: string, output: string) => {
-      return <SimpleOutput output={output} />;
+      return <SimpleOutput title={`Output - ${algorithm}`} output={output} />;
     },
     [algorithm],
   );

@@ -3,7 +3,7 @@ import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
 import type { ReactNode } from "react";
-import { useCallback, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 
@@ -22,6 +22,7 @@ interface Props<T> {
   ) => ReactNode;
   readonly renderOptions?: () => ReactNode;
   readonly showLoadFile?: Boolean;
+  readonly defaultAction?: string;
 }
 
 export default function Utiliti<T>({
@@ -31,34 +32,34 @@ export default function Utiliti<T>({
   renderOptions,
   actions,
   showLoadFile,
+  defaultAction,
 }: Props<T>) {
-  const [action, setAction] = useState<string | null>(null);
+  const [action, setAction] = useState<string>(
+    defaultAction ?? Object.keys(actions)[0],
+  );
   const [input, setInput] = useState("");
   const [output, setOutput] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const onClick = useCallback(
-    async (action: string, input: string) => {
-      const fn = actions[action];
+  // using an effect to calculate the value after input has changed
+  // this allows us to re-render when actions array has changed, which happens when options change
+  useLayoutEffect(() => {
+    const fn = actions[action];
 
-      if (!fn) {
-        return;
-      }
+    if (!fn || !input) {
+      return;
+    }
 
-      setAction(action);
-
-      fn(input)
-        .then((it) => {
-          setOutput(it);
-          setError(null);
-        })
-        .catch((e) => {
-          setError(e.message);
-          setOutput(null);
-        });
-    },
-    [actions],
-  );
+    fn(input)
+      .then((it) => {
+        setOutput(it);
+        setError(null);
+      })
+      .catch((e) => {
+        setError(e.message);
+        setOutput(null);
+      });
+  }, [action, actions, input]);
 
   return (
     <ContentWrapper>
@@ -74,6 +75,7 @@ export default function Utiliti<T>({
         <BoxContent isLast={false}>{renderInput(input, setInput)}</BoxContent>
 
         {renderOptions && renderOptions()}
+
         <BoxButtons>
           <div>
             {showLoadFile && (
@@ -87,7 +89,7 @@ export default function Utiliti<T>({
             {Object.keys(actions).map((action) => (
               <Button
                 key={action}
-                onClick={() => onClick(action, input)}
+                onClick={() => setAction(action)}
                 label={action}
               />
             ))}
