@@ -82,6 +82,11 @@ export const utilities: Record<
     description: "Easily generate a QR code and download it.",
     url: Routes.QR_CODE,
   },
+  hashing: {
+    name: "Hashing",
+    description: "Generate all sorts of hashes from your content.",
+    url: Routes.HASHING,
+  },
 };
 
 export const sidebar = [
@@ -96,6 +101,7 @@ export const sidebar = [
       utilities.base64,
       utilities.sqlFormatter,
       utilities.qrCode,
+      utilities.hashing,
     ],
   },
   {
