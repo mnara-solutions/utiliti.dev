@@ -30,7 +30,7 @@ export default function DataUrl() {
   const actions = useMemo(
     () => ({
       [Action.DISPLAY]: async (input: string) => {
-        if (input.substring(0, 5) === "data:") {
+        if (!input || input.substring(0, 5) === "data:") {
           return input;
         }
 
@@ -133,6 +133,51 @@ export default function DataUrl() {
     [format, quality],
   );
 
+  const renderExplanation = useCallback(
+    () => (
+      <>
+        <h2>What is a Data URL?</h2>
+        <p>
+          A data URL (Uniform Resource Locator) is a type of URI (Uniform
+          Resource Identifier) scheme that allows you to include data in-line in
+          web pages as if they were external resources. Instead of referencing
+          an external file, the data URL allows you to embed the actual data
+          directly within the URL itself.
+        </p>
+        <p>The general syntax of a data URL looks like this:</p>
+        <pre>data:[&#x3C;mediatype&#x3E;][;base64],&#x3C;data&#x3E;</pre>
+        <p>Here's a breakdown of the components:</p>
+        <ul>
+          <li>
+            <code>&#x3C;mediatype&#x3E;</code>: This is an optional parameter
+            that specifies the MIME type of the data. For example, "text/plain",
+            "image/jpeg", "application/pdf", etc.
+          </li>
+          <li>
+            <code>;base64</code>: This is an optional parameter indicating that
+            the data is Base64-encoded. If present, it means that the data
+            portion is encoded in Base64 format.
+          </li>
+          <li>
+            <code>&#x3C;data&#x3E;</code>: This is the actual data that you want
+            to include. If ;base64 is used, this data is encoded in Base64;
+            otherwise, it is in plain text.
+          </li>
+        </ul>
+        <p>
+          Data URLs are commonly used for small amounts of data, such as small
+          images, CSS stylesheets, or even small scripts. They can be useful in
+          situations where external file references are impractical or when you
+          want to reduce the number of HTTP requests for external resources,
+          potentially improving page load performance. However, they may not be
+          suitable for large files due to increased URL length and other
+          considerations.
+        </p>
+      </>
+    ),
+    [],
+  );
+
   return (
     <Utiliti
       label="DataURL"
@@ -140,6 +185,7 @@ export default function DataUrl() {
       renderInput={renderInput}
       renderOutput={renderOutput}
       renderReadFile={renderReadFile}
+      renderExplanation={renderExplanation}
     />
   );
 }

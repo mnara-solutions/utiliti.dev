@@ -23,6 +23,7 @@ interface Props<T> {
   readonly renderOptions?: () => ReactNode;
   readonly renderReadFile?: (setInput: (input: string) => void) => ReactNode;
   readonly defaultAction?: string;
+  readonly renderExplanation?: () => ReactNode;
 }
 
 export default function Utiliti<T>({
@@ -33,6 +34,7 @@ export default function Utiliti<T>({
   actions,
   renderReadFile,
   defaultAction,
+  renderExplanation,
 }: Props<T>) {
   const [action, setAction] = useState<string>(
     defaultAction ?? Object.keys(actions)[0],
@@ -105,9 +107,11 @@ export default function Utiliti<T>({
             </BoxContent>
           </Box>
         ) : (
-          action && output && renderOutput(action, input, output)
+          action && input && output && renderOutput(action, input, output)
         )}
       </Transition>
+
+      {renderExplanation && renderExplanation()}
     </ContentWrapper>
   );
 }

@@ -133,6 +133,83 @@ export default function QrCode() {
     [],
   );
 
+  const renderExplanation = useCallback(
+    () => (
+      <>
+        <h2>What is a QR Code?</h2>
+        <p>
+          A QR code, or Quick Response code, is a two-dimensional barcode that
+          was initially created in 1994 by a Japanese company called Denso Wave.
+          QR codes are designed to store information in a matrix format,
+          allowing for a quick and efficient way to encode data. These codes can
+          be scanned quickly using a camera-equipped device, such as a
+          smartphone or a dedicated barcode scanner.
+        </p>
+        <p>
+          The structure of a QR code consists of black squares arranged on a
+          white square grid. QR codes can store a variety of data types,
+          including numeric, alphanumeric, binary, and even Kanji characters.
+          The amount of data a QR code can store depends on the size and version
+          of the code. QR codes also include error correction capabilities,
+          allowing them to be scanned even if part of the code is damaged or
+          obscured.
+        </p>
+
+        <p>Common uses of QR codes include:</p>
+
+        <ol>
+          <li>
+            <strong>URLs and Website Links</strong>: QR codes can encode website
+            URLs, making it easy for users to access a website by scanning the
+            code with their smartphones.
+          </li>
+          <li>
+            <strong>Contact Information</strong>: QR codes can store contact
+            information (vCard), enabling users to quickly add a new contact to
+            their address book by scanning the code.
+          </li>
+          <li>
+            <strong>Wi-Fi Network Configuration</strong>: QR codes can encode
+            Wi-Fi network credentials, allowing users to connect to a Wi-Fi
+            network by scanning the code.
+          </li>
+          <li>
+            <strong>Geographic Coordinates</strong>: QR codes can encode
+            geographic coordinates (latitude and longitude), useful for
+            location-based services.
+          </li>
+          <li>
+            <strong>Product Information</strong>: QR codes on products or
+            advertisements can provide additional information, such as product
+            details, promotions, or links to user manuals.
+          </li>
+          <li>
+            <strong>Payment Transactions</strong>: QR codes are used in various
+            mobile payment systems. Scanning a code can initiate a payment or
+            transfer of funds.
+          </li>
+          <strong>Boarding Passes and Event Tickets</strong>: Airlines and event
+          organizers often use QR codes on boarding passes and tickets for quick
+          and easy check-in.
+        </ol>
+
+        <p>
+          To read or scan a QR code, users typically use a smartphone or a
+          dedicated QR code scanner app. Many modern smartphones come with
+          built-in QR code scanning functionality in their camera apps.
+        </p>
+
+        <p>
+          The widespread adoption of smartphones and the ease of use of QR codes
+          have contributed to their popularity in various industries for tasks
+          ranging from information sharing to facilitating quick and convenient
+          transactions.
+        </p>
+      </>
+    ),
+    [],
+  );
+
   return (
     <Utiliti
       label={utilities.qrCode.name}
@@ -140,6 +217,7 @@ export default function QrCode() {
       renderInput={renderInput}
       renderOptions={renderOptions}
       renderOutput={renderOutput}
+      renderExplanation={renderExplanation}
     />
   );
 }

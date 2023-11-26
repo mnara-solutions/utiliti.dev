@@ -93,12 +93,110 @@ export default function URLRoute() {
     [],
   );
 
+  const renderExplanation = useCallback(
+    () => (
+      <>
+        <h2>What is a URL?</h2>
+        <p>
+          A URL, or Uniform Resource Locator, is a reference or address used to
+          access resources on the internet. It's a string of characters that
+          provides a way to identify and locate a particular resource, such as a
+          web page, document, image, or any other file, on the World Wide Web.
+        </p>
+
+        <p>A standard URL consists of several components:</p>
+
+        <ol>
+          <li>
+            <strong>Scheme</strong>: The scheme indicates the protocol used to
+            access the resource. Common schemes include "http," "https," "ftp,"
+            and "mailto." For example, in the URL "https://www.example.com,"
+            "https" is the scheme.
+          </li>
+
+          <li>
+            <strong>Hostname</strong>: The hostname identifies the domain name
+            or IP address of the server hosting the resource. In the URL
+            "https://www.example.com," "www.example.com" is the hostname.
+          </li>
+
+          <li>
+            <strong>Port</strong>: The port number, if specified, indicates the
+            specific port on the server to connect to. The default ports are
+            often assumed if not explicitly mentioned (e.g., 80 for HTTP and 443
+            for HTTPS).
+          </li>
+
+          <li>
+            <strong>Path</strong>: The path specifies the location or route to
+            the specific resource on the server. In the URL
+            "https://www.example.com/path/to/resource," "/path/to/resource" is
+            the path.
+          </li>
+
+          <li>
+            <strong>Query Parameters</strong>: Query parameters are additional
+            information sent to the server, often in the form of key-value
+            pairs, to modify the request or provide additional data. They appear
+            after a question mark (?) in the URL. For example, in the URL
+            "https://www.example.com/search?q=query," "?q=query" represents the
+            query parameter.
+          </li>
+
+          <li>
+            <strong>Fragment</strong>: The fragment, indicated by a hash (#)
+            symbol, specifies a specific section within the resource. It is
+            often used in web pages to navigate to a particular section. For
+            example, in the URL "https://www.example.com/page#section,"
+            "#section" is the fragment.
+          </li>
+        </ol>
+
+        <p>Here's an example of a complete URL:</p>
+
+        <pre>
+          https://www.example.com:8080/path/to/resource?param1=value1&param2=value2#section
+        </pre>
+
+        <p>In this example:</p>
+        <ul>
+          <li>
+            <strong>Scheme</strong>: "https"
+          </li>
+          <li>
+            <strong>Hostname</strong>: "www.example.com"
+          </li>
+          <li>
+            <strong>Port</strong>: "8080"
+          </li>
+          <li>
+            <strong>Path</strong>: "/path/to/resource"
+          </li>
+          <li>
+            <strong>Query Parameters</strong>: "param1=value1" and
+            "param2=value2"
+          </li>
+          <li>
+            <strong>Fragment</strong>: "section"
+          </li>
+        </ul>
+        <p>
+          URLs are used in web browsers to access websites, and they are also
+          utilized in various internet protocols and applications for resource
+          identification and retrieval.
+        </p>
+      </>
+    ),
+    [],
+  );
+
   return (
     <Utiliti
       label="URL"
       actions={actions}
       renderInput={renderInput}
       renderOutput={renderOutput}
+      renderExplanation={renderExplanation}
     />
   );
 }
