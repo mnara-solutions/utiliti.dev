@@ -38,7 +38,7 @@ export const action: ActionFunction = async ({
 }): Promise<Response> => {
   const formData = await request.formData();
   const domain = formData.get("domain") as string;
-  const CF_WHOIS_KEY = context.CF_WHOIS_KEY as string;
+  const CF_WHOIS_KEY = context.env.CF_WHOIS_KEY as string;
 
   return fetch(
     `https://api.cloudflare.com/client/v4/accounts/3dc234b4097803f4dfbdfdcaf8dc029b/intel/whois?domain=${domain}`,
