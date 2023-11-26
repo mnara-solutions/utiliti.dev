@@ -1,11 +1,11 @@
 import Copy from "~/components/copy";
-import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
 import type { ReactNode } from "react";
 import { useLayoutEffect, useState } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
+import { useLocalStorage } from "~/hooks/use-local-storage";
 
 interface Props<T> {
   readonly label: string;
@@ -21,7 +21,7 @@ interface Props<T> {
     output: T,
   ) => ReactNode;
   readonly renderOptions?: () => ReactNode;
-  readonly showLoadFile?: Boolean;
+  readonly renderReadFile?: (setInput: (input: string) => void) => ReactNode;
   readonly defaultAction?: string;
 }
 
@@ -31,13 +31,13 @@ export default function Utiliti<T>({
   renderOutput,
   renderOptions,
   actions,
-  showLoadFile,
+  renderReadFile,
   defaultAction,
 }: Props<T>) {
   const [action, setAction] = useState<string>(
     defaultAction ?? Object.keys(actions)[0],
   );
-  const [input, setInput] = useState("");
+  const [input, setInput] = useLocalStorage(label, "");
   const [output, setOutput] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -77,14 +77,7 @@ export default function Utiliti<T>({
         {renderOptions && renderOptions()}
 
         <BoxButtons>
-          <div>
-            {showLoadFile && (
-              <ReadFile
-                accept="text/plain,application/JSON"
-                onLoad={setInput}
-              />
-            )}
-          </div>
+          <div>{renderReadFile && renderReadFile(setInput)}</div>
           <div className="flex gap-x-2">
             {Object.keys(actions).map((action) => (
               <Button

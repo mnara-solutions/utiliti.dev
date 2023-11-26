@@ -5,6 +5,7 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { BoxOptions } from "~/components/box";
 import Utiliti from "~/components/utiliti";
+import ReadFile from "~/components/read-file";
 
 export const meta = metaHelper(
   utilities.base64.name,
@@ -59,6 +60,10 @@ export default function Base64() {
     [encode],
   );
 
+  const renderReadFile = useCallback((setInput: (value: string) => void) => {
+    return <ReadFile accept="text/plain,application/JSON" onLoad={setInput} />;
+  }, []);
+
   return (
     <Utiliti
       label="Base64"
@@ -75,7 +80,7 @@ export default function Base64() {
         ></textarea>
       )}
       renderOutput={renderOutput}
-      showLoadFile={true}
+      renderReadFile={renderReadFile}
       renderOptions={() => (
         <BoxOptions isLast={false}>
           <div className="flex items-center h-5 w-5 ml-2">

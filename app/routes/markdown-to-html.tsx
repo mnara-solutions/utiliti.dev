@@ -9,6 +9,7 @@ import Box, { BoxContent, BoxTitle } from "~/components/box";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import ShadowDom from "~/components/shadow-dom";
+import ReadFile from "~/components/read-file";
 
 export const meta = metaHelper(
   utilities.markdownToHtml.name,
@@ -41,6 +42,22 @@ export default function MarkdownToHtml() {
     [],
   );
 
+  const renderInput = useCallback(
+    (input: string, setInput: (v: string) => void) => (
+      <div className="px-3 py-2">
+        <Code
+          value={input}
+          setValue={setInput}
+          minHeight="12rem"
+          language="markdown"
+          placeholder="Paste some markdown…"
+          readonly={false}
+        />
+      </div>
+    ),
+    [],
+  );
+
   const renderOutput = useCallback(
     (a: string, input: string, output: string) => {
       return (
@@ -70,24 +87,17 @@ export default function MarkdownToHtml() {
     [],
   );
 
+  const renderReadFile = useCallback((setInput: (value: string) => void) => {
+    return <ReadFile accept=".md" onLoad={setInput} />;
+  }, []);
+
   return (
     <Utiliti
       label="Markdown To HTML"
       actions={actions}
-      renderInput={(input, setInput) => (
-        <div className="px-3 py-2">
-          <Code
-            value={input}
-            setValue={setInput}
-            minHeight="12rem"
-            language="markdown"
-            placeholder="Paste some markdown…"
-            readonly={false}
-          />
-        </div>
-      )}
+      renderInput={renderInput}
       renderOutput={renderOutput}
-      showLoadFile={true}
+      renderReadFile={renderReadFile}
     />
   );
 }

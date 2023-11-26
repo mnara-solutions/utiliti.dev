@@ -5,6 +5,7 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import SimpleOutput from "~/components/simple-output";
 import Dropdown from "~/components/dropdown";
+import ReadFile from "~/components/read-file";
 
 export const meta = metaHelper(
   utilities.hashing.name,
@@ -59,7 +60,7 @@ export default function QrCode() {
       <textarea
         id="input"
         rows={10}
-        className="block font-mono w-full px-3 py-2 lg:text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+        className="block font-mono w-full px-3 py-2 lg:text-sm border-0 bg-zinc-800 focus:ring-0 placeholder-zinc-400"
         placeholder="Paste in your content…"
         required={true}
         value={input}
@@ -69,6 +70,10 @@ export default function QrCode() {
     [],
   );
 
+  const renderReadFile = useCallback((setInput: (value: string) => void) => {
+    return <ReadFile accept="text/plain,application/JSON" onLoad={setInput} />;
+  }, []);
+
   return (
     <Utiliti
       label={utilities.hashing.name}
@@ -76,7 +81,7 @@ export default function QrCode() {
       renderInput={renderInput}
       renderOptions={renderOptions}
       renderOutput={renderOutput}
-      showLoadFile={true}
+      renderReadFile={renderReadFile}
     />
   );
 }

@@ -140,7 +140,6 @@ export default function QrCode() {
       renderInput={renderInput}
       renderOptions={renderOptions}
       renderOutput={renderOutput}
-      showLoadFile={false}
     />
   );
 }
