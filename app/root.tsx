@@ -11,10 +11,11 @@ import {
   ScrollRestoration,
   useRouteError,
 } from "@remix-run/react";
-import tailwind from "./styles/tailwind.css";
-import highlight from "highlight.js/styles/stackoverflow-dark.css";
 import Layout from "~/components/layout";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/solid";
+
+import "./styles/tailwind.css";
+import "highlight.js/styles/stackoverflow-dark.css";
 
 export const meta: MetaFunction = () => {
   const title = "Utiliti";
@@ -74,8 +75,6 @@ export const links: LinksFunction = () => [
   },
   { rel: "shortcut icon", href: "/assets/favicon.ico" },
   { rel: "manifest", href: "/assets/site.webmanifest" },
-  { rel: "stylesheet", href: tailwind },
-  { rel: "stylesheet", href: highlight },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com" },
   {
