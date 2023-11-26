@@ -8,10 +8,7 @@ import Utiliti from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
-import styles from "../styles/html-viewer.css";
-import type { LinksFunction } from "@remix-run/cloudflare";
-
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
+import ShadowDom from "~/components/shadow-dom";
 
 export const meta = metaHelper(
   utilities.markdownToHtml.name,
@@ -63,10 +60,7 @@ export default function MarkdownToHtml() {
                   readonly={true}
                 />
               ) : (
-                <div
-                  id="html-viewer"
-                  dangerouslySetInnerHTML={{ __html: output }}
-                />
+                <ShadowDom content={output} />
               )}
             </div>
           </BoxContent>
