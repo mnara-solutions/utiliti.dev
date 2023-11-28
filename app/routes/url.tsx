@@ -65,7 +65,7 @@ export default function URLRoute() {
       [Action.ENCODE]: (input: string) => encode(input),
       [Action.DECODE]: (input: string) => decode(input),
     }),
-    []
+    [],
   );
 
   const renderOutput = useCallback(
@@ -79,7 +79,7 @@ export default function URLRoute() {
 
       return <JsonViewer json={output} />;
     },
-    []
+    [],
   );
 
   const renderInput = useCallback(
@@ -94,7 +94,7 @@ export default function URLRoute() {
         onChange={(e) => setInput(e.target.value)}
       ></textarea>
     ),
-    []
+    [],
   );
 
   const renderExplanation = useCallback(
@@ -191,7 +191,7 @@ export default function URLRoute() {
         </p>
       </>
     ),
-    []
+    [],
   );
 
   return (
