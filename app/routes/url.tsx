@@ -54,7 +54,7 @@ async function toJson(text: string): Promise<string | JsonURL> {
       username: url.username,
     };
   } catch (e) {
-    throw { message: "Invalid URL" };
+    throw { message: "Invalid URL." };
   }
 }
 
