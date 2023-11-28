@@ -28,30 +28,34 @@ enum Action {
   DECODE = "Decode",
 }
 
-function encode(text: string): Promise<string | JsonURL> {
-  return Promise.resolve(encodeURI(text));
+async function encode(text: string): Promise<string | JsonURL> {
+  return encodeURI(text);
 }
 
-function decode(text: string): Promise<string | JsonURL> {
-  return Promise.resolve(decodeURI(text));
+async function decode(text: string): Promise<string | JsonURL> {
+  return decodeURI(text);
 }
 
-function toJson(text: string): Promise<string | JsonURL> {
-  const url = new URL(text);
+async function toJson(text: string): Promise<string | JsonURL> {
+  try {
+    const url = new URL(text);
 
-  return Promise.resolve({
-    hash: url.hash,
-    host: url.host,
-    hostname: url.hostname,
-    origin: url.origin,
-    password: url.password,
-    pathname: url.pathname,
-    port: url.port,
-    protocol: url.protocol,
-    search: url.search,
-    searchParams: Object.fromEntries(url.searchParams),
-    username: url.username,
-  });
+    return {
+      hash: url.hash,
+      host: url.host,
+      hostname: url.hostname,
+      origin: url.origin,
+      password: url.password,
+      pathname: url.pathname,
+      port: url.port,
+      protocol: url.protocol,
+      search: url.search,
+      searchParams: Object.fromEntries(url.searchParams),
+      username: url.username,
+    };
+  } catch (e) {
+    throw { message: "Invalid URL" };
+  }
 }
 
 export default function URLRoute() {
@@ -61,7 +65,7 @@ export default function URLRoute() {
       [Action.ENCODE]: (input: string) => encode(input),
       [Action.DECODE]: (input: string) => decode(input),
     }),
-    [],
+    []
   );
 
   const renderOutput = useCallback(
@@ -75,7 +79,7 @@ export default function URLRoute() {
 
       return <JsonViewer json={output} />;
     },
-    [],
+    []
   );
 
   const renderInput = useCallback(
@@ -90,7 +94,7 @@ export default function URLRoute() {
         onChange={(e) => setInput(e.target.value)}
       ></textarea>
     ),
-    [],
+    []
   );
 
   const renderExplanation = useCallback(
@@ -187,7 +191,7 @@ export default function URLRoute() {
         </p>
       </>
     ),
-    [],
+    []
   );
 
   return (
