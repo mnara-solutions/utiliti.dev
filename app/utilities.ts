@@ -30,9 +30,14 @@ export const utilities: Record<
     url: Routes.URL,
   },
   dataurl: {
-    name: "DataURL",
+    name: "Data URL",
     description: "Displays a data url, with or without the data prefix.",
     url: Routes.DATAURL,
+  },
+  imageConverter: {
+    name: "Image Converter",
+    description: "Converts images to different formats.",
+    url: Routes.IMAGE_CONVERTER,
   },
   wordCounter: {
     name: "Word Counter",
@@ -102,6 +107,7 @@ export const sidebar = [
       utilities.json,
       utilities.markdownToHtml,
       utilities.dataurl,
+      utilities.imageConverter,
       utilities.wordCounter,
       utilities.url,
       utilities.base64,

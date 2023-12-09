@@ -6,9 +6,11 @@ import IconButton from "~/components/icon-button";
 interface Props {
   readonly accept: string;
   readonly onLoad: (value: string) => void;
+  readonly onError?: (error: string) => void;
   readonly type?: "text" | "dataURL";
   readonly format?: string;
   readonly quality?: string;
+  readonly multiple?: boolean;
 }
 
 const imageFormats: Record<string, string> = {
@@ -69,6 +71,8 @@ function convertToFileFormat(
 export default function ReadFile({
   accept,
   onLoad,
+  onError = undefined,
+  multiple = false,
   type = "text",
   format = "jpg",
   quality = "0",
@@ -86,47 +90,58 @@ export default function ReadFile({
         return;
       }
 
-      const file = files[0];
-      const maxAllowedSize = 10 * 1024 * 1024;
+      Array.from(files).forEach((file) => {
+        const maxAllowedSize = 10 * 1024 * 1024;
 
-      // stop if we are passed a certain limit
-      if (file.size > maxAllowedSize) {
-        return;
-      }
-
-      // read file
-      const reader = new FileReader();
-      reader.addEventListener("load", function (e) {
-        onLoad((e.target?.result || "").toString());
-      });
-
-      switch (type) {
-        case "text":
-          reader.readAsText(file);
-          break;
-        case "dataURL":
-          const fileFormat = imageFormats[file.type];
-          if (
-            (fileFormat && fileFormat !== format) ||
-            (quality != "0" && format !== "png")
-          ) {
-            convertToFileFormat(file, format || "jpg", parseFloat(quality))
-              .then((dataUrl) => {
-                onLoad(dataUrl);
-              })
-              .catch((_) => {
-                console.error(
-                  "Something went wrong, trying plain old read as dataurl",
-                );
-                reader.readAsDataURL(file);
-              });
-          } else {
-            reader.readAsDataURL(file);
+        // stop if we are passed a certain limit
+        if (file.size > maxAllowedSize) {
+          if (onError) {
+            onError(`File is too large. Max size is ${maxAllowedSize} bytes.`);
           }
-          break;
-      }
+          return;
+        }
+
+        // read file
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function (e) {
+          onLoad((e.target?.result || "").toString());
+        });
+
+        reader.addEventListener("error", function (e) {
+          if (onError) {
+            onError((e.target?.error || "").toString());
+          }
+        });
+
+        switch (type) {
+          case "text":
+            reader.readAsText(file);
+            break;
+          case "dataURL":
+            const fileFormat = imageFormats[file.type];
+            if (
+              (fileFormat && fileFormat !== format) ||
+              (quality != "0" && format !== "png")
+            ) {
+              convertToFileFormat(file, format || "jpg", parseFloat(quality))
+                .then((dataUrl) => {
+                  onLoad(dataUrl);
+                })
+                .catch((_) => {
+                  console.error(
+                    "Something went wrong, trying plain old read as dataurl",
+                  );
+                  reader.readAsDataURL(file);
+                });
+            } else {
+              reader.readAsDataURL(file);
+            }
+            break;
+        }
+      });
     },
-    [onLoad, type, format, quality],
+    [onLoad, onError, type, format, quality],
   );
 
   return (
@@ -141,6 +156,7 @@ export default function ReadFile({
         type="file"
         id="file-input"
         accept={accept}
+        multiple={multiple}
         className="hidden"
         onChange={onChange}
       />

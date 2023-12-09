@@ -124,6 +124,7 @@ export default function DataUrl() {
             <ReadFile
               accept="image/*"
               onLoad={onLoad}
+              onError={setError}
               type="dataURL"
               format={format}
               quality={quality}
