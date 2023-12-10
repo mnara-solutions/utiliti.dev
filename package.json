@@ -36,7 +36,7 @@
     "react-simple-code-editor": "^0.13.1",
     "use-keyboard-shortcut": "^1.1.6",
     "uuid": "^9.0.1",
-    "jszip": "^3.7.1"
+    "jszip": "^3.10.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231025.0",

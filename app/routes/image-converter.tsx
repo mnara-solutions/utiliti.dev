@@ -8,6 +8,7 @@ import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
 import Dropdown from "~/components/dropdown";
 import JSZip from "jszip";
+import { convertToFileFormat } from "~/utils/convert-image-file";
 
 export const meta = metaHelper(
   utilities.imageConverter.name,
@@ -25,18 +26,33 @@ export default function ImageConverter() {
   const [format, setFormat] = useState("jpg");
   const [quality, setQuality] = useState("0");
   const [error, setError] = useState<string | null>(null);
+  const [fileNames, setFileNames] = useState<string[]>([]);
 
   const onChangeFormat = useCallback(
     (format: string) => {
-      // TODO: Instead of setting the images to an empty array, convert the images to the new format.
-      setImages([]);
+      // This will loose some quality if we are going from jpeg to webp, in the future consider keeping the old
+      // images around to convert from.
+      images.forEach((image, index) => {
+        convertToFileFormat(image, format, parseFloat(quality))
+          .then((dataUrl) => {
+            setImages((prevImages) => {
+              prevImages[index] = dataUrl;
+              return [...prevImages];
+            });
+          })
+          .catch((_) => {
+            setError("Something went wrong, please try again.");
+            setImages([]);
+          });
+      });
+
       setFormat(format);
     },
-    [setFormat],
+    [images, setImages, setFormat, quality],
   );
 
-  const onDonwloadZip = useCallback(async () => {
-    const zip = new JSZip();
+  const onDownloadZip = useCallback(async () => {
+    const zip: JSZip = new JSZip();
 
     // Iterate over each data URL
     for (let i = 0; i < images.length; i++) {
@@ -46,8 +62,10 @@ export default function ImageConverter() {
       // Convert data URL to binary blob
       const blob = new Blob([arrayBuffer], { type: formatImage[format] });
 
+      const fileNameWithoutExtension = fileNames[i].replace(/\.[^.]+$/, "");
+
       // Add the blob to the zip file with a filename
-      zip.file(`image_${i + 1}.png`, blob);
+      zip.file(fileNameWithoutExtension + "." + format, blob);
     }
 
     // Generate the zip file
@@ -56,8 +74,9 @@ export default function ImageConverter() {
     // Create a download link for the zip file
     const link = document.createElement("a");
     link.href = URL.createObjectURL(content);
+
     // TODO: Come up with a better name...
-    link.download = "images.zip";
+    link.download = format + "-images.zip";
     document.body.appendChild(link);
 
     // Trigger a click on the link to initiate the download
@@ -65,14 +84,15 @@ export default function ImageConverter() {
 
     // Remove the link from the DOM
     document.body.removeChild(link);
-  }, [images, format]);
+  }, [images, fileNames, format]);
 
   const onLoad = useCallback(
-    (image: string) => {
+    (image: string, fileName: string) => {
       console.log("dataUrl", image);
       setImages((prevImages) => [...prevImages, image]);
+      setFileNames((prevFileNames) => [...prevFileNames, fileName]);
     },
-    [setImages],
+    [setImages, setFileNames],
   );
 
   const onError = useCallback(
@@ -85,8 +105,11 @@ export default function ImageConverter() {
   const onRemoveImage = useCallback(
     (index: number) => {
       setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+      setFileNames((prevFileNames) =>
+        prevFileNames.filter((_, i) => i !== index),
+      );
     },
-    [setImages],
+    [setImages, setFileNames],
   );
 
   const onDownloadImage = useCallback(
@@ -119,6 +142,7 @@ export default function ImageConverter() {
                     onClick={() => onDownloadImage(index)}
                     src={image}
                     key={index}
+                    alt={fileNames[index]}
                   />
                   <button
                     onClick={() => onRemoveImage(index)}
@@ -134,6 +158,7 @@ export default function ImageConverter() {
 
         <BoxButtons>
           <div className="flex gap-x-2">
+            <div className="flex items-center">Output Format</div>
             <Dropdown
               onOptionChange={onChangeFormat}
               options={[
@@ -144,22 +169,24 @@ export default function ImageConverter() {
               defaultValue={format}
             />
             {format !== "png" ? (
-              <Dropdown
-                onOptionChange={setQuality}
-                options={[
-                  { id: "0", label: "Default" },
-                  { id: "1", label: "Full (100%)" },
-                  { id: ".9", label: "Very High (90%)" },
-                  { id: ".8", label: "High (80%)" },
-                  { id: ".75", label: "Good (75%)" },
-                  { id: ".6", label: "Medium (60%)" },
-                  { id: ".5", label: "Low (50%)" },
-                  { id: ".25", label: "Poor (25%)" },
-                ]}
-                defaultValue={quality.toString()}
-              />
+              <>
+                <div className="flex items-center">Compression</div>
+                <Dropdown
+                  onOptionChange={setQuality}
+                  options={[
+                    { id: "0", label: "Default" },
+                    { id: "1", label: "Full (100%)" },
+                    { id: ".9", label: "Very High (90%)" },
+                    { id: ".8", label: "High (80%)" },
+                    { id: ".75", label: "Good (75%)" },
+                    { id: ".6", label: "Medium (60%)" },
+                    { id: ".5", label: "Low (50%)" },
+                    { id: ".25", label: "Poor (25%)" },
+                  ]}
+                  defaultValue={quality.toString()}
+                />
+              </>
             ) : null}
-
             <ReadFile
               accept="image/*"
               onLoad={onLoad}
@@ -171,7 +198,7 @@ export default function ImageConverter() {
             />
           </div>
           <div className="flex gap-x-2">
-            <Button onClick={onDonwloadZip} label="Download As Zip" />
+            <Button onClick={onDownloadZip} label="Download As Zip" />
           </div>
         </BoxButtons>
       </Box>
