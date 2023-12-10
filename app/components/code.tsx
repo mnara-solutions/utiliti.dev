@@ -25,7 +25,7 @@ export default function Code({
   setValue,
   minHeight,
   language = "javascript",
-  placeholder = "Paste some json…",
+  placeholder = "Paste some JSON…",
 }: Props) {
   const CodeEditor = (Editor as any).default;
   return (
