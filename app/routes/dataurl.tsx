@@ -123,13 +123,12 @@ export default function DataUrl() {
           <ReadFile
             accept="image/*"
             onLoad={setInput}
-            onError={setError}
-              type="dataURL"
-              format={format}
-              quality={quality}
-            />
-          </div>
-          );
+            type="dataURL"
+            format={format}
+            quality={quality}
+          />
+        </div>
+      );
     },
     [format, quality],
   );
