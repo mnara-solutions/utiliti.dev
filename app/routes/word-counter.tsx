@@ -15,7 +15,6 @@ import { Transition } from "@headlessui/react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/tooltip";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { useLocalStorage } from "~/hooks/use-local-storage";
-import { useHydrated } from "~/hooks/use-hydrated";
 
 export const meta = metaHelper(
   utilities.wordCounter.name,
@@ -141,7 +140,6 @@ function formatTime(words: number, speed: number) {
   return `${Math.floor(num / 60)} min ${Math.floor(num % 60)} sec`;
 }
 export default function WordCounter() {
-  const hydrated = useHydrated();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const hadSelected = useRef(false);
   const [content, setContent] = useLocalStorage("word-counter", "");
@@ -151,21 +149,6 @@ export default function WordCounter() {
     true,
   );
   const [info, setInfo] = useState<Info>(count(content, options));
-
-  const calculate = useCallback(() => {
-    if (!inputRef.current) {
-      return;
-    }
-
-    const input = inputRef.current.value;
-
-    setInfo(count(input, options));
-  }, [options]);
-
-  const throttledCalculate = useMemo(
-    () => throttle(calculate, 1000),
-    [calculate],
-  );
 
   const throttledSetContent = useMemo(
     () => throttle(setContent, 1000),
@@ -178,18 +161,17 @@ export default function WordCounter() {
       return;
     }
 
-    if (inputRef.current.value.length > 500000) {
-      throttledCalculate();
-    } else {
-      calculate();
-    }
-
     throttledSetContent(inputRef.current.value || "");
-  }, [calculate, throttledCalculate, throttledSetContent]);
+  }, [throttledSetContent]);
+
+  // whenever text changes (storage backend), re-calculate info
+  useEffect(() => {
+    setInfo(count(content, options));
+  }, [content, options]);
 
   // on highlight of text, only perform logic on selection
   useEffect(() => {
-    if (!inputRef.current || !hydrated) {
+    if (!inputRef.current) {
       return;
     }
 
@@ -214,12 +196,7 @@ export default function WordCounter() {
     document.addEventListener("mouseup", handler);
 
     return () => document.removeEventListener("mouseup", handler);
-  }, [setInfo, hydrated, options]);
-
-  // easy way to disable server side rendering, which causes lots of issues due to saved state in localStorage
-  if (!hydrated) {
-    return;
-  }
+  }, [setInfo, options]);
 
   return (
     <ContentWrapper>
@@ -355,14 +332,10 @@ export default function WordCounter() {
                     checked={options.filterCommonWords}
                     className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
                     onChange={(e) => {
-                      const newOptions = {
+                      setOptions({
                         ...options,
                         filterCommonWords: e.target.checked,
-                      };
-                      setOptions(newOptions);
-                      setInfo(
-                        count(inputRef?.current?.value || "", newOptions),
-                      );
+                      });
                     }}
                   />
                 </div>

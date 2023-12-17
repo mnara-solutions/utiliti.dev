@@ -12,7 +12,6 @@ import Copy from "~/components/copy";
 import { noop } from "~/common";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import NumberInput from "~/components/number-input";
-import { useHydrated } from "~/hooks/use-hydrated";
 import Dropdown from "~/components/dropdown";
 
 export const meta = metaHelper(
@@ -34,7 +33,6 @@ function formatSql(
 }
 
 export default function SqlFormatter() {
-  const hydrated = useHydrated();
   const [input, setInput] = useLocalStorage("sql-formatter-query", "");
   const [keywordCase, setKeywordCase] = useLocalStorage<KeywordCase>(
     "sql-formatter-kw-case",
@@ -60,11 +58,6 @@ export default function SqlFormatter() {
     tabWidth: parseInt(tabWidth, 10),
     keywordCase: keywordCase,
   });
-
-  // easy way to disable server side rendering, which causes lots of issues due to saved state in localStorage
-  if (!hydrated) {
-    return;
-  }
 
   return (
     <ContentWrapper>
