@@ -2,11 +2,12 @@ import type { ChangeEvent } from "react";
 import { useCallback } from "react";
 import { PaperClipIcon } from "@heroicons/react/24/outline";
 import IconButton from "~/components/icon-button";
+import { cleanSvg, encodeSvg } from "~/utils/svg-utils";
 
 interface Props {
   readonly accept: string;
   readonly onLoad: (value: string) => void;
-  readonly type?: "text" | "dataURL";
+  readonly type?: "text" | "dataURL" | "svg";
   readonly format?: string;
   readonly quality?: string;
 }
@@ -97,11 +98,20 @@ export default function ReadFile({
       // read file
       const reader = new FileReader();
       reader.addEventListener("load", function (e) {
-        onLoad((e.target?.result || "").toString());
+        let value = (e.target?.result || "").toString();
+        if (type === "svg") {
+          value = cleanSvg(value);
+          // Replace double quotes with single quotes
+          value = value.replace(/"/g, "'");
+          value = encodeSvg(value);
+          value = `data:image/svg+xml;utf8,${value}`;
+        }
+        onLoad(value);
       });
 
       switch (type) {
         case "text":
+        case "svg":
           reader.readAsText(file);
           break;
         case "dataURL":

@@ -38,8 +38,6 @@ export default function DataUrl() {
           "image/jpeg",
           "image/png",
           "image/webp",
-          "image/avif",
-          "image/gif",
           "image/svg+xml",
         ];
 
@@ -99,11 +97,12 @@ export default function DataUrl() {
               { id: "jpg", label: "Jpeg" },
               { id: "png", label: "Png" },
               { id: "webp", label: "Webp" },
+              { id: "svg", label: "Svg" },
             ]}
             defaultValue={format}
           />
 
-          {format !== "png" ? (
+          {format !== "png" && format !== "svg" ? (
             <Dropdown
               onOptionChange={setQuality}
               options={[
@@ -121,9 +120,9 @@ export default function DataUrl() {
           ) : null}
 
           <ReadFile
-            accept="image/*"
+            accept={format === "svg" ? "image/svg+xml" : "image/*"}
             onLoad={setInput}
-            type="dataURL"
+            type={format === "svg" ? "svg" : "dataURL"}
             format={format}
             quality={quality}
           />
