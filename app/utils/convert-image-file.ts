@@ -4,6 +4,47 @@ const formatImage: Record<string, string> = {
   webp: "image/webp",
 };
 
+export function convertFileToDataUrl(
+  file: File,
+  format: string,
+  quality: string,
+): Promise<string> {
+  const imageFormats: Record<string, string> = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+  };
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.addEventListener("load", function (e) {
+      resolve((e.target?.result || "").toString());
+    });
+
+    reader.addEventListener("error", function (e) {
+      reject((e.target?.error || "").toString());
+    });
+
+    const fileFormat = imageFormats[file.type];
+    if (
+      (fileFormat && fileFormat !== format) ||
+      (quality != "0" && format !== "png")
+    ) {
+      convertToFileFormat(file, format || "jpg", parseFloat(quality))
+        .then((dataUrl) => resolve(dataUrl))
+        .catch((_) => {
+          console.error(
+            "Something went wrong, trying plain old read as DataURL.",
+          );
+          reader.readAsDataURL(file);
+        });
+    } else {
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
 export function convertToFileFormat(
   file: File | string,
   format: string,

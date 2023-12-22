@@ -1,7 +1,7 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
@@ -21,57 +21,45 @@ const formatImage: { [format: string]: string } = {
   webp: "image/webp",
 };
 
+function renameFile(file: File, format: string) {
+  const filename = file.name;
+  const filenameWithoutExtension = filename.substring(
+    0,
+    filename.lastIndexOf("."),
+  );
+
+  return `${filenameWithoutExtension}.${format}`;
+}
 export default function ImageConverter() {
-  const [images, setImages] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+  const [dataUrls, setDataUrls] = useState<string[]>([]);
   const [format, setFormat] = useState("jpg");
   const [quality, setQuality] = useState("0");
   const [error, setError] = useState<string | null>(null);
-  const [fileNames, setFileNames] = useState<string[]>([]);
 
-  const onChangeFormat = useCallback(
-    (format: string) => {
-      // This will loose some quality if we are going from jpeg to webp, in the future consider keeping the old
-      // images around to convert from.
-      images.forEach((image, index) => {
-        convertToFileFormat(image, format, parseFloat(quality))
-          .then((dataUrl) => {
-            setImages((prevImages) => {
-              prevImages[index] = dataUrl;
-              return [...prevImages];
-            });
-          })
-          .catch((_) => {
-            setError("Something went wrong, please try again.");
-            setImages([]);
-          });
-      });
-
-      setFormat(format);
-    },
-    [images, setImages, setFormat, quality],
-  );
+  // materialized state - we need each file as a data url
+  useEffect(() => {
+    Promise.all(
+      files.map((it) => convertToFileFormat(it, format, parseInt(quality, 10))),
+    ).then((it) => setDataUrls(it));
+  }, [files, format, quality]);
 
   const onDownloadZip = useCallback(async () => {
     const zip: JSZip = new JSZip();
 
-    // Iterate over each data URL
-    for (let i = 0; i < images.length; i++) {
-      const response = await fetch(images[i]);
-      const arrayBuffer = await response.arrayBuffer();
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
 
-      // Convert data URL to binary blob
-      const blob = new Blob([arrayBuffer], { type: formatImage[format] });
-
-      const fileNameWithoutExtension = fileNames[i].replace(/\.[^.]+$/, "");
-
-      // Add the blob to the zip file with a filename
-      zip.file(fileNameWithoutExtension + "." + format, blob);
+      zip.file(
+        renameFile(f, format),
+        new Blob([await f.arrayBuffer()], { type: formatImage[format] }),
+      );
     }
 
-    // Generate the zip file
+    // generate the zip file
     const content = await zip.generateAsync({ type: "blob" });
 
-    // Create a download link for the zip file
+    // create a download link for the zip file
     const link = document.createElement("a");
     link.href = URL.createObjectURL(content);
 
@@ -79,21 +67,12 @@ export default function ImageConverter() {
     link.download = format + "-images.zip";
     document.body.appendChild(link);
 
-    // Trigger a click on the link to initiate the download
+    // trigger a click on the link to initiate the download
     link.click();
 
-    // Remove the link from the DOM
+    // remove the link from the DOM
     document.body.removeChild(link);
-  }, [images, fileNames, format]);
-
-  const onLoad = useCallback(
-    (image: string, fileName: string) => {
-      console.log("dataUrl", image);
-      setImages((prevImages) => [...prevImages, image]);
-      setFileNames((prevFileNames) => [...prevFileNames, fileName]);
-    },
-    [setImages, setFileNames],
-  );
+  }, [files, format]);
 
   const onError = useCallback(
     (error: string) => {
@@ -104,23 +83,19 @@ export default function ImageConverter() {
 
   const onRemoveImage = useCallback(
     (index: number) => {
-      setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-      setFileNames((prevFileNames) =>
-        prevFileNames.filter((_, i) => i !== index),
-      );
+      setFiles(files.filter((_, i) => i !== index));
     },
-    [setImages, setFileNames],
+    [files],
   );
 
   const onDownloadImage = useCallback(
     (index: number) => {
-      // TODO: Get the real name from ReadFile...
       const link = document.createElement("a");
-      link.href = images[index];
-      link.download = `image-${index}.${format}`;
+      link.href = dataUrls[index];
+      link.download = renameFile(files[index], format);
       link.click();
     },
-    [images, format],
+    [dataUrls, files, format],
   );
 
   return (
@@ -131,18 +106,18 @@ export default function ImageConverter() {
         <BoxTitle title="Images"></BoxTitle>
 
         <BoxContent isLast={false}>
-          {images.length === 0 ? (
+          {files.length === 0 ? (
             <div className="p-8 font-bold">Upload Some Images</div>
           ) : (
             <div className="flex flex-wrap m-8">
-              {images.map((image: string, index: number) => (
+              {files.map((file, index) => (
                 <div key={index} className="relative px-2 mb-4">
                   <img
                     className="w-40 h-40 object-cover rounded cursor-pointer"
                     onClick={() => onDownloadImage(index)}
-                    src={image}
+                    src={dataUrls[index]}
                     key={index}
-                    alt={fileNames[index]}
+                    alt={file.name}
                   />
                   <button
                     onClick={() => onRemoveImage(index)}
@@ -160,7 +135,7 @@ export default function ImageConverter() {
           <div className="flex gap-x-2">
             <div className="flex items-center">Output Format</div>
             <Dropdown
-              onOptionChange={onChangeFormat}
+              onOptionChange={setFormat}
               options={[
                 { id: "jpg", label: "Jpeg" },
                 { id: "png", label: "Png" },
@@ -189,12 +164,9 @@ export default function ImageConverter() {
             ) : null}
             <ReadFile
               accept="image/*"
-              onLoad={onLoad}
+              onLoad={setFiles}
               onError={onError}
               multiple={true}
-              type="dataURL"
-              format={format}
-              quality={quality}
             />
           </div>
           <div className="flex gap-x-2">

@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import Dropdown from "~/components/dropdown";
 import Utiliti from "~/components/utiliti";
 import ReadFile from "~/components/read-file";
+import { convertFileToDataUrl } from "~/utils/convert-image-file";
 
 export const meta = metaHelper(
   utilities.dataurl.name,
@@ -122,10 +123,9 @@ export default function DataUrl() {
 
           <ReadFile
             accept="image/*"
-            onLoad={setInput}
-            type="dataURL"
-            format={format}
-            quality={quality}
+            onLoad={async (files) =>
+              setInput(await convertFileToDataUrl(files[0], format, quality))
+            }
           />
         </div>
       );
