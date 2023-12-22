@@ -37,12 +37,19 @@ export default function ImageConverter() {
   const [quality, setQuality] = useState("0");
   const [error, setError] = useState<string | null>(null);
 
+  // cache computation for files
+  // the only reason we need this is that removing a file changes `files`, which causes dataUrls to be re-calculated
+  const convertFile = useCallback(
+    (file: File) => {
+      return convertToFileFormat(file, format, parseInt(quality, 10));
+    },
+    [format, quality],
+  );
+
   // materialized state - we need each file as a data url
   useEffect(() => {
-    Promise.all(
-      files.map((it) => convertToFileFormat(it, format, parseInt(quality, 10))),
-    ).then((it) => setDataUrls(it));
-  }, [files, format, quality]);
+    Promise.all(files.map(convertFile)).then(setDataUrls);
+  }, [files, convertFile]);
 
   const onDownloadZip = useCallback(async () => {
     const zip: JSZip = new JSZip();
@@ -63,7 +70,7 @@ export default function ImageConverter() {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(content);
 
-    // TODO: Come up with a better name...
+    // TODO: come up with a better name...
     link.download = format + "-images.zip";
     document.body.appendChild(link);
 
