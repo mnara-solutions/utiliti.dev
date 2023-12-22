@@ -1,20 +1,21 @@
-const formatImage: Record<string, string> = {
+const imageFormats: Record<string, string> = {
   jpg: "image/jpeg",
   png: "image/png",
   webp: "image/webp",
 };
+
+function extensionFromFormat(extension: string): string {
+  return (
+    Object.keys(imageFormats).find((key) => imageFormats[key] === extension) ||
+    "jpg"
+  );
+}
 
 export function convertFileToDataUrl(
   file: File,
   format: string,
   quality: string,
 ): Promise<string> {
-  const imageFormats: Record<string, string> = {
-    "image/jpeg": "jpg",
-    "image/png": "png",
-    "image/webp": "webp",
-  };
-
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -26,12 +27,12 @@ export function convertFileToDataUrl(
       reject((e.target?.error || "").toString());
     });
 
-    const fileFormat = imageFormats[file.type];
+    const fileFormat = extensionFromFormat(file.type);
     if (
       (fileFormat && fileFormat !== format) ||
       (quality != "0" && format !== "png")
     ) {
-      convertToFileFormat(file, format || "jpg", parseFloat(quality))
+      convertToFileFormat(file, format, parseFloat(quality))
         .then((dataUrl) => resolve(dataUrl))
         .catch((_) => {
           console.error(
@@ -76,9 +77,9 @@ export function convertToFileFormat(
 
         // Convert the canvas content to a data URL (PNG format)
         if (quality !== 0) {
-          resolve(canvas.toDataURL(formatImage[format], quality));
+          resolve(canvas.toDataURL(imageFormats[format], quality));
         } else {
-          resolve(canvas.toDataURL(formatImage[format]));
+          resolve(canvas.toDataURL(imageFormats[format]));
         }
       };
 
