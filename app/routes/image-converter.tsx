@@ -111,18 +111,24 @@ export default function ImageConverter() {
     [dataUrls, files, format],
   );
 
+  const imageFilter = (it: File) =>
+    it.size < 10 * 1024 * 1024 && it.type.startsWith("image/");
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],
       drop(item: { files: File[] }) {
-        setFiles([
-          ...files,
-          ...item.files.filter(
-            (it) => it.size < 10 * 1024 * 1024 && it.type.startsWith("image/"),
-          ),
+        setFiles((prevFiles) => [
+          ...prevFiles,
+          ...item.files.filter(imageFilter),
         ]);
       },
+      canDrop(item: any) {
+        const images = [...item.items].filter((it) =>
+          it.type.startsWith("image/"),
+        );
 
+        return images.length > 0;
+      },
       collect: (monitor: DropTargetMonitor) => {
         return {
           isOver: monitor.isOver(),
@@ -130,10 +136,8 @@ export default function ImageConverter() {
         };
       },
     }),
-    [files],
+    [],
   );
-
-  const isActive = canDrop && isOver;
 
   return (
     <ContentWrapper>
@@ -148,7 +152,11 @@ export default function ImageConverter() {
               htmlFor="file-input"
               className={classNames(
                 "flex flex-col m-2 items-center justify-center w-full h-full border-2 border-dashed rounded-lg bg-zinc-800",
-                isActive ? "border-green-700" : "border-gray-600",
+                isOver
+                  ? canDrop
+                    ? "border-green-700"
+                    : "border-red-700"
+                  : "border-gray-600",
                 files.length === 0 && "cursor-pointer hover:bg-zinc-700",
               )}
             >
