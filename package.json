@@ -26,17 +26,19 @@
     "dompurify": "^3.0.6",
     "highlight.js": "^11.9.0",
     "isbot": "^3.7.0",
+    "jszip": "^3.10.1",
     "marked": "^10.0.0",
     "prettier": "^3.0.3",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-json-tree": "^0.18.0",
-    "sql-formatter": "^13.1.0",
     "react-simple-code-editor": "^0.13.1",
+    "sql-formatter": "^13.1.0",
     "use-keyboard-shortcut": "^1.1.6",
-    "uuid": "^9.0.1",
-    "jszip": "^3.10.1"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231025.0",

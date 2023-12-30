@@ -1,6 +1,7 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
+import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import ReadFile from "~/components/read-file";
@@ -9,6 +10,11 @@ import { Transition } from "@headlessui/react";
 import Dropdown from "~/components/dropdown";
 import JSZip from "jszip";
 import { convertToFileFormat } from "~/utils/convert-image-file";
+import { NativeTypes } from "react-dnd-html5-backend";
+import type { DropTargetMonitor } from "react-dnd";
+import { useDrop } from "react-dnd";
+import { CloudArrowUpIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { classNames } from "~/common";
 
 export const meta = metaHelper(
   utilities.imageConverter.name,
@@ -105,6 +111,30 @@ export default function ImageConverter() {
     [dataUrls, files, format],
   );
 
+  const [{ canDrop, isOver }, drop] = useDrop(
+    () => ({
+      accept: [NativeTypes.FILE],
+      drop(item: { files: File[] }) {
+        setFiles([
+          ...files,
+          ...item.files.filter(
+            (it) => it.size < 10 * 1024 * 1024 && it.type.startsWith("image/"),
+          ),
+        ]);
+      },
+
+      collect: (monitor: DropTargetMonitor) => {
+        return {
+          isOver: monitor.isOver(),
+          canDrop: monitor.canDrop(),
+        };
+      },
+    }),
+    [files],
+  );
+
+  const isActive = canDrop && isOver;
+
   return (
     <ContentWrapper>
       <h1>Image Converter</h1>
@@ -112,30 +142,54 @@ export default function ImageConverter() {
       <Box>
         <BoxTitle title="Images"></BoxTitle>
 
-        <BoxContent isLast={false}>
-          {files.length === 0 ? (
-            <div className="p-8 font-bold">Upload Some Images</div>
-          ) : (
-            <div className="flex flex-wrap m-8">
-              {files.map((file, index) => (
-                <div key={index} className="relative px-2 mb-4">
-                  <img
-                    className="w-40 h-40 object-cover rounded cursor-pointer"
-                    onClick={() => onDownloadImage(index)}
-                    src={dataUrls[index]}
-                    key={index}
-                    alt={file.name}
-                  />
-                  <button
-                    onClick={() => onRemoveImage(index)}
-                    className="absolute top-1 right-3 px-2 bg-red-500 text-white rounded-full"
-                  >
-                    X
-                  </button>
+        <BoxContent isLast={false} className="max-h-max">
+          <div className="flex items-center justify-center w-full" ref={drop}>
+            <label
+              htmlFor="file-input"
+              className={classNames(
+                "flex flex-col m-2 items-center justify-center w-full h-full border-2 border-dashed rounded-lg bg-zinc-800",
+                isActive ? "border-green-700" : "border-gray-600",
+                files.length === 0 && "cursor-pointer hover:bg-zinc-700",
+              )}
+            >
+              {files.length === 0 ? (
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <CloudArrowUpIcon className="w-8 h-8 mb-4" />
+
+                  <p className="mb-2 text-sm">
+                    <span className="font-semibold">Click to upload</span> or
+                    drag and drop
+                  </p>
+                  <p className="text-xs">JPG, PNG or WEBP (MAX. 10mb)</p>
                 </div>
-              ))}
-            </div>
-          )}
+              ) : (
+                <div className="grid grid-cols-4 gap-4 p-2">
+                  {files.map((file, index) => (
+                    <div key={index} className="relative">
+                      <img
+                        className="w-full h-full aspect-square object-cover rounded cursor-pointer"
+                        onClick={() => onDownloadImage(index)}
+                        src={dataUrls[index]}
+                        key={index}
+                        alt={file.name}
+                      />
+
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onRemoveImage(index);
+                        }}
+                        className="absolute top-1 right-1 text-red-600 hover:text-red-800"
+                      >
+                        <XCircleIcon className="h-6 w-6" />
+                        <span className="sr-only">Remove Image</span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </label>
+          </div>
         </BoxContent>
 
         <BoxButtons>
@@ -171,7 +225,7 @@ export default function ImageConverter() {
             ) : null}
             <ReadFile
               accept="image/*"
-              onLoad={setFiles}
+              onLoad={(it) => setFiles([...files, ...it])}
               onError={onError}
               multiple={true}
             />
