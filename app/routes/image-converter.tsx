@@ -13,7 +13,11 @@ import { convertToFileFormat } from "~/utils/convert-image-file";
 import { NativeTypes } from "react-dnd-html5-backend";
 import type { DropTargetMonitor } from "react-dnd";
 import { useDrop } from "react-dnd";
-import { CloudArrowUpIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownOnSquareIcon,
+  CloudArrowUpIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
 import { classNames } from "~/common";
 
 export const meta = metaHelper(
@@ -168,7 +172,10 @@ export default function ImageConverter() {
                     <div key={index} className="relative">
                       <img
                         className="w-full h-full aspect-square object-cover rounded cursor-pointer"
-                        onClick={() => onDownloadImage(index)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onDownloadImage(index);
+                        }}
                         src={dataUrls[index]}
                         key={index}
                         alt={file.name}
@@ -183,6 +190,11 @@ export default function ImageConverter() {
                       >
                         <XCircleIcon className="h-6 w-6" />
                         <span className="sr-only">Remove Image</span>
+                      </button>
+
+                      <button className="absolute bottom-1 right-1 text-orange-600 hover:text-orange-800">
+                        <ArrowDownOnSquareIcon className="h-6 w-6" />
+                        <span className="sr-only">Download Image</span>
                       </button>
                     </div>
                   ))}
