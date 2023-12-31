@@ -10,6 +10,7 @@ import { marked } from "marked";
 import DOMPurify from "dompurify";
 import ShadowDom from "~/components/shadow-dom";
 import ReadFile from "~/components/read-file";
+import { setTextInputFromFiles } from "~/utils/convert-text-file";
 
 export const meta = metaHelper(
   utilities.markdownToHtml.name,
@@ -88,7 +89,12 @@ export default function MarkdownToHtml() {
   );
 
   const renderReadFile = useCallback((setInput: (value: string) => void) => {
-    return <ReadFile accept=".md" onLoad={setInput} />;
+    return (
+      <ReadFile
+        accept=".md"
+        onLoad={(files) => setTextInputFromFiles(files, setInput)}
+      />
+    );
   }, []);
 
   const renderExplanation = useCallback(

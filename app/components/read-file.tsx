@@ -5,73 +5,17 @@ import IconButton from "~/components/icon-button";
 
 interface Props {
   readonly accept: string;
-  readonly onLoad: (value: string) => void;
-  readonly type?: "text" | "dataURL";
-  readonly format?: string;
-  readonly quality?: string;
-}
-
-const imageFormats: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-};
-
-const formatImage: Record<string, string> = {
-  jpg: "image/jpeg",
-  png: "image/png",
-  webp: "image/webp",
-};
-
-function convertToFileFormat(
-  file: File,
-  format: string,
-  quality: number,
-): Promise<string> {
-  return new Promise(
-    (
-      resolve: (dataUrl: string) => void,
-      reject: (error: string) => void,
-    ): void => {
-      const img = new Image();
-
-      // Set up an onload event handler to execute the conversion when the image is loaded
-      img.onload = () => {
-        // Create a canvas element
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-
-        // Get the 2D context of the canvas
-        const ctx = canvas.getContext("2d");
-
-        if (ctx) {
-          // Draw the image onto the canvas
-          ctx.drawImage(img, 0, 0);
-        } else {
-          reject("Unable to get context");
-        }
-
-        // Convert the canvas content to a data URL (PNG format)
-        if (quality !== 0) {
-          resolve(canvas.toDataURL(formatImage[format], quality));
-        } else {
-          resolve(canvas.toDataURL(formatImage[format]));
-        }
-      };
-
-      // Set the source of the image to the JPEG file
-      img.src = URL.createObjectURL(file);
-    },
-  );
+  readonly multiple?: boolean;
+  readonly onLoad: (files: File[]) => void;
+  readonly onError?: (error: string) => void;
 }
 
 export default function ReadFile({
   accept,
+
+  multiple = false,
   onLoad,
-  type = "text",
-  format = "jpg",
-  quality = "0",
+  onError,
 }: Props) {
   const onButtonClick = useCallback(
     () => document.getElementById("file-input")?.click(),
@@ -86,47 +30,24 @@ export default function ReadFile({
         return;
       }
 
-      const file = files[0];
-      const maxAllowedSize = 10 * 1024 * 1024;
+      const filesArray = Array.from(files);
 
-      // stop if we are passed a certain limit
-      if (file.size > maxAllowedSize) {
-        return;
-      }
+      // ensure all files are under the size limit
+      filesArray.forEach((file) => {
+        const maxAllowedSize = 10 * 1024 * 1024;
 
-      // read file
-      const reader = new FileReader();
-      reader.addEventListener("load", function (e) {
-        onLoad((e.target?.result || "").toString());
+        // stop if we are passed a certain limit
+        if (file.size > maxAllowedSize) {
+          if (onError) {
+            onError(`File is too large. Max size is ${maxAllowedSize} bytes.`);
+          }
+          return;
+        }
       });
 
-      switch (type) {
-        case "text":
-          reader.readAsText(file);
-          break;
-        case "dataURL":
-          const fileFormat = imageFormats[file.type];
-          if (
-            (fileFormat && fileFormat !== format) ||
-            (quality != "0" && format !== "png")
-          ) {
-            convertToFileFormat(file, format || "jpg", parseFloat(quality))
-              .then((dataUrl) => {
-                onLoad(dataUrl);
-              })
-              .catch((_) => {
-                console.error(
-                  "Something went wrong, trying plain old read as dataurl",
-                );
-                reader.readAsDataURL(file);
-              });
-          } else {
-            reader.readAsDataURL(file);
-          }
-          break;
-      }
+      onLoad(filesArray);
     },
-    [onLoad, type, format, quality],
+    [onLoad, onError],
   );
 
   return (
@@ -141,6 +62,7 @@ export default function ReadFile({
         type="file"
         id="file-input"
         accept={accept}
+        multiple={multiple}
         className="hidden"
         onChange={onChange}
       />

@@ -28,17 +28,33 @@ enum Action {
   DECODE = "Decode",
 }
 
+function textToUrl(text: string) {
+  return text.startsWith("https%3A%2F%2F") ? decodeURIComponent(text) : text;
+}
+
 async function encode(text: string): Promise<string | JsonURL> {
-  return encodeURI(text);
+  const url = textToUrl(text);
+
+  try {
+    return encodeURI(url);
+  } catch (e) {
+    return encodeURIComponent(url);
+  }
 }
 
 async function decode(text: string): Promise<string | JsonURL> {
-  return decodeURI(text);
+  const url = textToUrl(text);
+
+  try {
+    return decodeURI(url);
+  } catch (e) {
+    return decodeURIComponent(url);
+  }
 }
 
 async function toJson(text: string): Promise<string | JsonURL> {
   try {
-    const url = new URL(text);
+    const url = new URL(textToUrl(text));
 
     return {
       hash: url.hash,

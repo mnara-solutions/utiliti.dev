@@ -8,6 +8,7 @@ import Utiliti from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import JsonViewer from "~/components/json-viewer";
 import ReadFile from "~/components/read-file";
+import { setTextInputFromFiles } from "~/utils/convert-text-file";
 
 export const meta = metaHelper(utilities.json.name, utilities.json.description);
 
@@ -78,7 +79,12 @@ export default function JSONEncoder() {
   );
 
   const renderReadFile = useCallback((setInput: (value: string) => void) => {
-    return <ReadFile accept="text/plain,application/JSON" onLoad={setInput} />;
+    return (
+      <ReadFile
+        accept="text/plain,application/JSON"
+        onLoad={(files) => setTextInputFromFiles(files, setInput)}
+      />
+    );
   }, []);
 
   const renderExplanation = useCallback(
