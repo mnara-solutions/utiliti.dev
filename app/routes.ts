@@ -7,6 +7,7 @@ export default class Routes {
   static readonly URL = "/url";
   static readonly BASE64 = "/base64";
   static readonly DATAURL = "/dataurl";
+  static readonly IMAGE_CONVERTER = "/image-converter";
   static readonly WORD_COUNTER = "/word-counter";
   static readonly MARKDOWN_TO_HTML = "/markdown-to-html";
   static readonly LOREM_IPSUM = "/lorem-ipsum";

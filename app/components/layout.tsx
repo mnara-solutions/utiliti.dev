@@ -15,6 +15,8 @@ import Sidebar from "~/components/sidebar";
 import { Dialog, Transition } from "@headlessui/react";
 import Search from "~/components/search";
 import useKeyboardShortcut from "use-keyboard-shortcut";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 const keyboardShortcutOptions = {
   overrideSystem: true,
@@ -170,7 +172,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </div>
             </div>
-            {children}
+            <DndProvider backend={HTML5Backend}>{children}</DndProvider>
           </article>
         </main>
       </div>

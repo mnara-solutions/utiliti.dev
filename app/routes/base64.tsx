@@ -6,6 +6,7 @@ import { utilities } from "~/utilities";
 import { BoxOptions } from "~/components/box";
 import Utiliti from "~/components/utiliti";
 import ReadFile from "~/components/read-file";
+import { setTextInputFromFiles } from "~/utils/convert-text-file";
 
 export const meta = metaHelper(
   utilities.base64.name,
@@ -61,7 +62,12 @@ export default function Base64() {
   );
 
   const renderReadFile = useCallback((setInput: (value: string) => void) => {
-    return <ReadFile accept="text/plain,application/JSON" onLoad={setInput} />;
+    return (
+      <ReadFile
+        accept="text/plain,application/JSON"
+        onLoad={(files) => setTextInputFromFiles(files, setInput)}
+      />
+    );
   }, []);
 
   const renderInput = useCallback(
