@@ -6,6 +6,8 @@ import Dropdown from "~/components/dropdown";
 import Utiliti from "~/components/utiliti";
 import ReadFile from "~/components/read-file";
 import { convertFileToDataUrl } from "~/utils/convert-image-file";
+import { NativeTypes } from "react-dnd-html5-backend";
+import { useDrop } from "react-dnd";
 
 export const meta = metaHelper(
   utilities.dataurl.name,
@@ -56,19 +58,47 @@ export default function DataUrl() {
     [],
   );
 
-  const renderInput = useCallback(
-    (input: string, setInput: (v: string) => void) => (
+  interface Props {
+    readonly input: string;
+    readonly setInput: (value: string) => void;
+  }
+
+  function DroppableInput({ input, setInput }: Props) {
+    const [{ canDrop, isOver }, drop] = useDrop(() => ({
+      accept: [NativeTypes.FILE],
+      drop(item: { files: File[] }) {
+        convertFileToDataUrl(item.files[0], format, quality).then((value) =>
+          setInput(value),
+        );
+      },
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+      }),
+    }));
+
+    return (
       <textarea
         id="input"
         rows={10}
-        className="block px-3 py-2 font-mono w-full lg:text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
+        className={
+          "block px-3 py-2 font-mono w-full lg:text-sm bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 " +
+          (isOver && canDrop ? "border-green-700" : "border-gray-600")
+        }
         placeholder="Paste in your Data URL…"
         required={true}
+        ref={drop}
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-    ),
-    [],
+    );
+  }
+
+  const renderInput = useCallback(
+    (input: string, setInput: (v: string) => void) => {
+      return <DroppableInput input={input} setInput={setInput} />;
+    },
+    [DroppableInput],
   );
 
   const renderOutput = useCallback(
