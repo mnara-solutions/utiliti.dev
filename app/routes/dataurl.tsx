@@ -123,7 +123,7 @@ export default function DataUrl() {
           <ReadFile
             accept={format === "svg" ? "image/svg+xml" : "image/*"}
             onLoad={async (files) =>
-                setInput(await convertFileToDataUrl(files[0], format, quality))
+              setInput(await convertFileToDataUrl(files[0], format, quality))
             }
           />
         </div>
