@@ -81,7 +81,7 @@ function generatePassword(
   return password;
 }
 
-export default function LoremIpsum() {
+export default function PasswordGenerator() {
   const [characters, setCharacters] = useState(20);
   const [useUpperCase, setUseUpperCase] = useState(true);
   const [useLowerCase, setLowerUpperCase] = useState(true);
@@ -150,9 +150,9 @@ export default function LoremIpsum() {
                 <Copy content={output} />
               </div>
             </BoxTitle>
-            <div className="bg-zinc-800 rounded-b-lg px-3 py-0.5">
+            <BoxContent isLast={true}>
               <ReadOnlyTextArea value={output} />
-            </div>
+            </BoxContent>
           </Box>
         )}
       </ClientOnly>
