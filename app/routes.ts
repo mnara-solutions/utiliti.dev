@@ -11,6 +11,7 @@ export default class Routes {
   static readonly WORD_COUNTER = "/word-counter";
   static readonly MARKDOWN_TO_HTML = "/markdown-to-html";
   static readonly LOREM_IPSUM = "/lorem-ipsum";
+  static readonly PASSWORD_GENERATOR = "/password-generator";
   static readonly UUID = "/uuid";
   static readonly CUID = "/cuid";
   static readonly NS_LOOKUP = "/ns-lookup";

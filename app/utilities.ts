@@ -55,6 +55,11 @@ export const utilities: Record<
     description: "Generate Lorem Ipsum placeholder text.",
     url: Routes.LOREM_IPSUM,
   },
+  password: {
+    name: "Password",
+    description: "Generate Cryptographically Secure Password.",
+    url: Routes.PASSWORD_GENERATOR,
+  },
   uuid: {
     name: "UUID",
     description: "Generate random Universal Unique Identifiers.",
@@ -118,7 +123,12 @@ export const sidebar = [
   },
   {
     name: "Random Generators",
-    children: [utilities.loremIpsum, utilities.uuid, utilities.cuid],
+    children: [
+      utilities.loremIpsum,
+      utilities.password,
+      utilities.uuid,
+      utilities.cuid,
+    ],
   },
   {
     name: "DNS",

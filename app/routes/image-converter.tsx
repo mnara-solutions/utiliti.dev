@@ -192,7 +192,13 @@ export default function ImageConverter() {
                         <span className="sr-only">Remove Image</span>
                       </button>
 
-                      <button className="absolute bottom-1 right-1 text-orange-600 hover:text-orange-800">
+                      <button
+                        className="absolute bottom-1 right-1 text-orange-600 hover:text-orange-800"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onDownloadImage(index);
+                        }}
+                      >
                         <ArrowDownOnSquareIcon className="h-6 w-6" />
                         <span className="sr-only">Download Image</span>
                       </button>
