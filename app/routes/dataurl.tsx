@@ -40,10 +40,8 @@ function DroppableInput({
 }) {
   const [{ canDrop, isOver }, drop] = useDrop(() => ({
     accept: [NativeTypes.FILE],
-    drop(item: { files: File[] }) {
-      convertFileToDataUrl(item.files[0], format, quality).then((value) =>
-        setInput(value),
-      );
+    async drop(item: { files: File[] }) {
+      setInput(await convertFileToDataUrl(item.files[0], format, quality));
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),

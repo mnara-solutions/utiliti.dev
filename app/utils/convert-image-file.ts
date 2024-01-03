@@ -4,6 +4,7 @@ const imageFormats: Record<string, string> = {
   jpg: "image/jpeg",
   png: "image/png",
   webp: "image/webp",
+  svg: "image/svg+xml",
 };
 
 function extensionFromFormat(extension: string): string {
@@ -23,6 +24,7 @@ export function convertFileToDataUrl(
 
     reader.addEventListener("load", function (e) {
       let value = (e.target?.result || "").toString();
+
       if (format === "svg") {
         value = cleanSvg(value);
         // Replace double quotes with single quotes
@@ -30,6 +32,7 @@ export function convertFileToDataUrl(
         value = encodeSvg(value);
         value = `data:image/svg+xml;utf8,${value}`;
       }
+
       resolve(value);
     });
 
