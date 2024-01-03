@@ -1,4 +1,3 @@
-import type { ChangeEventHandler } from "react";
 import { useState } from "react";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
@@ -6,6 +5,8 @@ import Copy from "~/components/copy";
 import { ClientOnly } from "~/components/client-only";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import Slider from "~/components/slider";
+import Checkbox from "~/components/checkbox";
 
 function random(min: number, max: number) {
   return Math.round(Math.random() * (max - min)) + min;
@@ -113,69 +114,6 @@ function generateLoremIpsum(
   );
 }
 
-function Checkbox({
-  id,
-  label,
-  value,
-  onChange,
-}: {
-  id: string;
-  label: string;
-  value: boolean;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-}) {
-  return (
-    <div>
-      <div className="flex items-center">
-        <input
-          id={id}
-          onChange={onChange}
-          checked={value}
-          type="checkbox"
-          className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
-        />
-
-        <label htmlFor={id} className="ml-2 text-sm font-medium text-white">
-          {label}
-        </label>
-      </div>
-    </div>
-  );
-}
-
-function Slider({
-  id,
-  label,
-  value,
-  min,
-  max,
-  onChange,
-}: {
-  id: string;
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  onChange: (v: number) => void;
-}) {
-  return (
-    <div>
-      <label htmlFor={id} className="block text-sm font-medium text-white">
-        {label}
-      </label>
-      <input
-        id={id}
-        type="range"
-        value={value}
-        min={min}
-        max={max}
-        onChange={(e) => onChange(parseInt(e.target.value, 10))}
-        className="w-full lg:w-1/2 h-2 mb-2 accent-orange-500 rounded-lg appearance-none cursor-pointer bg-dark-700"
-      />
-    </div>
-  );
-}
-
 export const meta = metaHelper(
   utilities.loremIpsum.name,
   utilities.loremIpsum.description,
@@ -190,7 +128,7 @@ export default function LoremIpsum() {
 
   return (
     <ContentWrapper>
-      <h1>Lorem Ipsum</h1>
+      <h1>{utilities.loremIpsum.name}</h1>
 
       <Box>
         <BoxTitle title="Settings" />
