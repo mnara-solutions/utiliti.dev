@@ -128,7 +128,7 @@ export default function LoremIpsum() {
 
   return (
     <ContentWrapper>
-      <h1>Lorem Ipsum</h1>
+      <h1>{utilities.loremIpsum.name}</h1>
 
       <Box>
         <BoxTitle title="Settings" />

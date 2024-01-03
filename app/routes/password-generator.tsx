@@ -97,7 +97,7 @@ export default function PasswordGenerator() {
 
   return (
     <ContentWrapper>
-      <h1>Password Generate</h1>
+      <h1>{utilities.password.name}</h1>
 
       <Box>
         <BoxTitle title="Settings" />
