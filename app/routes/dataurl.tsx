@@ -1,7 +1,7 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Dropdown from "~/components/dropdown";
 import Utiliti from "~/components/utiliti";
 import ReadFile from "~/components/read-file";
@@ -25,6 +25,49 @@ function isImage(dataUrl: string, fileType: string): Promise<boolean> {
     image.onerror = () => resolve(false);
     image.src = `data:${fileType};base64,${dataUrl}`;
   });
+}
+
+function DroppableInput({
+  input,
+  setInput,
+  format,
+  quality,
+}: {
+  readonly input: string;
+  readonly setInput: (v: string) => void;
+  readonly format: string;
+  readonly quality: string;
+}) {
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: [NativeTypes.FILE],
+    drop(item: { files: File[] }) {
+      convertFileToDataUrl(item.files[0], format, quality).then((value) =>
+        setInput(value),
+      );
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }));
+
+  return (
+    <textarea
+      id="input"
+      rows={10}
+      className={
+        "block px-2 py-2 font-mono w-full lg:text-sm bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 " +
+        (isOver && canDrop
+          ? "border-green-700 focus:border-green-700"
+          : "border-zinc-800 focus:border-zinc-800")
+      }
+      placeholder="Paste in your Data URL, drag and drop a file, or click on the attachment icon below and select a file."
+      required={true}
+      ref={drop}
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+    />
+  );
 }
 
 export default function DataUrl() {
@@ -58,47 +101,18 @@ export default function DataUrl() {
     [],
   );
 
-  const setInputRef = useRef<(v: string) => void>();
-
-  const [{ canDrop, isOver }, drop] = useDrop(() => ({
-    accept: [NativeTypes.FILE],
-    drop(item: { files: File[] }) {
-      convertFileToDataUrl(item.files[0], format, quality).then((value) => {
-        if (setInputRef.current) {
-          setInputRef.current(value);
-        }
-      });
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  }));
-
   const renderInput = useCallback(
     (input: string, setInput: (v: string) => void) => {
-      setInputRef.current = setInput;
       return (
-        <textarea
-          id="input"
-          rows={10}
-          className={
-            "block px-3 py-2 font-mono w-full lg:text-sm bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 " +
-            (isOver && canDrop ? "border-green-700" : "border-gray-600")
-          }
-          placeholder="Paste in your Data URL…"
-          required={true}
-          ref={drop}
-          value={input}
-          onChange={(e) => {
-            if (setInputRef.current) {
-              setInputRef.current(e.target.value);
-            }
-          }}
+        <DroppableInput
+          input={input}
+          setInput={setInput}
+          format={format}
+          quality={quality}
         />
       );
     },
-    [setInputRef, isOver, canDrop, drop],
+    [format, quality],
   );
 
   const renderOutput = useCallback(
