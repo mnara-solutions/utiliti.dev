@@ -39,7 +39,7 @@ function getCryptoGraphicallyRandomInt(max: number) {
     return getCryptoGraphicallyRandomIntLargerMax(max);
   }
 
-  let array = new Uint8Array(1);
+  const array = new Uint8Array(1);
 
   do {
     window.crypto.getRandomValues(array);

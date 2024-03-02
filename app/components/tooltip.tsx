@@ -109,6 +109,7 @@ export const TooltipTrigger = React.forwardRef<
   React.HTMLProps<HTMLElement> & { asChild?: boolean }
 >(function TooltipTrigger({ children, asChild = false, ...props }, propRef) {
   const context = useTooltipContext();
+  // eslint-disable-next-line
   const childrenRef = (children as any).ref;
   const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
 
@@ -162,6 +163,7 @@ export const TooltipContent = React.forwardRef<
             top: context.y ?? 0,
             left: context.x ?? 0,
             visibility: context.x == null ? "hidden" : "visible",
+            // eslint-disable-next-line react/prop-types
             ...props.style,
             ...styles,
           }}

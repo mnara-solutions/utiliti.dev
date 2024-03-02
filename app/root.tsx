@@ -1,10 +1,8 @@
 import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare";
-import { cssBundleHref } from "@remix-run/css-bundle";
 import {
   isRouteErrorResponse,
   Link,
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -14,8 +12,8 @@ import {
 import Layout from "~/components/layout";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/solid";
 
-import "./styles/tailwind.css";
-import "highlight.js/styles/stackoverflow-dark.css";
+import tailwind from "./styles/tailwind.css?url";
+import dark from "../node_modules/highlight.js/styles/stackoverflow-dark.css?url";
 
 export const meta: MetaFunction = () => {
   const title = "Utiliti";
@@ -81,7 +79,8 @@ export const links: LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap",
   },
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  { rel: "stylesheet", href: tailwind },
+  { rel: "stylesheet", href: dark },
 ];
 
 export default function App() {
@@ -105,7 +104,6 @@ function Document({ children }: { children: React.ReactNode }) {
         <Layout>{children}</Layout>
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );

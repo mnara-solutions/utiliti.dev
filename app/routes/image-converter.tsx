@@ -1,7 +1,6 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
-import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import ReadFile from "~/components/read-file";
@@ -170,6 +169,7 @@ export default function ImageConverter() {
                 <div className="grid grid-cols-4 gap-4 p-2">
                   {files.map((file, index) => (
                     <div key={index} className="relative">
+                      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
                       <img
                         className="w-full h-full aspect-square object-cover rounded cursor-pointer"
                         onClick={(e) => {

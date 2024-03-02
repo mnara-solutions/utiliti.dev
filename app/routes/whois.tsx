@@ -2,7 +2,6 @@ import ContentWrapper from "~/components/content-wrapper";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import React from "react";
 import Button from "~/components/button";
 import type { ActionFunction } from "@remix-run/router";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
@@ -70,7 +69,7 @@ export default function Whois() {
       </p>
 
       <p>
-        Utiliti uses Cloudflare's{" "}
+        Utiliti uses Cloudflare&apos;s{" "}
         <a
           href="https://developers.cloudflare.com/api/operations/whois-record-get-whois-record"
           target="_blank"

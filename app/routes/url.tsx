@@ -119,7 +119,7 @@ export default function URLRoute() {
         <h2>What is a URL?</h2>
         <p>
           A URL, or Uniform Resource Locator, is a reference or address used to
-          access resources on the internet. It's a string of characters that
+          access resources on the internet. It&apos;s a string of characters that
           provides a way to identify and locate a particular resource, such as a
           web page, document, image, or any other file, on the World Wide Web.
         </p>
@@ -129,15 +129,15 @@ export default function URLRoute() {
         <ol>
           <li>
             <strong>Scheme</strong>: The scheme indicates the protocol used to
-            access the resource. Common schemes include "http," "https," "ftp,"
-            and "mailto." For example, in the URL "https://www.example.com,"
-            "https" is the scheme.
+            access the resource. Common schemes include &quot;http&quot;, &quot;https&quot;, &quot;ftp&quot;,
+            and &quot;mailto&quot;. For example, in the URL &quot;https://www.example.com&quot;,
+            &quot;https&quot; is the scheme.
           </li>
 
           <li>
             <strong>Hostname</strong>: The hostname identifies the domain name
             or IP address of the server hosting the resource. In the URL
-            "https://www.example.com," "www.example.com" is the hostname.
+            &quot;https://www.example.com&quot;, &quot;www.example.com&quot; is the hostname.
           </li>
 
           <li>
@@ -150,7 +150,7 @@ export default function URLRoute() {
           <li>
             <strong>Path</strong>: The path specifies the location or route to
             the specific resource on the server. In the URL
-            "https://www.example.com/path/to/resource," "/path/to/resource" is
+            &quot;https://www.example.com/path/to/resource&quot;, &quot;/path/to/resource&quot; is
             the path.
           </li>
 
@@ -159,7 +159,7 @@ export default function URLRoute() {
             information sent to the server, often in the form of key-value
             pairs, to modify the request or provide additional data. They appear
             after a question mark (?) in the URL. For example, in the URL
-            "https://www.example.com/search?q=query," "?q=query" represents the
+            &quot;https://www.example.com/search?q=query&quot;, &quot;?q=query&quot; represents the
             query parameter.
           </li>
 
@@ -167,12 +167,12 @@ export default function URLRoute() {
             <strong>Fragment</strong>: The fragment, indicated by a hash (#)
             symbol, specifies a specific section within the resource. It is
             often used in web pages to navigate to a particular section. For
-            example, in the URL "https://www.example.com/page#section,"
-            "#section" is the fragment.
+            example, in the URL &quot;https://www.example.com/page#section&quot;,
+            &quot;#section&quot; is the fragment.
           </li>
         </ol>
 
-        <p>Here's an example of a complete URL:</p>
+        <p>Here&apos;s an example of a complete URL:</p>
 
         <pre>
           https://www.example.com:8080/path/to/resource?param1=value1&param2=value2#section
@@ -181,23 +181,23 @@ export default function URLRoute() {
         <p>In this example:</p>
         <ul>
           <li>
-            <strong>Scheme</strong>: "https"
+            <strong>Scheme</strong>: &quot;https&quot;
           </li>
           <li>
-            <strong>Hostname</strong>: "www.example.com"
+            <strong>Hostname</strong>: &quot;www.example.com&quot;
           </li>
           <li>
-            <strong>Port</strong>: "8080"
+            <strong>Port</strong>: &quot;8080&quot;
           </li>
           <li>
-            <strong>Path</strong>: "/path/to/resource"
+            <strong>Path</strong>: &quot;/path/to/resource&quot;
           </li>
           <li>
-            <strong>Query Parameters</strong>: "param1=value1" and
-            "param2=value2"
+            <strong>Query Parameters</strong>: &quot;param1=value1&quot; and
+            &quot;param2=value2&quot;
           </li>
           <li>
-            <strong>Fragment</strong>: "section"
+            <strong>Fragment</strong>: &quot;section&quot;
           </li>
         </ul>
         <p>

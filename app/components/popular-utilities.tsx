@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
-import React, { memo } from "react";
+import { memo } from "react";
 import { utilities } from "~/utilities";
 import { ClientOnly } from "~/components/client-only";
 

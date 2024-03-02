@@ -1,4 +1,3 @@
-import React from "react";
 import ContentWrapper from "~/components/content-wrapper";
 
 export default function Index() {

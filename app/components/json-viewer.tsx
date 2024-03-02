@@ -12,7 +12,7 @@ import type { ShouldExpandNodeInitially } from "react-json-tree/src/types";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 
 interface Props {
-  readonly json: Object;
+  readonly json: object | string;
 }
 
 export default function JsonViewer({ json }: Props) {

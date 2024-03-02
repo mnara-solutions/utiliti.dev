@@ -34,7 +34,7 @@ export function BoxContent({
   isLast = true,
   className,
 }: PropsWithChildren<{
-  readonly isLast: Boolean;
+  readonly isLast: boolean;
   readonly className?: string | undefined;
 }>) {
   return (
@@ -71,7 +71,7 @@ export function BoxOptions({
   children,
   className,
 }: PropsWithChildren<{
-  readonly isLast: Boolean;
+  readonly isLast: boolean;
   readonly className?: string | undefined;
 }>) {
   return (
@@ -87,7 +87,7 @@ export function BoxOptions({
   );
 }
 
-export function BoxInfo({ children }: PropsWithChildren<{}>) {
+export function BoxInfo({ children }: PropsWithChildren<object>) {
   return (
     <div className="px-3 py-2 flex border-t border-gray-600 rounded-b-lg text-sm items-center">
       {children}

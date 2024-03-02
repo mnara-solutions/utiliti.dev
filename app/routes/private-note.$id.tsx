@@ -8,7 +8,7 @@ import {
   useLocation,
   useRouteError,
 } from "@remix-run/react";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import {
   ArrowSmallLeftIcon,
@@ -36,7 +36,7 @@ export const loader: LoaderFunction = async ({
   params,
   context,
 }): Promise<LoaderData | Response> => {
-  const privateNotesNs = (context.env as Env).PRIVATE_NOTES;
+  const privateNotesNs = (context.cloudflare.env as Env).PRIVATE_NOTES;
   const id = params.id;
 
   // if there is no id present, redirect back to private notes (technically not possible)

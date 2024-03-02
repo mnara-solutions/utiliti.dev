@@ -23,7 +23,9 @@ export const action: ActionFunction = async ({
   request,
   context,
 }): Promise<CreateActionData> => {
-  const privateNotesNs = (context.env as Env).PRIVATE_NOTES;
+  console.log(context);
+
+  const privateNotesNs = (context.cloudflare.env as Env).PRIVATE_NOTES;
 
   // grab submitted data
   const formData = await request.formData();

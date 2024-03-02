@@ -2,7 +2,7 @@ import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import React, {
+import {
   useCallback,
   useEffect,
   useMemo,

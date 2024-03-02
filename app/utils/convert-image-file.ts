@@ -34,7 +34,7 @@ export function convertFileToDataUrl(
     ) {
       convertToFileFormat(file, format, parseFloat(quality))
         .then((dataUrl) => resolve(dataUrl))
-        .catch((_) => {
+        .catch(() => {
           console.error(
             "Something went wrong, trying plain old read as DataURL.",
           );
