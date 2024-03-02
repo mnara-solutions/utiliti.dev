@@ -1,13 +1,7 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxContent, BoxOptions, BoxTitle } from "~/components/box";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import Copy from "~/components/copy";
 import { useHydrated } from "~/hooks/use-hydrated";
@@ -280,9 +274,10 @@ export default function UnixTimestamp() {
       </p>
 
       <p>
-        The Unix timestamp is also sometimes referred to as &quot;Epoch time&quot; or
-          &quot;POSIX time&quot;. It can be converted to a human-readable date and time
-        using various software tools and programming libraries.
+        The Unix timestamp is also sometimes referred to as &quot;Epoch
+        time&quot; or &quot;POSIX time&quot;. It can be converted to a
+        human-readable date and time using various software tools and
+        programming libraries.
       </p>
     </ContentWrapper>
   );

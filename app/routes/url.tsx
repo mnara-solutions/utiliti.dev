@@ -119,9 +119,10 @@ export default function URLRoute() {
         <h2>What is a URL?</h2>
         <p>
           A URL, or Uniform Resource Locator, is a reference or address used to
-          access resources on the internet. It&apos;s a string of characters that
-          provides a way to identify and locate a particular resource, such as a
-          web page, document, image, or any other file, on the World Wide Web.
+          access resources on the internet. It&apos;s a string of characters
+          that provides a way to identify and locate a particular resource, such
+          as a web page, document, image, or any other file, on the World Wide
+          Web.
         </p>
 
         <p>A standard URL consists of several components:</p>
@@ -129,15 +130,17 @@ export default function URLRoute() {
         <ol>
           <li>
             <strong>Scheme</strong>: The scheme indicates the protocol used to
-            access the resource. Common schemes include &quot;http&quot;, &quot;https&quot;, &quot;ftp&quot;,
-            and &quot;mailto&quot;. For example, in the URL &quot;https://www.example.com&quot;,
+            access the resource. Common schemes include &quot;http&quot;,
+            &quot;https&quot;, &quot;ftp&quot;, and &quot;mailto&quot;. For
+            example, in the URL &quot;https://www.example.com&quot;,
             &quot;https&quot; is the scheme.
           </li>
 
           <li>
             <strong>Hostname</strong>: The hostname identifies the domain name
             or IP address of the server hosting the resource. In the URL
-            &quot;https://www.example.com&quot;, &quot;www.example.com&quot; is the hostname.
+            &quot;https://www.example.com&quot;, &quot;www.example.com&quot; is
+            the hostname.
           </li>
 
           <li>
@@ -150,8 +153,8 @@ export default function URLRoute() {
           <li>
             <strong>Path</strong>: The path specifies the location or route to
             the specific resource on the server. In the URL
-            &quot;https://www.example.com/path/to/resource&quot;, &quot;/path/to/resource&quot; is
-            the path.
+            &quot;https://www.example.com/path/to/resource&quot;,
+            &quot;/path/to/resource&quot; is the path.
           </li>
 
           <li>
@@ -159,15 +162,16 @@ export default function URLRoute() {
             information sent to the server, often in the form of key-value
             pairs, to modify the request or provide additional data. They appear
             after a question mark (?) in the URL. For example, in the URL
-            &quot;https://www.example.com/search?q=query&quot;, &quot;?q=query&quot; represents the
-            query parameter.
+            &quot;https://www.example.com/search?q=query&quot;,
+            &quot;?q=query&quot; represents the query parameter.
           </li>
 
           <li>
             <strong>Fragment</strong>: The fragment, indicated by a hash (#)
             symbol, specifies a specific section within the resource. It is
             often used in web pages to navigate to a particular section. For
-            example, in the URL &quot;https://www.example.com/page#section&quot;,
+            example, in the URL
+            &quot;https://www.example.com/page#section&quot;,
             &quot;#section&quot; is the fragment.
           </li>
         </ol>

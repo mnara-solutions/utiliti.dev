@@ -150,8 +150,9 @@ export default function DataUrl() {
         <ul>
           <li>
             <code>&#x3C;mediatype&#x3E;</code>: This is an optional parameter
-            that specifies the MIME type of the data. For example, &quot;text/plain&quot;,
-              &quot;image/jpeg&quot;, &quot;application/pdf&quot;, etc.
+            that specifies the MIME type of the data. For example,
+            &quot;text/plain&quot;, &quot;image/jpeg&quot;,
+            &quot;application/pdf&quot;, etc.
           </li>
           <li>
             <code>;base64</code>: This is an optional parameter indicating that

@@ -118,9 +118,10 @@ export default function Base64() {
           encode binary data, such as images, audio files, or other binary
           content, into a text-based format. The encoding is called Base64
           because it uses a set of 64 characters, consisting of A-Z, a-z, 0-9,
-          and two additional characters, usually &apos;+&apos;, and &apos;/&apos;. The &apos;=&apos; character
-          is often used as padding at the end of the encoded data to ensure that
-          the length of the encoded text is a multiple of 4.
+          and two additional characters, usually &apos;+&apos;, and
+          &apos;/&apos;. The &apos;=&apos; character is often used as padding at
+          the end of the encoded data to ensure that the length of the encoded
+          text is a multiple of 4.
         </p>
 
         <p>
