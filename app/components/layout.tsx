@@ -14,8 +14,6 @@ import { Link, useLocation } from "@remix-run/react";
 import Sidebar from "~/components/sidebar";
 import { Dialog, Transition } from "@headlessui/react";
 import Search from "~/components/search";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
 import useKeyboardShortcut from "~/hooks/use-keyboard-shortcut";
 
 const keyboardShortcutOptions = {
@@ -172,7 +170,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </div>
             </div>
-            <DndProvider backend={HTML5Backend}>{children}</DndProvider>
+            {children}
           </article>
         </main>
       </div>

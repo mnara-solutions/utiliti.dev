@@ -8,7 +8,7 @@ import {
   useLocation,
   useRouteError,
 } from "@remix-run/react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import {
   ArrowSmallLeftIcon,
@@ -20,6 +20,7 @@ import { decrypt } from "~/utils/aes";
 import Routes from "~/routes";
 import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import { useHydrated } from "~/hooks/use-hydrated";
+import { useIsomorphicLayoutEffect } from "~/hooks/use-isomorphic-layout-effect";
 
 type LoaderData = {
   readonly ciphertext: string;
@@ -98,7 +99,7 @@ export default function PrivateNote() {
     }
   }, [location]);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!loaderData.ciphertext) {
       return;
     }
