@@ -36,8 +36,7 @@
     "react-json-tree": "^0.18.0",
     "react-simple-code-editor": "^0.13.1",
     "sql-formatter": "^15.2.0",
-    "uuid": "^9.0.1",
-    "miniflare": "^3.20240223.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240222.0",
@@ -51,7 +50,7 @@
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
-    "autoprefixer": "^10.4.16",
+    "autoprefixer": "^10.4.18",
     "eslint": "^8.53.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.28.1",

@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
+import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { memo } from "react";
 import { utilities } from "~/utilities";
 import { ClientOnly } from "~/components/client-only";
@@ -84,7 +84,7 @@ function PopularUtility({ name, description, path }: PopularUtilityProps) {
           to={path}
         >
           Try
-          <ArrowSmallRightIcon
+          <ArrowRightIcon
             className="h-4 w-4 relative top-px -mr-1"
             aria-hidden="true"
           />
