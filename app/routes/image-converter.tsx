@@ -9,8 +9,6 @@ import { Transition } from "@headlessui/react";
 import Dropdown from "~/components/dropdown";
 import JSZip from "jszip";
 import { convertToFileFormat } from "~/utils/convert-image-file";
-import { HTML5Backend, NativeTypes } from "react-dnd-html5-backend";
-import { DndProvider, DropTargetMonitor, useDrop } from "react-dnd";
 import {
   ArrowDownOnSquareIcon,
   CloudArrowUpIcon,
