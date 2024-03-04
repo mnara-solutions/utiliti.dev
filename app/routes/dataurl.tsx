@@ -6,6 +6,8 @@ import Dropdown from "~/components/dropdown";
 import Utiliti from "~/components/utiliti";
 import ReadFile from "~/components/read-file";
 import { convertFileToDataUrl } from "~/utils/convert-image-file";
+import { NativeTypes } from "react-dnd-html5-backend";
+import { useDrop } from "react-dnd";
 
 export const meta = metaHelper(
   utilities.dataurl.name,
@@ -25,6 +27,47 @@ function isImage(dataUrl: string, fileType: string): Promise<boolean> {
   });
 }
 
+function DroppableInput({
+  input,
+  setInput,
+  format,
+  quality,
+}: {
+  readonly input: string;
+  readonly setInput: (v: string) => void;
+  readonly format: string;
+  readonly quality: string;
+}) {
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: [NativeTypes.FILE],
+    async drop(item: { files: File[] }) {
+      setInput(await convertFileToDataUrl(item.files[0], format, quality));
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }));
+
+  return (
+    <textarea
+      id="input"
+      rows={10}
+      className={
+        "block px-2 py-2 font-mono w-full lg:text-sm bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 " +
+        (isOver && canDrop
+          ? "border-green-700 focus:border-green-700"
+          : "border-zinc-800 focus:border-zinc-800")
+      }
+      placeholder="Paste in your Data URL, drag and drop a file, or click on the attachment icon below and select a file."
+      required={true}
+      ref={drop}
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+    />
+  );
+}
+
 export default function DataUrl() {
   const [format, setFormat] = useState("jpg");
   const [quality, setQuality] = useState("0");
@@ -39,8 +82,6 @@ export default function DataUrl() {
           "image/jpeg",
           "image/png",
           "image/webp",
-          "image/avif",
-          "image/gif",
           "image/svg+xml",
         ];
 
@@ -59,18 +100,17 @@ export default function DataUrl() {
   );
 
   const renderInput = useCallback(
-    (input: string, setInput: (v: string) => void) => (
-      <textarea
-        id="input"
-        rows={10}
-        className="block px-3 py-2 font-mono w-full lg:text-sm border-0 bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400"
-        placeholder="Paste in your Data URL…"
-        required={true}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-    ),
-    [],
+    (input: string, setInput: (v: string) => void) => {
+      return (
+        <DroppableInput
+          input={input}
+          setInput={setInput}
+          format={format}
+          quality={quality}
+        />
+      );
+    },
+    [format, quality],
   );
 
   const renderOutput = useCallback(
@@ -100,11 +140,12 @@ export default function DataUrl() {
               { id: "jpg", label: "Jpeg" },
               { id: "png", label: "Png" },
               { id: "webp", label: "Webp" },
+              { id: "svg", label: "Svg" },
             ]}
             defaultValue={format}
           />
 
-          {format !== "png" ? (
+          {format !== "png" && format !== "svg" ? (
             <Dropdown
               onOptionChange={setQuality}
               options={[
@@ -122,7 +163,7 @@ export default function DataUrl() {
           ) : null}
 
           <ReadFile
-            accept="image/*"
+            accept={format === "svg" ? "image/svg+xml" : "image/*"}
             onLoad={async (files) =>
               setInput(await convertFileToDataUrl(files[0], format, quality))
             }

@@ -1,7 +1,10 @@
+import { cleanSvg, encodeSvg } from "~/utils/svg-utils";
+
 const imageFormats: Record<string, string> = {
   jpg: "image/jpeg",
   png: "image/png",
   webp: "image/webp",
+  svg: "image/svg+xml",
 };
 
 function extensionFromFormat(extension: string): string {
@@ -20,7 +23,17 @@ export function convertFileToDataUrl(
     const reader = new FileReader();
 
     reader.addEventListener("load", function (e) {
-      resolve((e.target?.result || "").toString());
+      let value = (e.target?.result || "").toString();
+
+      if (format === "svg") {
+        value = cleanSvg(value);
+        // Replace double quotes with single quotes
+        value = value.replace(/"/g, "'");
+        value = encodeSvg(value);
+        value = `data:image/svg+xml;utf8,${value}`;
+      }
+
+      resolve(value);
     });
 
     reader.addEventListener("error", function (e) {
@@ -28,7 +41,9 @@ export function convertFileToDataUrl(
     });
 
     const fileFormat = extensionFromFormat(file.type);
-    if (
+    if (format === "svg") {
+      reader.readAsText(file);
+    } else if (
       (fileFormat && fileFormat !== format) ||
       (quality != "0" && format !== "png")
     ) {
