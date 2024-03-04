@@ -2,7 +2,6 @@ import ContentWrapper from "~/components/content-wrapper";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import React from "react";
 import Button from "~/components/button";
 import type { ActionFunction } from "@remix-run/router";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
@@ -90,7 +89,6 @@ function typeToString(type: number): string {
 
 export const action: ActionFunction = async ({
   request,
-  context,
 }): Promise<Response[]> => {
   const formData = await request.formData();
   const domain = formData.get("domain") as string;
@@ -108,6 +106,7 @@ export const action: ActionFunction = async ({
 export default function NsLookup() {
   const data = useActionData<Response[]>();
   const navigation = useNavigation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const isEmpty = data && data.every(([_, rows]) => rows === null);
 
   return (
@@ -115,7 +114,7 @@ export default function NsLookup() {
       <h1>NS Lookup</h1>
 
       <p>
-        Uses Cloudflare's DNS-over-HTTPS (DOH){" "}
+        Uses Cloudflare&apos;s DNS-over-HTTPS (DOH){" "}
         <a
           href="https://developers.cloudflare.com/1.1.1.1/encryption/dns-over-https/make-api-requests/dns-json/"
           target="_blank"

@@ -117,7 +117,7 @@ export default function Search({ open, setOpen }: Props) {
                 {query !== "" && filteredUtilities.length === 0 && (
                   <div className="py-14 px-6 text-center sm:px-14">
                     <p className="text-sm text-gray-200">
-                      We couldn't find any utilities with that term.
+                      We couldn&apos;t find any utilities with that term.
                     </p>
                   </div>
                 )}

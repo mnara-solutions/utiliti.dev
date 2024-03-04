@@ -1,11 +1,11 @@
 node_modules
 
 /.cache
-/.wrangler
-/functions
-/public/build
+/build
 .env
-.dev.vars
-/test-results/
+
+.wrangler
+
 /playwright-report/
 /playwright/.cache/
+test-results

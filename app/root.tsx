@@ -1,10 +1,8 @@
 import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare";
-import { cssBundleHref } from "@remix-run/css-bundle";
 import {
   isRouteErrorResponse,
   Link,
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -12,10 +10,12 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import Layout from "~/components/layout";
-import { ArrowSmallLeftIcon } from "@heroicons/react/24/solid";
+import tailwind from "./styles/tailwind.css?url";
+import dark from "../node_modules/highlight.js/styles/stackoverflow-dark.css?url";
+import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 
-import "./styles/tailwind.css";
-import "highlight.js/styles/stackoverflow-dark.css";
+// @ts-expect-error hack to get around react-dnd + vite issue
+globalThis.global = {};
 
 export const meta: MetaFunction = () => {
   const title = "Utiliti";
@@ -81,7 +81,8 @@ export const links: LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap",
   },
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  { rel: "stylesheet", href: tailwind },
+  { rel: "stylesheet", href: dark },
 ];
 
 export default function App() {
@@ -105,7 +106,6 @@ function Document({ children }: { children: React.ReactNode }) {
         <Layout>{children}</Layout>
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );
@@ -142,7 +142,7 @@ export function ErrorBoundary() {
           className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
           to="/"
         >
-          <ArrowSmallLeftIcon className="h-4 w-4 -ml-1" aria-hidden="true" />
+          <ArrowLeftIcon className="h-4 w-4 -ml-1" aria-hidden="true" />
           Home
         </Link>
       </div>

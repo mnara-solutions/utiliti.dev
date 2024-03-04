@@ -1,5 +1,5 @@
 import Copy from "~/components/copy";
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import Code from "~/components/code";
 import { noop } from "~/common";
 import { metaHelper } from "~/utils/meta";

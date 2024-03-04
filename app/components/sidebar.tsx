@@ -1,4 +1,3 @@
-import React from "react";
 import { useLocation } from "react-router";
 import { Link } from "@remix-run/react";
 import { sidebar } from "~/utilities";
