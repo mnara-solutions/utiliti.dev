@@ -10,10 +10,7 @@ import {
 } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import {
-  ArrowSmallLeftIcon,
-  ArrowSmallRightIcon,
-} from "@heroicons/react/24/solid";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import Copy from "~/components/copy";
 import { decrypt } from "~/utils/aes";
@@ -28,16 +25,12 @@ type LoaderData = {
   readonly needsConfirmation: boolean;
 };
 
-interface Env {
-  PRIVATE_NOTES: KVNamespace;
-}
-
 export const loader: LoaderFunction = async ({
   request,
   params,
   context,
 }): Promise<LoaderData | Response> => {
-  const privateNotesNs = (context.cloudflare.env as Env).PRIVATE_NOTES;
+  const privateNotesNs: KVNamespace = context.cloudflare.env.PRIVATE_NOTES;
   const id = params.id;
 
   // if there is no id present, redirect back to private notes (technically not possible)
@@ -178,7 +171,7 @@ function Confirm() {
           to={`?confirm=true`}
         >
           Show the note
-          <ArrowSmallRightIcon className="h-4 w-4 -mr-1" aria-hidden="true" />
+          <ArrowRightIcon className="h-4 w-4 -mr-1" aria-hidden="true" />
         </Link>
       </div>
     </>
@@ -195,7 +188,7 @@ function Error({ message }: { readonly message: string }) {
           className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
           to={Routes.PRIVATE_NOTES}
         >
-          <ArrowSmallLeftIcon className="h-4 w-4 -ml-1" aria-hidden="true" />
+          <ArrowLeftIcon className="h-4 w-4 -ml-1" aria-hidden="true" />
           Back
         </Link>
       </div>

@@ -6,10 +6,6 @@ export type CreateActionData = {
   readonly id: string;
 };
 
-interface Env {
-  PRIVATE_NOTES: KVNamespace;
-}
-
 /**
  * This file is only responsible for saving the ciphertext into Cloudflare KV and returning the id.
  *
@@ -23,9 +19,7 @@ export const action: ActionFunction = async ({
   request,
   context,
 }): Promise<CreateActionData> => {
-  console.log(context);
-
-  const privateNotesNs = (context.cloudflare.env as Env).PRIVATE_NOTES;
+  const privateNotesNs: KVNamespace = context.cloudflare.env.PRIVATE_NOTES;
 
   // grab submitted data
   const formData = await request.formData();
