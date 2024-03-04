@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import Utiliti from "~/components/utiliti";
-import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
+import qrcode from "qrcode.react";
 import Box, { BoxContent, BoxOptions, BoxTitle } from "~/components/box";
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import IconButton from "~/components/icon-button";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+
+// eslint-disable-next-line import/no-named-as-default-member
+const { QRCodeCanvas, QRCodeSVG } = qrcode;
 
 export const meta = metaHelper(
   utilities.qrCode.name,

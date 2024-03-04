@@ -17,7 +17,7 @@ export default function Button(props: Props) {
         className,
       )}
     >
-      {props.label}
+      {label}
     </button>
   );
 }

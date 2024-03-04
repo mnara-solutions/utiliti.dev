@@ -1,6 +1,5 @@
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import type { ChangeEvent } from "react";
-import React, { useCallback } from "react";
+import { ChangeEvent, useCallback } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import { utilities } from "~/utilities";
 import { metaHelper } from "~/utils/meta";

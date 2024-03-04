@@ -25,7 +25,7 @@ function GoogleAd() {
     scriptTag.setAttribute("crossorigin", "anonymous");
     document.body.appendChild(scriptTag);
 
-    // @ts-ignore
+    // @ts-expect-error ignore for now
     (window.adsbygoogle = window.adsbygoogle || []).push({});
 
     adsLoaded.current = true;

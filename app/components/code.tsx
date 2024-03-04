@@ -27,7 +27,9 @@ export default function Code({
   language = "javascript",
   placeholder = "Paste some JSON…",
 }: Props) {
-  const CodeEditor = (Editor as any).default;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const CodeEditor = (Editor as any).default || Editor;
+
   return (
     <CodeEditor
       value={value}

@@ -2,10 +2,11 @@ import Copy from "~/components/copy";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
 import type { ReactNode } from "react";
-import { useLayoutEffect, useState } from "react";
+import { useState } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { useLocalStorage } from "~/hooks/use-local-storage";
+import { useIsomorphicLayoutEffect } from "~/hooks/use-isomorphic-layout-effect";
 
 interface Props<T> {
   readonly label: string;
@@ -45,7 +46,7 @@ export default function Utiliti<T>({
 
   // using an effect to calculate the value after input has changed
   // this allows us to re-render when actions array has changed, which happens when options change
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const fn = actions[action];
 
     if (!fn || !input) {

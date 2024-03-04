@@ -146,12 +146,13 @@ export default function DataUrl() {
         </p>
         <p>The general syntax of a data URL looks like this:</p>
         <pre>data:[&#x3C;mediatype&#x3E;][;base64],&#x3C;data&#x3E;</pre>
-        <p>Here's a breakdown of the components:</p>
+        <p>Here&apos;s a breakdown of the components:</p>
         <ul>
           <li>
             <code>&#x3C;mediatype&#x3E;</code>: This is an optional parameter
-            that specifies the MIME type of the data. For example, "text/plain",
-            "image/jpeg", "application/pdf", etc.
+            that specifies the MIME type of the data. For example,
+            &quot;text/plain&quot;, &quot;image/jpeg&quot;,
+            &quot;application/pdf&quot;, etc.
           </li>
           <li>
             <code>;base64</code>: This is an optional parameter indicating that
