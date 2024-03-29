@@ -15,7 +15,7 @@ import dark from "../node_modules/highlight.js/styles/stackoverflow-dark.css?url
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 
 // @ts-expect-error hack to get around react-dnd + vite issue
-globalThis.global = {};
+globalThis.global = typeof window !== "undefined" ? window : {};
 
 export const meta: MetaFunction = () => {
   const title = "Utiliti";

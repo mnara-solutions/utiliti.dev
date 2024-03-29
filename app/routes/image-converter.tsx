@@ -15,6 +15,8 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { classNames } from "~/common";
+import { DropTargetMonitor, useDrop } from "react-dnd";
+import { NativeTypes } from "react-dnd-html5-backend";
 
 export const meta = metaHelper(
   utilities.imageConverter.name,
@@ -36,6 +38,7 @@ function renameFile(file: File, format: string) {
 
   return `${filenameWithoutExtension}.${format}`;
 }
+
 export default function ImageConverter() {
   const [files, setFiles] = useState<File[]>([]);
   const [dataUrls, setDataUrls] = useState<string[]>([]);
