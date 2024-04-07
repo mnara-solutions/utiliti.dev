@@ -29,7 +29,7 @@ enum Action {
 }
 
 function textToUrl(text: string) {
-  return text.startsWith("https%3A%2F%2F") ? decodeURIComponent(text) : text;
+  return text.startsWith("https%3A%2F%2F") ? decodeURIComponent(text) : text.startsWith("http") ?  text : `https://${text}`;
 }
 
 async function encode(text: string): Promise<string | JsonURL> {
@@ -103,7 +103,7 @@ export default function URLRoute() {
       <textarea
         id="input"
         rows={3}
-        className="block font-mono w-full px-3 py-2 lg:text-sm border-0 bg-zinc-800 focus:ring-0 placeholder-zinc-400"
+    className="block font-mono w-full px-3 py-2 lg:text-sm border-0 bg-zinc-800 focus:ring-0 placeholder-zinc-400"
         placeholder="Paste in your URL…"
         required={true}
         value={input}
