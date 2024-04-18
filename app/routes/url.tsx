@@ -28,7 +28,7 @@ enum Action {
   DECODE = "Decode",
 }
 
-//the usage of this function expects a protocal in the url, so we need to add the protocol if its not in the text
+//the usage of this function expects a protocol in the url, so we need to add the protocol if its not in the text
 function textToUrl(text: string) {
   // decode encoded text - we check index of "://" since it could be https or http
   if (text.indexOf("%3A%2F%2F") <= 5) {
