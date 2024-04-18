@@ -29,11 +29,13 @@ enum Action {
 }
 
 function textToUrl(text: string) {
-  return text.startsWith("https%3A%2F%2F")
-    ? decodeURIComponent(text)
-    : text.startsWith("http")
-      ? text
-      : `https://${text}`;
+  if (text.indexOf("%3A%2F%2F") <= 5) {
+    return decodeURIComponent(text);
+  } else if (text.startsWith("http")) {
+    return text;
+  }
+
+  return `https://${text}`;
 }
 
 async function encode(text: string): Promise<string | JsonURL> {
