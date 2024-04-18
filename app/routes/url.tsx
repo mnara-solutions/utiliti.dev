@@ -30,10 +30,10 @@ enum Action {
 
 //the usuage of this function expects a protocal in the url, so we need to add the protocol if its not in the text
 function textToUrl(text: string) {
-  // decode encoded url - we check index incase of https or http
+  // decode encoded text - we check index of "://" since it could be https or http
   if (text.indexOf("%3A%2F%2F") <= 5) {
     return decodeURIComponent(text);
-  // if text start with http or https, we return text  
+  // if text starts with http (or https), we return text as is 
   } else if (text.startsWith("http")) {
     return text;
   }
