@@ -5,7 +5,7 @@ const DOCUMENT_CACHE = "documents";
  * Very simple service worker that caches the assets and serves them if they exist in the cache.
  *
  * If this becomes more complex, it might be worth using the google workbox libraries and transpiling
- * a typescript worker. Look at `remix-pwa` and see how they do it.
+ * a typescript worker.
  */
 self.addEventListener("fetch", (event) => {
   const r = event.request;

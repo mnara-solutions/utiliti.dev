@@ -79,7 +79,7 @@ export default function PrivateNote() {
 
   // We are going to capture the `key` on load, and then remove it from the URL. This is to prevent
   // the key from leaking via browser history. More details: https://github.com/mnara-solutions/utiliti.dev/issues/12
-  // This only works because remix will fetch the note when the confirm button is clicked without reloading
+  // This only works because react router will fetch the note when the confirm button is clicked without reloading
   // the document (only if javascript is enabled, which is kind of necessary for this website).
   const key = useRef(location.hash.slice(1));
   useEffect(() => {

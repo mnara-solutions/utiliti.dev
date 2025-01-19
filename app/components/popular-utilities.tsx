@@ -23,7 +23,7 @@ function shuffle<T>(arr: T[]) {
 export default memo(PopularUtilities);
 
 /**
- * Since we are using a random() function to show popular utilities, remix fails to match server side
+ * Since we are using a random() function to show popular utilities, react router fails to match server side
  * rendered content with what the client does and throws a bunch of errors. We wrap it with <ClientOnly />
  * to only render fully on the client side.
  *
