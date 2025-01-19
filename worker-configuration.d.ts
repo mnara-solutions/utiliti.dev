@@ -3,5 +3,4 @@
 
 interface Env {
   PRIVATE_NOTES: KVNamespace;
-  CF_WHOIS_KEY: string;
 }

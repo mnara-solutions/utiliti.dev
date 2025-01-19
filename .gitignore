@@ -5,7 +5,6 @@ node_modules
 .env
 
 .wrangler
-.dev.vars
 
 /playwright-report/
 /playwright/.cache/
