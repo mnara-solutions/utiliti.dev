@@ -1,4 +1,4 @@
-import type { ActionFunction } from "@remix-run/router";
+import type { ActionFunction } from "react-router";
 import { createId } from "@paralleldrive/cuid2";
 import { noteExpiries } from "~/routes/private-note._index";
 

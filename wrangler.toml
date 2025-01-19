@@ -1,5 +1,8 @@
+name = "utiliti"
 compatibility_date = "2024-11-11"
 compatibility_flags = []
+main = "./build/server/index.js"
+assets = { directory = "./build/client/" }
 
 [[kv_namespaces]]
 binding = "PRIVATE_NOTES"

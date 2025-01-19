@@ -15,12 +15,10 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { classNames } from "~/common";
-import { DropTargetMonitor, useDrop } from "react-dnd";
-import { NativeTypes } from "react-dnd-html5-backend";
 
 export const meta = metaHelper(
   utilities.imageConverter.name,
-  utilities.imageConverter.description,
+  utilities.imageConverter.description
 );
 
 const formatImage: { [format: string]: string } = {
@@ -33,7 +31,7 @@ function renameFile(file: File, format: string) {
   const filename = file.name;
   const filenameWithoutExtension = filename.substring(
     0,
-    filename.lastIndexOf("."),
+    filename.lastIndexOf(".")
   );
 
   return `${filenameWithoutExtension}.${format}`;
@@ -52,7 +50,7 @@ export default function ImageConverter() {
     (file: File) => {
       return convertToFileFormat(file, format, parseInt(quality, 10));
     },
-    [format, quality],
+    [format, quality]
   );
 
   // materialized state - we need each file as a data url
@@ -68,7 +66,7 @@ export default function ImageConverter() {
 
       zip.file(
         renameFile(f, format),
-        new Blob([await f.arrayBuffer()], { type: formatImage[format] }),
+        new Blob([await f.arrayBuffer()], { type: formatImage[format] })
       );
     }
 
@@ -94,14 +92,14 @@ export default function ImageConverter() {
     (error: string) => {
       setError(error);
     },
-    [setError],
+    [setError]
   );
 
   const onRemoveImage = useCallback(
     (index: number) => {
       setFiles(files.filter((_, i) => i !== index));
     },
-    [files],
+    [files]
   );
 
   const onDownloadImage = useCallback(
@@ -111,32 +109,33 @@ export default function ImageConverter() {
       link.download = renameFile(files[index], format);
       link.click();
     },
-    [dataUrls, files, format],
+    [dataUrls, files, format]
   );
 
-  const [{ canDrop, isOver }, drop] = useDrop(
-    () => ({
-      accept: [NativeTypes.FILE],
-      drop(item: { files: File[] }) {
-        setFiles([
-          ...files,
-          ...item.files.filter(
-            (it) => it.size < 10 * 1024 * 1024 && it.type.startsWith("image/"),
-          ),
-        ]);
-      },
+  // const [{ canDrop, isOver }, drop] = useDrop(
+  //   () => ({
+  //     accept: [NativeTypes.FILE],
+  //     drop(item: { files: File[] }) {
+  //       setFiles([
+  //         ...files,
+  //         ...item.files.filter(
+  //           (it) => it.size < 10 * 1024 * 1024 && it.type.startsWith("image/"),
+  //         ),
+  //       ]);
+  //     },
 
-      collect: (monitor: DropTargetMonitor) => {
-        return {
-          isOver: monitor.isOver(),
-          canDrop: monitor.canDrop(),
-        };
-      },
-    }),
-    [files],
-  );
+  //     collect: (monitor: DropTargetMonitor) => {
+  //       return {
+  //         isOver: monitor.isOver(),
+  //         canDrop: monitor.canDrop(),
+  //       };
+  //     },
+  //   }),
+  //   [files],
+  // );
 
-  const isActive = canDrop && isOver;
+  // const isActive = canDrop && isOver;
+  const isActive = false;
 
   return (
     <ContentWrapper>
@@ -146,13 +145,13 @@ export default function ImageConverter() {
         <BoxTitle title="Images"></BoxTitle>
 
         <BoxContent isLast={false} className="max-h-max">
-          <div className="flex items-center justify-center w-full" ref={drop}>
+          <div className="flex items-center justify-center w-full">
             <label
               htmlFor="file-input"
               className={classNames(
                 "flex flex-col m-2 items-center justify-center w-full h-full border-2 border-dashed rounded-lg bg-zinc-800",
                 isActive ? "border-green-700" : "border-gray-600",
-                files.length === 0 && "cursor-pointer hover:bg-zinc-700",
+                files.length === 0 && "cursor-pointer hover:bg-zinc-700"
               )}
             >
               {files.length === 0 ? (

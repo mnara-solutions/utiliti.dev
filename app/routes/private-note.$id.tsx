@@ -1,13 +1,7 @@
-import type { LoaderFunction } from "@remix-run/router";
-import { redirect } from "@remix-run/router";
+import type { LoaderFunction } from "react-router";
+import { redirect } from "react-router";
 import type { NoteMetadata } from "~/routes/private-note._index";
-import {
-  isRouteErrorResponse,
-  Link,
-  useLoaderData,
-  useLocation,
-  useRouteError,
-} from "@remix-run/react";
+import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";

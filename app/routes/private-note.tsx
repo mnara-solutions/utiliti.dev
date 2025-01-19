@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react";
+import { Outlet } from "react-router";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import ContentWrapper from "~/components/content-wrapper";

@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { memo } from "react";
 import { utilities } from "~/utilities";

@@ -1,5 +1,8 @@
-import type { ChangeEvent, SelectHTMLAttributes } from "react";
-import { useCallback } from "react";
+import {
+  useCallback,
+  type ChangeEvent,
+  type SelectHTMLAttributes,
+} from "react";
 import { classNames } from "~/common";
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -16,7 +19,7 @@ export default function Dropdown({
 }: Props) {
   const onChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => onOptionChange(e.target.value),
-    [onOptionChange],
+    [onOptionChange]
   );
 
   return (
@@ -25,7 +28,7 @@ export default function Dropdown({
       name={name}
       className={classNames(
         "block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 focus:ring-orange-500 focus:border-orange-500",
-        className,
+        className
       )}
       defaultValue={defaultValue}
       onChange={onChange}

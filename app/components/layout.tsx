@@ -10,13 +10,11 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Link, useLocation } from "@remix-run/react";
+import { Link, useLocation } from "react-router";
 import Sidebar from "~/components/sidebar";
 import { Dialog, Transition } from "@headlessui/react";
 import Search from "~/components/search";
 import useKeyboardShortcut from "~/hooks/use-keyboard-shortcut";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
 
 const keyboardShortcutOptions = {
   overrideSystem: true,
@@ -172,7 +170,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </div>
             </div>
-            <DndProvider backend={HTML5Backend}>{children}</DndProvider>
+            {children}
           </article>
         </main>
       </div>

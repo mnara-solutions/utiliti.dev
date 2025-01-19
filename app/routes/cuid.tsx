@@ -1,7 +1,6 @@
 import ContentWrapper from "~/components/content-wrapper";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import type { ChangeEvent } from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useState, type ChangeEvent } from "react";
 import Copy from "~/components/copy";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { init } from "@paralleldrive/cuid2";
@@ -24,14 +23,14 @@ export default function UuidGenerator() {
     (e: ChangeEvent<HTMLInputElement>) => {
       setLength(Math.min(Math.max(parseInt(e.target.value, 10), 5), 50));
     },
-    [setLength],
+    [setLength]
   );
 
   const onChangeNumber = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setNumber(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
     },
-    [setNumber],
+    [setNumber]
   );
 
   const random = init({ length });

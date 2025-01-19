@@ -1,4 +1,7 @@
-export default class Routes {
+import { type RouteConfig } from "@react-router/dev/routes";
+import { flatRoutes } from "@react-router/fs-routes";
+
+export class Routes {
   static readonly PRIVATE_NOTES = "/private-note/";
   static readonly PRIVATE_NOTE_CREATE = "/private-note/create";
   static readonly PRIVATE_NOTE = (id: string = ":id", hash = ":hash") =>
@@ -21,3 +24,5 @@ export default class Routes {
   static readonly QR_CODE = "/qr-code";
   static readonly HASHING = "/hashing";
 }
+
+export default flatRoutes() satisfies RouteConfig;
