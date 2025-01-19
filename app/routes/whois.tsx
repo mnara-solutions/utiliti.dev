@@ -11,7 +11,7 @@ import Copy from "~/components/copy";
 
 export const meta = metaHelper(
   utilities.whois.name,
-  utilities.whois.description
+  utilities.whois.description,
 );
 
 type Response = {
@@ -46,7 +46,7 @@ export const action: ActionFunction = async ({
         accept: "application/json",
         Authorization: `Bearer ${CF_WHOIS_KEY}`,
       },
-    }
+    },
   ).then((it) => it.json<Response>());
 };
 
