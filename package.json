@@ -52,6 +52,12 @@
     "vite-tsconfig-paths": "^5.1.4",
     "wrangler": "^3.103.2"
   },
+  "overrides": {
+    "react-json-tree": {
+      "@types/react": "^19.0.7",
+      "react": "^19.0.0"
+    }
+  },
   "engines": {
     "node": ">=20.9"
   }
