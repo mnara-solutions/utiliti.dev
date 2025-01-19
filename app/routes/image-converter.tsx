@@ -15,6 +15,8 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { classNames } from "~/common";
+import { type DropTargetMonitor, useDrop } from "react-dnd";
+import { NativeTypes } from "react-dnd-html5-backend";
 
 export const meta = metaHelper(
   utilities.imageConverter.name,
@@ -112,27 +114,27 @@ export default function ImageConverter() {
     [dataUrls, files, format],
   );
 
-  // const [{ canDrop, isOver }, drop] = useDrop(
-  //   () => ({
-  //     accept: [NativeTypes.FILE],
-  //     drop(item: { files: File[] }) {
-  //       setFiles([
-  //         ...files,
-  //         ...item.files.filter(
-  //           (it) => it.size < 10 * 1024 * 1024 && it.type.startsWith("image/"),
-  //         ),
-  //       ]);
-  //     },
+  const [{ canDrop, isOver }, drop] = useDrop(
+    () => ({
+      accept: [NativeTypes.FILE],
+      drop(item: { files: File[] }) {
+        setFiles([
+          ...files,
+          ...item.files.filter(
+            (it) => it.size < 10 * 1024 * 1024 && it.type.startsWith("image/"),
+          ),
+        ]);
+      },
 
-  //     collect: (monitor: DropTargetMonitor) => {
-  //       return {
-  //         isOver: monitor.isOver(),
-  //         canDrop: monitor.canDrop(),
-  //       };
-  //     },
-  //   }),
-  //   [files],
-  // );
+      collect: (monitor: DropTargetMonitor) => {
+        return {
+          isOver: monitor.isOver(),
+          canDrop: monitor.canDrop(),
+        };
+      },
+    }),
+    [files],
+  );
 
   // const isActive = canDrop && isOver;
   const isActive = false;
@@ -145,7 +147,7 @@ export default function ImageConverter() {
         <BoxTitle title="Images"></BoxTitle>
 
         <BoxContent isLast={false} className="max-h-max">
-          <div className="flex items-center justify-center w-full">
+          <div className="flex items-center justify-center w-full" ref={drop}>
             <label
               htmlFor="file-input"
               className={classNames(
