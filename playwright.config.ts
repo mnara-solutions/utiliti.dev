@@ -6,7 +6,7 @@ import { defineConfig, devices } from "@playwright/test";
  */
 // require('dotenv').config();
 
-const PORT = process.env.PORT || 8787;
+const PORT = process.env.PORT || 8788;
 const baseURL = `http://localhost:${PORT}`;
 
 /**
