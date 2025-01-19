@@ -1,11 +1,6 @@
-import { KVNamespace } from "@cloudflare/workers-types";
-import { GetLoadContextFunction } from "@react-router/cloudflare";
+import { type GetLoadContextFunction } from "@react-router/cloudflare";
 import { type PlatformProxy } from "wrangler";
 
-type Env = {
-  PRIVATE_NOTES: KVNamespace;
-  CF_WHOIS_KEY: string;
-};
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;
 
 declare module "@react-router/cloudflare" {
