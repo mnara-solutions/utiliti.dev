@@ -7,7 +7,6 @@
     "build": "react-router build",
     "start": "wrangler pages dev ./build/client",
     "typecheck": "react-router typegen && tsc",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "prettier": "prettier --write --ignore-path .gitignore .",
     "test:e2e": "playwright test",
     "typegen": "wrangler types"
