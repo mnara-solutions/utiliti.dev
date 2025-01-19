@@ -1,6 +1,6 @@
 import type { LoaderFunction } from "react-router";
 import { redirect } from "react-router";
-import type { NoteMetadata } from "~/routes/private-note._index";
+import type { NoteMetadata } from "~/routes/private-note/index";
 import {
   isRouteErrorResponse,
   Link,

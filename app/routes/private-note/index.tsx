@@ -6,7 +6,7 @@ import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { encrypt } from "~/utils/aes";
 import { Routes } from "~/routes";
 import Copy from "~/components/copy";
-import type { CreateActionData } from "~/routes/private-note.create";
+import type { CreateActionData } from "~/routes/private-note/create";
 import Box, {
   BoxButtons,
   BoxContent,
