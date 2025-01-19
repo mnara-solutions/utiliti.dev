@@ -1,5 +1,5 @@
 import { KVNamespace } from "@cloudflare/workers-types";
-import { type AppLoadContext } from "@react-router/cloudflare";
+import { GetLoadContextFunction } from "@react-router/cloudflare";
 import { type PlatformProxy } from "wrangler";
 
 type Env = {
@@ -14,12 +14,7 @@ declare module "@react-router/cloudflare" {
   }
 }
 
-type GetLoadContext = (args: {
-  request: Request;
-  context: { cloudflare: Cloudflare };
-}) => AppLoadContext;
-
-export const getLoadContext: GetLoadContext = ({ context }) => {
+export const getLoadContext: GetLoadContextFunction = ({ context }) => {
   return {
     ...context,
   };
