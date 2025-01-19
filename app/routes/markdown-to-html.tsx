@@ -24,7 +24,7 @@ enum Action {
 }
 
 async function convert(markdown: string): Promise<string> {
-  const html = marked(markdown);
+  const html = await marked(markdown);
 
   return DOMPurify.sanitize(html).toString();
 }
