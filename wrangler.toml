@@ -4,3 +4,7 @@ compatibility_flags = []
 [[kv_namespaces]]
 binding = "PRIVATE_NOTES"
 id = "PRIVATE_NOTES"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
