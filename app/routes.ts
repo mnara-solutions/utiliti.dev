@@ -1,4 +1,5 @@
 import { type RouteConfig } from "@react-router/dev/routes";
+import { flatRoutes } from "@react-router/fs-routes";
 
 export class Routes {
   static readonly PRIVATE_NOTES = "/private-note/";
@@ -24,6 +25,4 @@ export class Routes {
   static readonly HASHING = "/hashing";
 }
 
-export default [
-  // however your routes are defined
-] satisfies RouteConfig;
+export default flatRoutes() satisfies RouteConfig;
