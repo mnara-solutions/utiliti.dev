@@ -4,7 +4,7 @@ import { useFetcher } from "react-router";
 import { init } from "@paralleldrive/cuid2";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { encrypt } from "~/utils/aes";
-import Routes from "~/routes";
+import { Routes } from "~/routes";
 import Copy from "~/components/copy";
 import type { CreateActionData } from "~/routes/private-note.create";
 import Box, {
@@ -68,7 +68,7 @@ export default function Index() {
     // encrypt data
     const ciphertext = await encrypt(
       inputRef.current.value,
-      passwordRef.current,
+      passwordRef.current
     );
 
     // submit form
@@ -77,7 +77,7 @@ export default function Index() {
         input: ciphertext,
         expiry,
       },
-      { method: "post", action: Routes.PRIVATE_NOTE_CREATE },
+      { method: "post", action: Routes.PRIVATE_NOTE_CREATE }
     );
   }, [expiry, fetcher]);
 

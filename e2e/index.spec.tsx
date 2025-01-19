@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import Routes from "~/routes";
+import { Routes } from "../app/routes";
 
 test("navigate to a few pages and perform smoke test", async ({ page }) => {
   // load up the index page
@@ -8,7 +8,7 @@ test("navigate to a few pages and perform smoke test", async ({ page }) => {
   // ensure the index page has a few key pieces of information
   await expect(page.locator("h1")).toContainText("Utiliti");
   await expect(
-    page.getByText("A collection of open source utilities."),
+    page.getByText("A collection of open source utilities.")
   ).toBeVisible();
   await expect(page.getByText("Standards")).toBeVisible();
   await expect(page.getByText("Popular Utilities")).toBeVisible();

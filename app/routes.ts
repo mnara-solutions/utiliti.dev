@@ -25,4 +25,4 @@ export class Routes {
   static readonly HASHING = "/hashing";
 }
 
-export default flatRoutes() satisfies RouteConfig;
+export default [...(await flatRoutes())] satisfies RouteConfig;

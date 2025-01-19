@@ -1,4 +1,4 @@
-import Routes from "~/routes";
+import { Routes } from "~/routes";
 
 /**
  * This file serves as an index of all available utilities and the content gets re-used in places like the sidebar

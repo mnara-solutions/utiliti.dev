@@ -1,14 +1,20 @@
 import type { LoaderFunction } from "react-router";
 import { redirect } from "react-router";
 import type { NoteMetadata } from "~/routes/private-note._index";
-import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
+import {
+  isRouteErrorResponse,
+  Link,
+  useLoaderData,
+  useLocation,
+  useRouteError,
+} from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import Copy from "~/components/copy";
 import { decrypt } from "~/utils/aes";
-import Routes from "~/routes";
+import { Routes } from "~/routes";
 import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import { useHydrated } from "~/hooks/use-hydrated";
 import { useIsomorphicLayoutEffect } from "~/hooks/use-isomorphic-layout-effect";
@@ -81,7 +87,7 @@ export default function PrivateNote() {
       history.replaceState(
         {},
         document.title,
-        Routes.PRIVATE_NOTES + "#redacted",
+        Routes.PRIVATE_NOTES + "#redacted"
       );
     }
   }, [location]);
@@ -96,7 +102,7 @@ export default function PrivateNote() {
       .catch((it) => {
         console.error(
           "Error occurred while trying to decrypt the ciphertext.",
-          it,
+          it
         );
 
         setDecryptionError(true);
