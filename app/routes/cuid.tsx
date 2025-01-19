@@ -23,14 +23,14 @@ export default function UuidGenerator() {
     (e: ChangeEvent<HTMLInputElement>) => {
       setLength(Math.min(Math.max(parseInt(e.target.value, 10), 5), 50));
     },
-    [setLength]
+    [setLength],
   );
 
   const onChangeNumber = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setNumber(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
     },
-    [setNumber]
+    [setNumber],
   );
 
   const random = init({ length });

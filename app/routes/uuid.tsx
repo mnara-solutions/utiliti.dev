@@ -19,18 +19,18 @@ export default function UuidGenerator() {
     (e: ChangeEvent<HTMLInputElement>) => {
       setNumber(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
     },
-    [setNumber]
+    [setNumber],
   );
 
   const onChangeVersion = useCallback(
     (v: string) => {
       setVersion(parseInt(v, 10));
     },
-    [setVersion]
+    [setVersion],
   );
 
   const output = Array.from(Array(number), () =>
-    version === 1 ? v1() : v4()
+    version === 1 ? v1() : v4(),
   ).join("\n");
 
   return (

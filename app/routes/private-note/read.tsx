@@ -87,7 +87,7 @@ export default function PrivateNote() {
       history.replaceState(
         {},
         document.title,
-        Routes.PRIVATE_NOTES + "#redacted"
+        Routes.PRIVATE_NOTES + "#redacted",
       );
     }
   }, [location]);
@@ -102,7 +102,7 @@ export default function PrivateNote() {
       .catch((it) => {
         console.error(
           "Error occurred while trying to decrypt the ciphertext.",
-          it
+          it,
         );
 
         setDecryptionError(true);

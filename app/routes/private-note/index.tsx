@@ -68,7 +68,7 @@ export default function Index() {
     // encrypt data
     const ciphertext = await encrypt(
       inputRef.current.value,
-      passwordRef.current
+      passwordRef.current,
     );
 
     // submit form
@@ -77,7 +77,7 @@ export default function Index() {
         input: ciphertext,
         expiry,
       },
-      { method: "post", action: Routes.PRIVATE_NOTE_CREATE }
+      { method: "post", action: Routes.PRIVATE_NOTE_CREATE },
     );
   }, [expiry, fetcher]);
 

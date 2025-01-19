@@ -15,7 +15,7 @@ test("Immediately expiring private note", async ({ page }) => {
   // ensure note was created successfully
   await expect(page.getByText("Success")).toBeVisible();
   await expect(
-    page.getByText("This note will self-destruct after reading it.")
+    page.getByText("This note will self-destruct after reading it."),
   ).toBeVisible();
 
   // go to the note
@@ -25,8 +25,8 @@ test("Immediately expiring private note", async ({ page }) => {
   // ensure we get a confirmation page since this is a self-destructing note
   await expect(
     page.getByText(
-      "You were sent a sensitive note which is meant to be destroyed after it is read. Once you click on the button below, the note will be deleted."
-    )
+      "You were sent a sensitive note which is meant to be destroyed after it is read. Once you click on the button below, the note will be deleted.",
+    ),
   ).toBeVisible();
   await expect(page.getByText("Popular Utilities")).toBeVisible();
   await page.getByText("Show the note").click();
@@ -35,8 +35,8 @@ test("Immediately expiring private note", async ({ page }) => {
   await expect(page.getByText(noteText)).toBeVisible();
   await expect(
     page.getByText(
-      "This note is now deleted. Copy the content in the note before closing this window."
-    )
+      "This note is now deleted. Copy the content in the note before closing this window.",
+    ),
   ).toBeVisible();
 
   // ensure page url does not have the secret key
@@ -46,8 +46,8 @@ test("Immediately expiring private note", async ({ page }) => {
   await page.goto(noteUrl);
   await expect(
     page.getByText(
-      "The note you are looking was either not found or was deleted."
-    )
+      "The note you are looking was either not found or was deleted.",
+    ),
   ).toBeVisible();
 });
 
@@ -64,7 +64,7 @@ test("A note that is expiring in 1 hour", async ({ page }) => {
   // ensure note was created successfully
   await expect(page.getByText("Success")).toBeVisible();
   await expect(
-    page.getByText("This note will self-destruct 1 hour from now.")
+    page.getByText("This note will self-destruct 1 hour from now."),
   ).toBeVisible();
 
   // go to the note
