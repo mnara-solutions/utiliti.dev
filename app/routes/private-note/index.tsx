@@ -1,12 +1,12 @@
 import Button from "~/components/button";
 import { useCallback, useRef, useState } from "react";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher } from "react-router";
 import { init } from "@paralleldrive/cuid2";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { encrypt } from "~/utils/aes";
-import Routes from "~/routes";
+import { Routes } from "~/routes";
 import Copy from "~/components/copy";
-import type { CreateActionData } from "~/routes/private-note.create";
+import type { CreateActionData } from "~/routes/private-note/create";
 import Box, {
   BoxButtons,
   BoxContent,

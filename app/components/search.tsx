@@ -3,7 +3,7 @@ import { Combobox, Dialog, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { classNames } from "~/common";
 import { utilities } from "~/utilities";
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from "react-router";
 
 const allUtilities = Object.values(utilities);
 

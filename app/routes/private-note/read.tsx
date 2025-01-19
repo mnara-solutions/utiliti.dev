@@ -1,20 +1,20 @@
-import type { LoaderFunction } from "@remix-run/router";
-import { redirect } from "@remix-run/router";
-import type { NoteMetadata } from "~/routes/private-note._index";
+import type { LoaderFunction } from "react-router";
+import { redirect } from "react-router";
+import type { NoteMetadata } from "~/routes/private-note/index";
 import {
   isRouteErrorResponse,
   Link,
   useLoaderData,
   useLocation,
   useRouteError,
-} from "@remix-run/react";
+} from "react-router";
 import { useEffect, useRef, useState } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import Copy from "~/components/copy";
 import { decrypt } from "~/utils/aes";
-import Routes from "~/routes";
+import { Routes } from "~/routes";
 import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import { useHydrated } from "~/hooks/use-hydrated";
 import { useIsomorphicLayoutEffect } from "~/hooks/use-isomorphic-layout-effect";
@@ -79,7 +79,7 @@ export default function PrivateNote() {
 
   // We are going to capture the `key` on load, and then remove it from the URL. This is to prevent
   // the key from leaking via browser history. More details: https://github.com/mnara-solutions/utiliti.dev/issues/12
-  // This only works because remix will fetch the note when the confirm button is clicked without reloading
+  // This only works because react router will fetch the note when the confirm button is clicked without reloading
   // the document (only if javascript is enabled, which is kind of necessary for this website).
   const key = useRef(location.hash.slice(1));
   useEffect(() => {

@@ -1,9 +1,7 @@
+name = "utiliti"
 compatibility_date = "2024-11-11"
 compatibility_flags = []
 
 [[kv_namespaces]]
 binding = "PRIVATE_NOTES"
 id = "PRIVATE_NOTES"
-
-[observability]
-enabled = true

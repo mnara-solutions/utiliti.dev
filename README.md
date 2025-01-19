@@ -11,11 +11,11 @@ A collection of open source utilities hosted online at [utiliti.dev](https://uti
 
 ## Tech Stack
 
-- Built on top of [Remix](https://remix.run)
+- Built on top of [React Router](https://reactrouter.com/)
 - Styled with [Tailwind](https://tailwindcss.com/)
 - Hosted on [Cloudflare Pages](https://pages.cloudflare.com/) + Functions
 
-Running a framework like Remix on Cloudflare Pages means that we utilize edge functions to deliver a server side rendered initial page. This increases the cost of hosting a project like this, but our users get a performance benefit and more importantly it unlocks more powerful utilities like private notes.
+Running a framework like React Router on Cloudflare Pages means that we utilize edge functions to deliver a server side rendered initial page. This increases the cost of hosting a project like this, but our users get a performance benefit and more importantly it unlocks more powerful utilities like private notes.
 
 ## Roadmap
 

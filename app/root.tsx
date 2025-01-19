@@ -1,4 +1,4 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/cloudflare";
+import type { LinksFunction, MetaFunction } from "react-router";
 import {
   isRouteErrorResponse,
   Link,
@@ -8,7 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
   useRouteError,
-} from "@remix-run/react";
+} from "react-router";
 import Layout from "~/components/layout";
 import tailwind from "./styles/tailwind.css?url";
 import dark from "../node_modules/highlight.js/styles/stackoverflow-dark.css?url";

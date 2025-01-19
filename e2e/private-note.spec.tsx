@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import Routes from "~/routes";
+import { Routes } from "../app/routes";
 
 test("Immediately expiring private note", async ({ page }) => {
   await page.goto(Routes.PRIVATE_NOTES);

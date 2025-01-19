@@ -1,5 +1,8 @@
-import type { ChangeEvent, SelectHTMLAttributes } from "react";
-import { useCallback } from "react";
+import {
+  useCallback,
+  type ChangeEvent,
+  type SelectHTMLAttributes,
+} from "react";
 import { classNames } from "~/common";
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {

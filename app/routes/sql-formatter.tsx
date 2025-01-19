@@ -1,5 +1,4 @@
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { ChangeEvent, useCallback } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import { utilities } from "~/utilities";
 import { metaHelper } from "~/utils/meta";
@@ -12,6 +11,7 @@ import { noop } from "~/common";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import NumberInput from "~/components/number-input";
 import Dropdown from "~/components/dropdown";
+import { useCallback, type ChangeEvent } from "react";
 
 export const meta = metaHelper(
   utilities.sqlFormatter.name,

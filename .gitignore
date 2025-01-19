@@ -6,6 +6,7 @@ node_modules
 
 .wrangler
 .dev.vars
+.react-router/
 
 /playwright-report/
 /playwright/.cache/

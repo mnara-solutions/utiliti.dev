@@ -1,5 +1,5 @@
 import { useLocation } from "react-router";
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import { sidebar } from "~/utilities";
 
 export default function Sidebar() {

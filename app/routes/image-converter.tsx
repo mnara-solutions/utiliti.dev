@@ -15,7 +15,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { classNames } from "~/common";
-import { DropTargetMonitor, useDrop } from "react-dnd";
+import { type DropTargetMonitor, useDrop } from "react-dnd";
 import { NativeTypes } from "react-dnd-html5-backend";
 
 export const meta = metaHelper(
@@ -136,7 +136,8 @@ export default function ImageConverter() {
     [files],
   );
 
-  const isActive = canDrop && isOver;
+  // const isActive = canDrop && isOver;
+  const isActive = false;
 
   return (
     <ContentWrapper>
