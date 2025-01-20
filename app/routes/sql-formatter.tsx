@@ -122,6 +122,7 @@ export default function SqlFormatter() {
         enterFrom="opacity-0"
         enterTo="opacity-100"
         className="mt-6"
+        as="div"
       >
         <Box>
           <BoxTitle title="Output">

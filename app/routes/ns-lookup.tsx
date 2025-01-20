@@ -162,6 +162,7 @@ export default function NsLookup() {
         enterFrom="opacity-0"
         enterTo="opacity-100"
         className="not-prose mt-6"
+        as="div"
       >
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-400">

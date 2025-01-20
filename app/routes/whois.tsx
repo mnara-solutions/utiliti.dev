@@ -117,6 +117,7 @@ export default function Whois() {
         enterFrom="opacity-0"
         enterTo="opacity-100"
         className="not-prose mt-6"
+        as="div"
       >
         {data && !data.success && (
           <Box>
