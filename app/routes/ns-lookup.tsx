@@ -125,7 +125,7 @@ export default function NsLookup() {
         to return information about the domains DNS records.
       </p>
 
-      <Form method="post">
+      <Form method="post" viewTransition={true}>
         <label
           htmlFor="domain"
           className="mb-2 text-sm font-medium sr-only text-white"
