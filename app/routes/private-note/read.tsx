@@ -169,6 +169,7 @@ function Confirm() {
         <Link
           className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
           to={`?confirm=true`}
+          viewTransition={true}
         >
           Show the note
           <ArrowRightIcon className="h-4 w-4 -mr-1" aria-hidden="true" />
@@ -187,6 +188,7 @@ function Error({ message }: { readonly message: string }) {
         <Link
           className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition rounded-full py-1 px-3 bg-orange-500/10 text-orange-500 ring-1 ring-inset ring-orange-600/20 hover:bg-orange-600/10 hover:text-orange-600 hover:ring-orange-600"
           to={Routes.PRIVATE_NOTES}
+          viewTransition={true}
         >
           <ArrowLeftIcon className="h-4 w-4 -ml-1" aria-hidden="true" />
           Back
