@@ -243,6 +243,7 @@ export default function WordCounter() {
         enterFrom="opacity-0"
         enterTo="opacity-100"
         className="mt-6"
+        as="div"
       >
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
           <div className="flex flex-col w-full border rounded-lg bg-zinc-700 border-zinc-600">

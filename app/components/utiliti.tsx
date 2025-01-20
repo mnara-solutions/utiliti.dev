@@ -99,6 +99,7 @@ export default function Utiliti<T>({
         enterFrom="opacity-0"
         enterTo="opacity-100"
         className="mt-6"
+        as="div"
       >
         {error ? (
           <Box>

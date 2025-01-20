@@ -80,7 +80,7 @@ export default function Whois() {
         to return information about the domain name.
       </p>
 
-      <Form method="post">
+      <Form method="post" viewTransition={true}>
         <label
           htmlFor="domain"
           className="mb-2 text-sm font-medium sr-only text-white"
@@ -117,6 +117,7 @@ export default function Whois() {
         enterFrom="opacity-0"
         enterTo="opacity-100"
         className="not-prose mt-6"
+        as="div"
       >
         {data && !data.success && (
           <Box>

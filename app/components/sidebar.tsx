@@ -27,6 +27,7 @@ export default function Sidebar() {
                         "flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 hover:text-white" +
                         (current ? " text-white" : " text-zinc-400")
                       }
+                      viewTransition={true}
                     >
                       <span className="truncate">{c.name}</span>
                     </Link>

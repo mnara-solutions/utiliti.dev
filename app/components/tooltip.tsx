@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import type { Placement } from "@floating-ui/react";
 import {
   arrow,
@@ -80,10 +80,10 @@ export function useTooltip({
 
 type ContextType = ReturnType<typeof useTooltip> | null;
 
-const TooltipContext = React.createContext<ContextType>(null);
+const TooltipContext = createContext<ContextType>(null);
 
 export const useTooltipContext = () => {
-  const context = React.useContext(TooltipContext);
+  const context = useContext(TooltipContext);
 
   if (context == null) {
     throw new Error("Tooltip components must be wrapped in <Tooltip />");
@@ -104,13 +104,15 @@ export function Tooltip({
   );
 }
 
-export const TooltipTrigger = React.forwardRef<
-  HTMLElement,
-  React.HTMLProps<HTMLElement> & { asChild?: boolean }
->(function TooltipTrigger({ children, asChild = false, ...props }, propRef) {
+export const TooltipTrigger = function TooltipTrigger({
+  ref: propRef,
+  children,
+  asChild = false,
+  ...props
+}: React.HTMLProps<HTMLElement> & { asChild?: boolean }) {
   const context = useTooltipContext();
   // eslint-disable-next-line
-  const childrenRef = (children as any).ref;
+  const childrenRef = (children as any).props.ref;
   const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
 
   if (asChild && React.isValidElement(children)) {
@@ -134,12 +136,14 @@ export const TooltipTrigger = React.forwardRef<
       {children}
     </button>
   );
-});
+};
 
-export const TooltipContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLProps<HTMLDivElement>
->(function TooltipContent(props, propRef) {
+export const TooltipContent = function TooltipContent({
+  ref: propRef,
+  ...props
+}: React.HTMLProps<HTMLDivElement> & {
+  ref: React.RefObject<HTMLDivElement>;
+}) {
   const context = useTooltipContext();
   const ref = useMergeRefs([context.refs.setFloating, propRef]);
   const { isMounted, styles } = useTransitionStyles(context.context);
@@ -188,4 +192,4 @@ export const TooltipContent = React.forwardRef<
       )}
     </FloatingPortal>
   );
-});
+};

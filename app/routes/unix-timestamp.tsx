@@ -209,6 +209,7 @@ export default function UnixTimestamp() {
         enterFrom="opacity-0"
         enterTo="opacity-100"
         className="mt-6"
+        as="div"
       >
         {input && isNaN(input.value.getDate()) ? (
           <Box>

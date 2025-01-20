@@ -82,6 +82,7 @@ function PopularUtility({ name, description, path }: PopularUtilityProps) {
         <Link
           className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition text-orange-500 hover:text-orange-600"
           to={path}
+          viewTransition={true}
         >
           Try
           <ArrowRightIcon
