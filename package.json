@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build",
+    "build": "NODE_ENV=production react-router build",
     "start": "wrangler pages dev ./build/client",
     "typecheck": "react-router typegen && tsc",
     "prettier": "prettier --write --ignore-path .gitignore .",
@@ -16,7 +16,7 @@
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@paralleldrive/cuid2": "^2.2.2",
-    "@react-router/cloudflare": "^7.1.5",
+    "@react-router/cloudflare": "^7.2.0",
     "base64-encoding": "^0.15.0-alpha.0",
     "date-fns": "^4.1.0",
     "dompurify": "^3.2.3",
@@ -31,7 +31,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.0.0",
     "react-json-tree": "^0.19.0",
-    "react-router": "^7.1.5",
+    "react-router": "^7.2.0",
     "react-simple-code-editor": "^0.14.1",
     "sql-formatter": "^15.4.9",
     "uuid": "^11.0.5"
@@ -39,7 +39,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250109.0",
     "@playwright/test": "^1.49.1",
-    "@react-router/dev": "^7.1.5",
+    "@react-router/dev": "^7.2.0",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
     "@types/react": "^19.0.7",
