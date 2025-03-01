@@ -36,10 +36,10 @@ jobs:
           echo "::set-output name=size::$BUNDLE_SIZE"
 
       - name: Comment bundle size
-        uses: peter-evans/create-or-update-comment@v4
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
+          header: bundle-size
+          message: |
             ## Bundle Size Report
             Client bundle size: ${{ steps.client_bundle_size.outputs.size }} kb
             Server bundle size: ${{ steps.server_bundle_size.outputs.size }} kb
