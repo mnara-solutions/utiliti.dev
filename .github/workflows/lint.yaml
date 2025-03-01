@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout project sources
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: .
 
       - name: Setup node
         uses: actions/setup-node@v4
