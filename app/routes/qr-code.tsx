@@ -89,7 +89,7 @@ export default function QrCode() {
                 id="svg"
                 type="checkbox"
                 checked={svg}
-                className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 text-orange-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800"
+                className="w-4 h-4 border rounded-sm focus:ring-3 bg-zinc-700 border-zinc-600 text-orange-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800"
                 onChange={(e) => setSvg(e.target.checked)}
               />
             </div>
@@ -236,7 +236,7 @@ function ColourPicker({
       <div className="flex items-center h-5 w-5">
         <input
           type="color"
-          className="block bg-zinc-700 rounded"
+          className="block bg-zinc-700 rounded-sm"
           style={{
             width: "1.05rem",
             height: "1.05rem",

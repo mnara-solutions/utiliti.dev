@@ -172,7 +172,7 @@ export default function ImageConverter() {
                     <div key={index} className="relative">
                       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
                       <img
-                        className="w-full h-full aspect-square object-cover rounded cursor-pointer"
+                        className="w-full h-full aspect-square object-cover rounded-sm cursor-pointer"
                         onClick={(e) => {
                           e.preventDefault();
                           onDownloadImage(index);

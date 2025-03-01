@@ -68,12 +68,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* top bar */}
-          <div className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80 backdrop-blur-sm backdrop-blur lg:left-72 xl:left-80 bg-zinc-900/[var(--bg-opacity-dark)]">
+          <div className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80 backdrop-blur-xs backdrop-blur-sm lg:left-72 xl:left-80 bg-zinc-900/[var(--bg-opacity-dark)]">
             <div className="absolute inset-x-0 top-full h-px transition bg-white/10"></div>
             <div className="hidden lg:block lg:max-w-md lg:flex-auto">
               <button
                 type="button"
-                className="hidden h-8 w-full items-center gap-2 rounded-full pl-2 pr-3 text-sm ring-1 transition bg-white/5 text-zinc-400 ring-inset ring-white/10 hover:ring-white/20 lg:flex outline-none"
+                className="hidden h-8 w-full items-center gap-2 rounded-full pl-2 pr-3 text-sm ring-1 transition bg-white/5 text-zinc-400 ring-inset ring-white/10 hover:ring-white/20 lg:flex outline-hidden"
                 onClick={toggleSearch}
               >
                 <MagnifyingGlassIcon
@@ -118,7 +118,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="contents lg:hidden">
                 <button
                   type="button"
-                  className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white/5 lg:hidden focus:[&:not(:focus-visible)]:outline-none"
+                  className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white/5 lg:hidden focus:not-focus-visible:outline-hidden"
                   aria-label="Find something..."
                   onClick={toggleSearch}
                 >
@@ -161,7 +161,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <article className="prose prose-sm max-w-none prose-invert">
             <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
               <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] [mask-image:linear-gradient(white,transparent)]">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#ea580c]/30 to-[#fdba74]/30 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] opacity-100">
+                <div className="absolute inset-0 bg-linear-to-r from-[#ea580c]/30 to-[#fdba74]/30 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] opacity-100">
                   <div
                     className="absolute inset-0 opacity-30"
                     style={{

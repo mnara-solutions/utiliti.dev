@@ -53,7 +53,7 @@ export default function UuidGenerator() {
 
       <Box>
         <BoxTitle title="">
-          <div className="flex items-center justify-start flex-grow">
+          <div className="flex items-center justify-start grow">
             <label
               htmlFor="length"
               className="block text-sm font-medium text-gray-900 dark:text-white pr-2"

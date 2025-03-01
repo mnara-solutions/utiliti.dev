@@ -66,7 +66,7 @@ function CurrentTimestamp() {
             id="url-safe"
             type="checkbox"
             checked={isMilliSeconds}
-            className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
+            className="w-4 h-4 border rounded-sm focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
             onChange={(e) => setIsMilliSeconds(e.target.checked)}
           />
         </div>
@@ -165,7 +165,7 @@ export default function UnixTimestamp() {
             <div className="pl-2">
               <button
                 type="submit"
-                className="inline-flex justify-center p-2 rounded cursor-pointer text-orange-600 hover:text-white hover:bg-orange-800"
+                className="inline-flex justify-center p-2 rounded-sm cursor-pointer text-orange-600 hover:text-white hover:bg-orange-800"
               >
                 <ArrowsRightLeftIcon className="w-5 h-5" />
                 <span className="sr-only">Convert</span>
@@ -193,7 +193,7 @@ export default function UnixTimestamp() {
             <div className="pl-2">
               <button
                 type="submit"
-                className="inline-flex justify-center p-2 rounded cursor-pointer text-orange-600 hover:text-white hover:bg-orange-800"
+                className="inline-flex justify-center p-2 rounded-sm cursor-pointer text-orange-600 hover:text-white hover:bg-orange-800"
               >
                 <ArrowsRightLeftIcon className="w-5 h-5" />
                 <span className="sr-only">Convert</span>
