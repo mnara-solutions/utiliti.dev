@@ -20,7 +20,7 @@
     "@tailwindcss/vite": "^4.0.9",
     "base64-encoding": "^0.15.0-alpha.0",
     "date-fns": "^4.1.0",
-    "dompurify": "^3.2.3",
+    "dompurify": "^3.2.4",
     "highlight.js": "^11.11.1",
     "isbot": "^5.1.21",
     "jszip": "^3.10.1",
