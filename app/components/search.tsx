@@ -48,7 +48,7 @@ export default function Search({ open, setOpen }: Props) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 backdrop-blur-sm bg-black/40 opacity-100" />
+          <div className="fixed inset-0 backdrop-blur-xs bg-black/40 opacity-100" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto px-4 py-4 sm:py-20 sm:px-6 md:py-32 lg:px-8 lg:py-[15vh]">

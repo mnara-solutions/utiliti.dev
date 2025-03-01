@@ -93,7 +93,7 @@ export default function Base64() {
             id="url-safe"
             type="checkbox"
             checked={urlSafe}
-            className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
+            className="w-4 h-4 border rounded-sm focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
             onChange={(e) => setUrlSafe(e.target.checked)}
           />
         </div>

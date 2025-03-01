@@ -31,14 +31,14 @@ export default function Copy({ content }: Props) {
         <button
           ref={buttonRef}
           type="button"
-          className="p-2 rounded cursor-pointer text-zinc-400 hover:text-white hover:bg-zinc-600"
+          className="p-2 rounded-sm cursor-pointer text-zinc-400 hover:text-white hover:bg-zinc-600"
           onClick={onClick}
         >
           <DocumentDuplicateIcon className="h-5 w-5" aria-hidden="true" />
           <span className="sr-only">{text}</span>
         </button>
       </TooltipTrigger>
-      <TooltipContent className="inline-block px-2 py-1 text-sm font-medium text-white rounded-lg shadow-sm bg-zinc-700">
+      <TooltipContent className="inline-block px-2 py-1 text-sm font-medium text-white rounded-lg shadow-xs bg-zinc-700">
         {tooltipText}
       </TooltipContent>
     </Tooltip>

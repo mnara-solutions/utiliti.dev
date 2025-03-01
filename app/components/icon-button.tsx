@@ -24,14 +24,14 @@ export default function IconButton({
       <TooltipTrigger asChild={true}>
         <button
           type="button"
-          className="inline-flex justify-center p-2 rounded cursor-pointer text-gray-400 hover:text-white hover:bg-zinc-600"
+          className="inline-flex justify-center p-2 rounded-sm cursor-pointer text-gray-400 hover:text-white hover:bg-zinc-600"
           onClick={onClick}
         >
           <Icon className="w-5 h-5" />
           <span className="sr-only">{label}</span>
         </button>
       </TooltipTrigger>
-      <TooltipContent className="inline-block px-2 py-1 text-sm font-medium text-white rounded-lg shadow-sm bg-zinc-700">
+      <TooltipContent className="inline-block px-2 py-1 text-sm font-medium text-white rounded-lg shadow-xs bg-zinc-700">
         {label}
       </TooltipContent>
     </Tooltip>
