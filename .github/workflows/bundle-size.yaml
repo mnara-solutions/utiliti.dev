@@ -1,0 +1,47 @@
+name: Lint
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Bundle Size
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Extract client bundle size
+        id: client_bundle_size
+        run: |
+          BUNDLE_SIZE=$(du -sk build/client/assets | awk '{print $1}')
+          echo "::set-output name=size::$BUNDLE_SIZE"
+
+      - name: Extract server bundle size
+        id: server_bundle_size
+        run: |
+          BUNDLE_SIZE=$(du -sk build/server | awk '{print $1}')
+          echo "::set-output name=size::$BUNDLE_SIZE"
+
+      - name: Comment bundle size
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Bundle Size Report
+            Client bundle size: ${{ steps.client_bundle_size.outputs.size }} kb
+            Server bundle size: ${{ steps.server_bundle_size.outputs.size }} kb
