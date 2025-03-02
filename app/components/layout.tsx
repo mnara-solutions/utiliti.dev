@@ -174,9 +174,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <DndProvider backend={HTML5Backend}>
               <noscript>
-                  <p className="text-center text-white bg-red-400 py-2 px-4 rounded text-lg">
-                      You currently have JavaScript disabled. JavaScript is required to use full functionality of this website. Please enable JavaScript and refresh the page to ensure the best experience.
-                  </p>
+                <p className="text-center text-white bg-red-400 py-2 px-4 rounded text-lg">
+                  You currently have JavaScript disabled. JavaScript is required
+                  to use full functionality of this website. Please enable
+                  JavaScript and refresh the page to ensure the best experience.
+                </p>
               </noscript>
               {children}
             </DndProvider>
