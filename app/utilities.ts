@@ -18,6 +18,11 @@ export const utilities: Record<
     description: "View complex JSON documents as a tree structure.",
     url: Routes.JSON,
   },
+  html: {
+    name: "HTML",
+    description: "View and minify HTML content.",
+    url: Routes.HTML,
+  },
   base64: {
     name: "Base64",
     description: "Easily encode and decode base64 content.",
@@ -110,6 +115,7 @@ export const sidebar = [
     children: [
       utilities.privateNotes,
       utilities.json,
+      utilities.html,
       utilities.markdownToHtml,
       utilities.dataurl,
       utilities.imageConverter,

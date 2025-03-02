@@ -1,22 +1,21 @@
 import * as React from "react";
-import { createContext, useContext, useRef, useState } from "react";
-import type { Placement } from "@floating-ui/react";
 import {
-  arrow,
-  autoUpdate,
-  flip,
-  FloatingPortal,
-  offset,
-  shift,
-  useDismiss,
   useFloating,
-  useFocus,
+  autoUpdate,
+  offset,
+  flip,
+  shift,
+  arrow,
   useHover,
-  useInteractions,
-  useMergeRefs,
+  useFocus,
+  useDismiss,
   useRole,
+  useInteractions,
   useTransitionStyles,
+  useMergeRefs,
+  FloatingPortal,
 } from "@floating-ui/react";
+import type { Placement } from "@floating-ui/react";
 
 interface TooltipOptions {
   initialOpen?: boolean;
@@ -31,10 +30,10 @@ export function useTooltip({
   open: controlledOpen,
   onOpenChange: setControlledOpen,
 }: TooltipOptions = {}) {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(initialOpen);
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
   const open = controlledOpen ?? uncontrolledOpen;
   const setOpen = setControlledOpen ?? setUncontrolledOpen;
-  const arrowRef = useRef(null);
+  const arrowRef = React.useRef(null);
 
   const data = useFloating({
     placement,
@@ -44,7 +43,9 @@ export function useTooltip({
     middleware: [
       offset(5),
       flip({
+        crossAxis: placement.includes("-"),
         fallbackAxisSideDirection: "start",
+        padding: 5,
       }),
       shift({ padding: 5 }),
       arrow({ element: arrowRef }),
@@ -52,7 +53,6 @@ export function useTooltip({
   });
 
   const context = data.context;
-
   const hover = useHover(context, {
     move: false,
     enabled: controlledOpen == null,
@@ -63,7 +63,6 @@ export function useTooltip({
   });
   const dismiss = useDismiss(context);
   const role = useRole(context, { role: "tooltip" });
-
   const interactions = useInteractions([hover, focus, dismiss, role]);
 
   return React.useMemo(
@@ -80,10 +79,10 @@ export function useTooltip({
 
 type ContextType = ReturnType<typeof useTooltip> | null;
 
-const TooltipContext = createContext<ContextType>(null);
+const TooltipContext = React.createContext<ContextType>(null);
 
 export const useTooltipContext = () => {
-  const context = useContext(TooltipContext);
+  const context = React.useContext(TooltipContext);
 
   if (context == null) {
     throw new Error("Tooltip components must be wrapped in <Tooltip />");
@@ -104,48 +103,48 @@ export function Tooltip({
   );
 }
 
-export const TooltipTrigger = function TooltipTrigger({
-  ref: propRef,
+export function TooltipTrigger({
   children,
+  ref,
   asChild = false,
   ...props
 }: React.HTMLProps<HTMLElement> & { asChild?: boolean }) {
   const context = useTooltipContext();
-  // eslint-disable-next-line
-  const childrenRef = (children as any).props.ref;
-  const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
+  const childrenRef = (children as any).ref;
+  const mergedRef = useMergeRefs([context.refs.setReference, ref, childrenRef]);
 
   if (asChild && React.isValidElement(children)) {
+    const childElement = children as React.ReactElement<HTMLElement>;
+
     return React.cloneElement(
-      children,
+      childElement,
       context.getReferenceProps({
-        ref,
+        ref: mergedRef,
         ...props,
-        ...children.props,
+        ...childElement.props,
         "data-state": context.open ? "open" : "closed",
-      }),
+      } as any),
     );
   }
 
   return (
     <button
-      ref={ref}
+      ref={mergedRef}
       data-state={context.open ? "open" : "closed"}
       {...context.getReferenceProps(props)}
     >
       {children}
     </button>
   );
-};
+}
 
-export const TooltipContent = function TooltipContent({
-  ref: propRef,
+export function TooltipContent({
+  style,
+  ref,
   ...props
-}: React.HTMLProps<HTMLDivElement> & {
-  ref: React.RefObject<HTMLDivElement>;
-}) {
+}: React.HTMLProps<HTMLElement>) {
   const context = useTooltipContext();
-  const ref = useMergeRefs([context.refs.setFloating, propRef]);
+  const mergedRef = useMergeRefs([context.refs.setFloating, ref]);
   const { isMounted, styles } = useTransitionStyles(context.context);
   const { x: arrowX, y: arrowY } = context.middlewareData.arrow ?? {};
 
@@ -157,39 +156,38 @@ export const TooltipContent = function TooltipContent({
       left: "right",
     }[context.placement.split("-")[0]] ?? "";
 
+  if (!context.open || !isMounted) return null;
+
   return (
     <FloatingPortal>
-      {isMounted && context.open && (
+      <div
+        ref={mergedRef}
+        style={{
+          position: context.strategy,
+          top: context.y ?? 0,
+          left: context.x ?? 0,
+          visibility: context.x == null ? "hidden" : "visible",
+          ...style,
+          ...styles,
+        }}
+        {...context.getFloatingProps(props)}
+      >
+        {props.children}
         <div
-          ref={ref}
+          ref={context.arrowRef}
+          className="tooltip-arrow"
           style={{
-            position: context.strategy,
-            top: context.y ?? 0,
-            left: context.x ?? 0,
-            visibility: context.x == null ? "hidden" : "visible",
-            // eslint-disable-next-line react/prop-types
-            ...props.style,
-            ...styles,
+            position: "absolute",
+            width: "12px",
+            height: "12px",
+            background: "inherit",
+            left: arrowX != null ? `${arrowX}px` : "",
+            top: arrowY != null ? `${arrowY}px` : "",
+            [staticSide]: "-6px",
+            transform: "rotate(45deg)",
           }}
-          {...context.getFloatingProps(props)}
-        >
-          {props.children}
-          <div
-            ref={context.arrowRef}
-            className="tooltip-arrow"
-            style={{
-              position: "absolute",
-              width: "12px",
-              height: "12px",
-              background: "inherit",
-              left: arrowX != null ? `${arrowX}px` : "",
-              top: arrowY != null ? `${arrowY}px` : "",
-              [staticSide]: "-6px",
-              transform: "rotate(45deg)",
-            }}
-          ></div>
-        </div>
-      )}
+        ></div>
+      </div>
     </FloatingPortal>
   );
-};
+}
