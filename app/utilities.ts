@@ -18,10 +18,10 @@ export const utilities: Record<
     description: "View complex JSON documents as a tree structure.",
     url: Routes.JSON,
   },
-  html: {
-    name: "HTML",
-    description: "View and minify HTML content.",
-    url: Routes.HTML,
+  prettier: {
+    name: "Prettier",
+    description: "Run prettier on your input.",
+    url: Routes.PRETTIER,
   },
   base64: {
     name: "Base64",
@@ -115,7 +115,7 @@ export const sidebar = [
     children: [
       utilities.privateNotes,
       utilities.json,
-      utilities.html,
+      utilities.prettier,
       utilities.markdownToHtml,
       utilities.dataurl,
       utilities.imageConverter,

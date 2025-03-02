@@ -6,7 +6,7 @@ export class Routes {
   static readonly PRIVATE_NOTE = (id: string = ":id", hash = ":hash") =>
     `/private-note/${id}#${hash}`;
   static readonly JSON = "/json";
-  static readonly HTML = "/html";
+  static readonly PRETTIER = "/prettier";
   static readonly URL = "/url";
   static readonly BASE64 = "/base64";
   static readonly DATAURL = "/dataurl";
@@ -33,7 +33,7 @@ export default [
     route("create", "./routes/private-note/create.tsx"),
   ]),
   route(Routes.JSON, "./routes/json.tsx"),
-  route(Routes.HTML, "./routes/html.tsx"),
+  route(Routes.PRETTIER, "./routes/prettier.tsx"),
   route(Routes.URL, "./routes/url.tsx"),
   route(Routes.BASE64, "./routes/base64.tsx"),
   route(Routes.DATAURL, "./routes/dataurl.tsx"),

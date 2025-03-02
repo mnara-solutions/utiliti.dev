@@ -8,7 +8,7 @@ import {
   useLocation,
   useRouteError,
 } from "react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
@@ -17,7 +17,6 @@ import { decrypt } from "~/utils/aes";
 import { Routes } from "~/routes";
 import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import { useHydrated } from "~/hooks/use-hydrated";
-import { useIsomorphicLayoutEffect } from "~/hooks/use-isomorphic-layout-effect";
 
 type LoaderData = {
   readonly ciphertext: string;
@@ -92,7 +91,7 @@ export default function PrivateNote() {
     }
   }, [location]);
 
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (!loaderData.ciphertext) {
       return;
     }

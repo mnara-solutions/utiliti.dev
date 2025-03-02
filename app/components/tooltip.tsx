@@ -110,7 +110,8 @@ export function TooltipTrigger({
   ...props
 }: React.HTMLProps<HTMLElement> & { asChild?: boolean }) {
   const context = useTooltipContext();
-  const childrenRef = (children as any).ref;
+
+  const childrenRef = (children as any).props.ref;
   const mergedRef = useMergeRefs([context.refs.setReference, ref, childrenRef]);
 
   if (asChild && React.isValidElement(children)) {

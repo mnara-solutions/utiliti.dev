@@ -23,7 +23,6 @@
     "dompurify": "^3.2.4",
     "highlight.js": "^11.11.1",
     "isbot": "^5.1.23",
-    "js-beautify": "^1.15.4",
     "jszip": "^3.10.1",
     "marked": "^15.0.7",
     "prettier": "^3.5.2",
