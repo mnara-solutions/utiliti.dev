@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/tooltip";
 
 interface Props {
-  readonly content: string;
+  readonly content: string | (() => string);
 }
 export default function Copy({ content }: Props) {
   const text = "Copy to clipboard";
@@ -12,7 +12,7 @@ export default function Copy({ content }: Props) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const onClick = () => {
-    copyText(content)
+    copyText(typeof content === "string" ? content : content())
       .then(() => setTooltipText("Copied"))
       .catch((e) => console.error("Could not copy to clipboard.", e));
 

@@ -202,7 +202,7 @@ export default function WordCounter() {
       <Box>
         <BoxTitle title="Input">
           <div>
-            <Copy content={inputRef.current?.value || ""} />
+            <Copy content={() => inputRef.current?.value || ""} />
           </div>
         </BoxTitle>
 
