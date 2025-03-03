@@ -84,7 +84,7 @@ export default function Search({ open, setOpen }: Props) {
 
                 {(query === "" || filteredUtilities.length > 0) && (
                   <ComboboxOptions
-                    static
+                    static={true}
                     className="max-h-80 scroll-py-2 divide-y divide-gray-500 divide-opacity-20 overflow-y-auto"
                   >
                     <li className="list-none p-2">
@@ -93,6 +93,7 @@ export default function Search({ open, setOpen }: Props) {
                           (it) => (
                             <ComboboxOption
                               key={it.name}
+                              test-id="search-option"
                               value={it}
                               className={({ focus }) =>
                                 classNames(
