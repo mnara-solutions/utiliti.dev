@@ -10,7 +10,7 @@ test("clicking on search box", async ({ page }) => {
   // wait for search options
   await expect(page.locator('[test-id="search-option"]').first()).toBeVisible();
 
-  // ensure the first item is private nodes
+  // ensure the first item is private notes
   const text = await page
     .locator('[test-id="search-option"]')
     .first()
