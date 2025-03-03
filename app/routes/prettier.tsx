@@ -21,11 +21,13 @@ export const meta = metaHelper(
   utilities.prettier.description,
 );
 
-enum Action {
-  FORMAT = "Format",
-}
+const languages = {
+  html: "HTML",
+  typescript: "TypeScript",
+  css: "CSS",
+};
 
-type Language = "html" | "typescript";
+type Language = keyof typeof languages;
 
 export default function Prettier() {
   const [language, setLanguage] = useLocalStorage<Language>(
@@ -35,7 +37,7 @@ export default function Prettier() {
 
   const actions = useMemo(() => {
     return {
-      [Action.FORMAT]: async (input: string) =>
+      ["Format"]: async (input: string) =>
         prettier.format(input, {
           parser: language,
           plugins: [html, typescript, estree, postcss],
@@ -47,7 +49,7 @@ export default function Prettier() {
     (input: string, setInput: (v: string) => void) => (
       <div className="px-3 py-2">
         <Code
-          placeholder="Paste some HTML…"
+          placeholder={`Paste some ${languages[language]}…`}
           value={input}
           setValue={setInput}
           minHeight="12rem"
@@ -56,7 +58,7 @@ export default function Prettier() {
         />
       </div>
     ),
-    [],
+    [language],
   );
 
   const renderOutput = useCallback(
@@ -90,11 +92,9 @@ export default function Prettier() {
         <div className="flex gap-x-2">
           <Dropdown
             onOptionChange={(it) => setLanguage(it as Language)}
-            options={[
-              { id: "html", label: "HTML" },
-              { id: "typescript", label: "Javascript" },
-              { id: "css", label: "CSS" },
-            ]}
+            options={Object.entries(languages).map(([k, v]) => {
+              return { id: k, label: v };
+            })}
             value={language}
           />
 
