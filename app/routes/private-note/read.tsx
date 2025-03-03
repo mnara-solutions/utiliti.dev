@@ -8,7 +8,7 @@ import {
   useLocation,
   useRouteError,
 } from "react-router";
-import { useEffect, useRef, useState, useLayoutEffect } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
@@ -80,7 +80,7 @@ export default function PrivateNote() {
   // the key from leaking via browser history. More details: https://github.com/mnara-solutions/utiliti.dev/issues/12
   // This only works because react router will fetch the note when the confirm button is clicked without reloading
   // the document (only if javascript is enabled, which is kind of necessary for this website).
-  const key = useRef(location.hash.slice(1));
+  const [key] = useState(location.hash.slice(1));
   useEffect(() => {
     if (location.hash.length > 0) {
       history.replaceState(
@@ -96,7 +96,7 @@ export default function PrivateNote() {
       return;
     }
 
-    decrypt(loaderData.ciphertext, key.current)
+    decrypt(loaderData.ciphertext, key)
       .then((it) => setPlainText(it))
       .catch((it) => {
         console.error(
@@ -106,12 +106,12 @@ export default function PrivateNote() {
 
         setDecryptionError(true);
       });
-  }, [loaderData.ciphertext]);
+  }, [loaderData.ciphertext, key]);
 
   const expiration = loaderData.expiration;
 
   // if we ran into a decryption error, show an error page
-  if (decryptionError || (hydrated && key.current.length !== 10)) {
+  if (decryptionError || (hydrated && key.length !== 10)) {
     return (
       <Error message="An error occurred while trying to decrypt the note. Double check that the URL is copied exactly and try again." />
     );

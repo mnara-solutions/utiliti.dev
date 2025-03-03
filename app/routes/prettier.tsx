@@ -1,5 +1,4 @@
 import Copy from "~/components/copy";
-import { useCallback, useMemo } from "react";
 import Code from "~/components/code";
 import { noop } from "~/common";
 import { metaHelper } from "~/utils/meta";
@@ -35,7 +34,7 @@ export default function Prettier() {
     "html",
   );
 
-  const actions = useMemo(() => {
+  const actions = () => {
     return {
       ["Format"]: async (input: string) =>
         prettier.format(input, {
@@ -43,70 +42,61 @@ export default function Prettier() {
           plugins: [html, typescript, estree, postcss],
         }),
     };
-  }, [language]);
+  };
 
-  const renderInput = useCallback(
-    (input: string, setInput: (v: string) => void) => (
-      <div className="px-3 py-2">
-        <Code
-          placeholder={`Paste some ${languages[language]}…`}
-          value={input}
-          setValue={setInput}
-          minHeight="12rem"
-          readonly={false}
-          language="xml"
+  const renderInput = (input: string, setInput: (v: string) => void) => (
+    <div className="px-3 py-2">
+      <Code
+        placeholder={`Paste some ${languages[language]}…`}
+        value={input}
+        setValue={setInput}
+        minHeight="12rem"
+        readonly={false}
+        language="xml"
+      />
+    </div>
+  );
+
+  const renderOutput = (a: string, input: string, output: string) => {
+    return (
+      <Box>
+        <BoxTitle title="Output">
+          <div>
+            <Copy content={output} />
+          </div>
+        </BoxTitle>
+        <BoxContent isLast={true}>
+          <div className="px-3 py-2">
+            <Code
+              value={output}
+              setValue={noop}
+              readonly={true}
+              language={language == "html" ? "xml" : language}
+            />
+          </div>
+        </BoxContent>
+      </Box>
+    );
+  };
+
+  const renderReadFile = (setInput: (value: string) => void) => {
+    return (
+      <div className="flex gap-x-2">
+        <Dropdown
+          onOptionChange={(it) => setLanguage(it as Language)}
+          options={Object.entries(languages).map(([k, v]) => {
+            return { id: k, label: v };
+          })}
+          value={language}
+        />
+
+        <ReadFile
+          accept="text/plain,application/JSON"
+          onLoad={(files) => setTextInputFromFiles(files, setInput)}
         />
       </div>
-    ),
-    [language],
-  );
-
-  const renderOutput = useCallback(
-    (a: string, input: string, output: string) => {
-      return (
-        <Box>
-          <BoxTitle title="Output">
-            <div>
-              <Copy content={output} />
-            </div>
-          </BoxTitle>
-          <BoxContent isLast={true}>
-            <div className="px-3 py-2">
-              <Code
-                value={output}
-                setValue={noop}
-                readonly={true}
-                language={language == "html" ? "xml" : language}
-              />
-            </div>
-          </BoxContent>
-        </Box>
-      );
-    },
-    [language],
-  );
-
-  const renderReadFile = useCallback(
-    (setInput: (value: string) => void) => {
-      return (
-        <div className="flex gap-x-2">
-          <Dropdown
-            onOptionChange={(it) => setLanguage(it as Language)}
-            options={Object.entries(languages).map(([k, v]) => {
-              return { id: k, label: v };
-            })}
-            value={language}
-          />
-
-          <ReadFile
-            accept="text/plain,application/JSON"
-            onLoad={(files) => setTextInputFromFiles(files, setInput)}
-          />
-        </div>
-      );
-    },
-    [language],
-  );
+    );
+  };
 
   return (
     <Utiliti

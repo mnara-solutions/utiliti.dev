@@ -1,10 +1,4 @@
-import {
-  type ChangeEvent,
-  useCallback,
-  useLayoutEffect,
-  useReducer,
-  useState,
-} from "react";
+import { type ChangeEvent, useLayoutEffect, useReducer, useState } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { metaHelper } from "~/utils/meta";
@@ -100,12 +94,9 @@ export default function PasswordGenerator() {
   // hack: we don't have a way to re-render inside a function component without something changing
   const [forceUpdate, setForceUpdate] = useReducer((x) => x + 1, 0);
 
-  const onChangeNumber = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setNumber(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
-    },
-    [setNumber],
-  );
+  const onChangeNumber = (e: ChangeEvent<HTMLInputElement>) => {
+    setNumber(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
+  };
 
   // we need to use a layout effect here because `generatePassword` calls upon `window.crypto`, which is not available
   // when rendering on the server side (node).

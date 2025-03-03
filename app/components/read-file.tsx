@@ -1,5 +1,4 @@
 import type { ChangeEvent } from "react";
-import { useCallback } from "react";
 import { PaperClipIcon } from "@heroicons/react/24/outline";
 import IconButton from "~/components/icon-button";
 
@@ -17,45 +16,38 @@ export default function ReadFile({
   onLoad,
   onError,
 }: Props) {
-  const onButtonClick = useCallback(
-    () => document.getElementById("file-input")?.click(),
-    [],
-  );
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const files = e.target.files || [];
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files || [];
 
-      // stop, no file selected
-      if (files.length === 0) {
+    // stop, no file selected
+    if (files.length === 0) {
+      return;
+    }
+
+    const filesArray = Array.from(files);
+
+    // ensure all files are under the size limit
+    filesArray.forEach((file) => {
+      const maxAllowedSize = 10 * 1024 * 1024;
+
+      // stop if we are passed a certain limit
+      if (file.size > maxAllowedSize) {
+        if (onError) {
+          onError(`File is too large. Max size is ${maxAllowedSize} bytes.`);
+        }
         return;
       }
+    });
 
-      const filesArray = Array.from(files);
-
-      // ensure all files are under the size limit
-      filesArray.forEach((file) => {
-        const maxAllowedSize = 10 * 1024 * 1024;
-
-        // stop if we are passed a certain limit
-        if (file.size > maxAllowedSize) {
-          if (onError) {
-            onError(`File is too large. Max size is ${maxAllowedSize} bytes.`);
-          }
-          return;
-        }
-      });
-
-      onLoad(filesArray);
-    },
-    [onLoad, onError],
-  );
+    onLoad(filesArray);
+  };
 
   return (
     <>
       <IconButton
         icon={PaperClipIcon}
         label="Load file"
-        onClick={onButtonClick}
+        onClick={() => document.getElementById("file-input")?.click()}
         tooltipPlacement="bottom"
       />
       <input

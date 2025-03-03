@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useRef, createContext, useContext } from "react";
 import {
   useFloating,
   autoUpdate,
@@ -24,16 +24,16 @@ interface TooltipOptions {
   onOpenChange?: (open: boolean) => void;
 }
 
-export function useTooltip({
+function useTooltip({
   initialOpen = false,
   placement = "top",
   open: controlledOpen,
   onOpenChange: setControlledOpen,
 }: TooltipOptions = {}) {
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(initialOpen);
   const open = controlledOpen ?? uncontrolledOpen;
   const setOpen = setControlledOpen ?? setUncontrolledOpen;
-  const arrowRef = React.useRef(null);
+  const arrowRef = useRef(null);
 
   const data = useFloating({
     placement,
@@ -48,6 +48,7 @@ export function useTooltip({
         padding: 5,
       }),
       shift({ padding: 5 }),
+      // eslint-disable-next-line react-compiler/react-compiler
       arrow({ element: arrowRef }),
     ],
   });
@@ -65,24 +66,21 @@ export function useTooltip({
   const role = useRole(context, { role: "tooltip" });
   const interactions = useInteractions([hover, focus, dismiss, role]);
 
-  return React.useMemo(
-    () => ({
-      open,
-      setOpen,
-      arrowRef,
-      ...interactions,
-      ...data,
-    }),
-    [open, setOpen, interactions, data],
-  );
+  return {
+    open,
+    setOpen,
+    arrowRef,
+    ...interactions,
+    ...data,
+  };
 }
 
 type ContextType = ReturnType<typeof useTooltip> | null;
 
-const TooltipContext = React.createContext<ContextType>(null);
+const TooltipContext = createContext<ContextType>(null);
 
-export const useTooltipContext = () => {
-  const context = React.useContext(TooltipContext);
+const useTooltipContext = () => {
+  const context = useContext(TooltipContext);
 
   if (context == null) {
     throw new Error("Tooltip components must be wrapped in <Tooltip />");
@@ -105,35 +103,24 @@ export function Tooltip({
 
 export function TooltipTrigger({
   children,
-  ref,
   asChild = false,
   ...props
 }: React.HTMLProps<HTMLElement> & { asChild?: boolean }) {
   const context = useTooltipContext();
-
-  const childrenRef = (children as any).props.ref;
-  const mergedRef = useMergeRefs([context.refs.setReference, ref, childrenRef]);
+  const mergedRef = useMergeRefs([context.refs.setReference]);
 
   if (asChild && React.isValidElement(children)) {
-    const childElement = children as React.ReactElement<HTMLElement>;
-
     return React.cloneElement(
-      childElement,
+      children,
       context.getReferenceProps({
         ref: mergedRef,
         ...props,
-        ...childElement.props,
-        "data-state": context.open ? "open" : "closed",
-      } as any),
+      }),
     );
   }
 
   return (
-    <button
-      ref={mergedRef}
-      data-state={context.open ? "open" : "closed"}
-      {...context.getReferenceProps(props)}
-    >
+    <button ref={mergedRef} {...context.getReferenceProps(props)}>
       {children}
     </button>
   );
@@ -143,7 +130,10 @@ export function TooltipContent({
   style,
   ref,
   ...props
-}: React.HTMLProps<HTMLElement>) {
+}: {
+  ref?: React.Ref<HTMLDivElement>;
+  style?: React.CSSProperties;
+} & React.HTMLProps<HTMLDivElement>) {
   const context = useTooltipContext();
   const mergedRef = useMergeRefs([context.refs.setFloating, ref]);
   const { isMounted, styles } = useTransitionStyles(context.context);

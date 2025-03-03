@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef, useMemo } from "react";
+import { useEffect, useRef } from "react";
 
 const BLACKLISTED_DOM_TARGETS = ["TEXTAREA", "INPUT"];
 
@@ -33,107 +33,89 @@ const useKeyboardShortcut = (
       "The second parameter to `useKeyboardShortcut` must be a function that will be envoked when the keys are pressed.",
     );
 
-  const shortcutKeysId = useMemo(() => shortcutKeys.join(), [shortcutKeys]);
+  const shortcutKeysId = shortcutKeys.join();
 
   // Normalizes the shortcut keys a deduplicated array of lowercased keys.
-  const shortcutArray = useMemo(
-    () => [...new Set(shortcutKeys)].map((key) => String(key).toLowerCase()),
-    // While using .join() is bad for most larger objects, this shortcut
-    // array is fine as it's small, according to the answer below.
-    // https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [shortcutKeysId],
+  const shortcutArray = [...new Set(shortcutKeys)].map((key) =>
+    String(key).toLowerCase(),
   );
 
   // useRef to avoid a constant re-render on keydown and keyup.
   const heldKeys = useRef<string[]>([]);
 
-  const keydownListener = useCallback(
-    (keydownEvent: KeyboardEvent) => {
-      const loweredKey = String(keydownEvent.key).toLowerCase();
+  const keydownListener = (keydownEvent: KeyboardEvent) => {
+    const loweredKey = String(keydownEvent.key).toLowerCase();
 
-      if (!(shortcutArray.indexOf(loweredKey) >= 0)) {
-        return;
-      }
+    if (!(shortcutArray.indexOf(loweredKey) >= 0)) {
+      return;
+    }
 
-      if (
-        options.ignoreInputFields &&
-        keydownEvent.target instanceof Element &&
-        BLACKLISTED_DOM_TARGETS.indexOf(keydownEvent.target.tagName) >= 0
-      ) {
-        return;
-      }
+    if (
+      options.ignoreInputFields &&
+      keydownEvent.target instanceof Element &&
+      BLACKLISTED_DOM_TARGETS.indexOf(keydownEvent.target.tagName) >= 0
+    ) {
+      return;
+    }
 
-      if (keydownEvent.repeat && !options.repeatOnHold) return;
+    if (keydownEvent.repeat && !options.repeatOnHold) return;
 
-      if (options.overrideSystem) {
-        overrideSystemHandling(keydownEvent);
-      }
-      // This needs to be checked as soon as possible to avoid
-      // all option checks that might prevent default behavior
-      // of the key press.
-      //
-      // I.E If shortcut is "Shift + A", we shouldn't prevent the
-      // default browser behavior of Select All Text just because
-      // "A" is being observed for our custom behavior shortcut.
-      const isHeldKeyCombinationValid = checkHeldKeysRecursive(
-        loweredKey,
-        null,
-        shortcutArray,
-        heldKeys.current,
-      );
+    if (options.overrideSystem) {
+      overrideSystemHandling(keydownEvent);
+    }
+    // This needs to be checked as soon as possible to avoid
+    // all option checks that might prevent default behavior
+    // of the key press.
+    //
+    // I.E If shortcut is "Shift + A", we shouldn't prevent the
+    // default browser behavior of Select All Text just because
+    // "A" is being observed for our custom behavior shortcut.
+    const isHeldKeyCombinationValid = checkHeldKeysRecursive(
+      loweredKey,
+      null,
+      shortcutArray,
+      heldKeys.current,
+    );
 
-      if (!isHeldKeyCombinationValid) {
-        return;
-      }
+    if (!isHeldKeyCombinationValid) {
+      return;
+    }
 
-      const nextHeldKeys = [...heldKeys.current, loweredKey];
-      if (nextHeldKeys.join() === shortcutArray.join()) {
-        callback(shortcutKeys);
-        return false;
-      }
-
-      heldKeys.current = nextHeldKeys;
-
+    const nextHeldKeys = [...heldKeys.current, loweredKey];
+    if (nextHeldKeys.join() === shortcutArray.join()) {
+      callback(shortcutKeys);
       return false;
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      shortcutKeysId,
-      callback,
-      options.overrideSystem,
-      options.ignoreInputFields,
-    ],
-  );
+    }
 
-  const keyupListener = useCallback(
-    (keyupEvent: KeyboardEvent) => {
-      const raisedKey = String(keyupEvent.key).toLowerCase();
-      if (!(shortcutArray.indexOf(raisedKey) >= 0)) return;
+    heldKeys.current = nextHeldKeys;
 
-      const raisedKeyHeldIndex = heldKeys.current.indexOf(raisedKey);
-      if (!(raisedKeyHeldIndex >= 0)) return;
+    return false;
+  };
 
-      const nextHeldKeys: string[] = [];
-      let loopIndex;
+  const keyupListener = (keyupEvent: KeyboardEvent) => {
+    const raisedKey = String(keyupEvent.key).toLowerCase();
+    if (!(shortcutArray.indexOf(raisedKey) >= 0)) return;
 
-      for (loopIndex = 0; loopIndex < heldKeys.current.length; ++loopIndex) {
-        if (loopIndex !== raisedKeyHeldIndex) {
-          nextHeldKeys.push(heldKeys.current[loopIndex]);
-        }
+    const raisedKeyHeldIndex = heldKeys.current.indexOf(raisedKey);
+    if (!(raisedKeyHeldIndex >= 0)) return;
+
+    const nextHeldKeys: string[] = [];
+    let loopIndex;
+
+    for (loopIndex = 0; loopIndex < heldKeys.current.length; ++loopIndex) {
+      if (loopIndex !== raisedKeyHeldIndex) {
+        nextHeldKeys.push(heldKeys.current[loopIndex]);
       }
+    }
 
-      heldKeys.current = nextHeldKeys;
+    heldKeys.current = nextHeldKeys;
 
-      return false;
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [shortcutKeysId],
-  );
+    return false;
+  };
 
-  const flushHeldKeys = useCallback(() => {
+  const flushHeldKeys = () => {
     heldKeys.current = [];
-  }, []);
+  };
 
   useEffect(() => {
     window.addEventListener("keydown", keydownListener);
@@ -143,13 +125,11 @@ const useKeyboardShortcut = (
       window.removeEventListener("keydown", keydownListener);
       window.removeEventListener("keyup", keyupListener);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keydownListener, keyupListener, shortcutKeysId]);
 
   // Resets the held keys array if the shortcut keys are changed.
   useEffect(() => {
     flushHeldKeys();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shortcutKeysId, flushHeldKeys]);
 
   return {

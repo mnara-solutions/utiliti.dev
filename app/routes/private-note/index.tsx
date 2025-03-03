@@ -1,5 +1,5 @@
 import Button from "~/components/button";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useFetcher } from "react-router";
 import { init } from "@paralleldrive/cuid2";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
@@ -51,25 +51,22 @@ export const noteExpiries = [
 
 export default function Index() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const passwordRef = useRef<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
   const [expiry, setExpiry] = useState("0");
   const fetcher = useFetcher<CreateActionData>();
 
   // on submit, encrypt the plaintext and then send it to the action
-  const onSubmit = useCallback(async () => {
+  const onSubmit = async () => {
     if (!inputRef.current) {
       return;
     }
 
     // generate a password (shortening the length as collisions here are not important)
     const cuid = init({ length: 10 });
-    passwordRef.current = cuid();
+    const generatedPassword = cuid();
 
     // encrypt data
-    const ciphertext = await encrypt(
-      inputRef.current.value,
-      passwordRef.current,
-    );
+    const ciphertext = await encrypt(inputRef.current.value, generatedPassword);
 
     // submit form
     fetcher.submit(
@@ -79,16 +76,15 @@ export default function Index() {
       },
       { method: "post", action: Routes.PRIVATE_NOTE_CREATE },
     );
-  }, [expiry, fetcher]);
+
+    // save the password for success message
+    setPassword(generatedPassword);
+  };
 
   // if the form was submitted, and we have action data, a note was created
-  if (fetcher.state === "idle" && fetcher.data != null && passwordRef.current) {
+  if (fetcher.state === "idle" && fetcher.data != null && password) {
     return (
-      <CreatedNote
-        id={fetcher.data.id}
-        secret={passwordRef.current}
-        expiry={expiry}
-      />
+      <CreatedNote id={fetcher.data.id} secret={password} expiry={expiry} />
     );
   }
 

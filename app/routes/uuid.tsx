@@ -1,6 +1,6 @@
 import ContentWrapper from "~/components/content-wrapper";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { useCallback, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import Copy from "~/components/copy";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { v1, v4, v6, v7 } from "uuid";
@@ -15,19 +15,13 @@ export default function UuidGenerator() {
   const [number, setNumber] = useState(1);
   const [version, setVersion] = useState<number>(4);
 
-  const onChangeNumber = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setNumber(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
-    },
-    [setNumber],
-  );
+  const onChangeNumber = (e: ChangeEvent<HTMLInputElement>) => {
+    setNumber(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
+  };
 
-  const onChangeVersion = useCallback(
-    (v: string) => {
-      setVersion(parseInt(v, 10));
-    },
-    [setVersion],
-  );
+  const onChangeVersion = (v: string) => {
+    setVersion(parseInt(v, 10));
+  };
 
   const output = Array.from(Array(number), () => {
     switch (version) {
