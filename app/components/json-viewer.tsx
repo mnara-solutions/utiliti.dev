@@ -31,9 +31,6 @@ export default function JsonViewer({ json }: Props) {
     return level < expandAfter;
   };
 
-  const expandAll = () => setShouldExpand(true);
-  const collapseALl = () => setShouldExpand(false);
-
   const incrementExpandAfter = () => {
     setExpandAfter(Math.min(10, expandAfter + 1));
     setShouldExpand(null);
@@ -42,8 +39,6 @@ export default function JsonViewer({ json }: Props) {
     setExpandAfter(Math.max(0, expandAfter - 1));
     setShouldExpand(null);
   };
-
-  const serialized = JSON.stringify(json);
 
   return (
     <Box>
@@ -66,16 +61,16 @@ export default function JsonViewer({ json }: Props) {
             <IconButton
               icon={ArrowsPointingInIcon}
               label="Collapse all nodes"
-              onClick={collapseALl}
+              onClick={() => setShouldExpand(false)}
             />
             <IconButton
               icon={ArrowsPointingOutIcon}
               label="Expand all nodes"
-              onClick={expandAll}
+              onClick={() => setShouldExpand(true)}
             />
           </div>
           <div className="flex flex-wrap items-center space-x-1 sm:pl-4">
-            <Copy content={serialized} />
+            <Copy content={() => JSON.stringify(json)} />
           </div>
         </div>
       </BoxTitle>

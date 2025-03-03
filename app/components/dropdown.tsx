@@ -14,8 +14,6 @@ export default function Dropdown({
   defaultValue,
   value,
 }: Props) {
-  const onChange = (e: ChangeEvent<HTMLSelectElement>) => onOptionChange(e.target.value);
-
   return (
     <select
       id={id}
@@ -26,7 +24,9 @@ export default function Dropdown({
       )}
       defaultValue={defaultValue}
       value={value}
-      onChange={onChange}
+      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+        onOptionChange(e.target.value)
+      }
     >
       {options.map((it) => (
         <option key={it.id} value={it.id}>

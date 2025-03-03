@@ -16,7 +16,6 @@ export default function ReadFile({
   onLoad,
   onError,
 }: Props) {
-  const onButtonClick = () => document.getElementById("file-input")?.click();
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files || [];
 
@@ -48,7 +47,7 @@ export default function ReadFile({
       <IconButton
         icon={PaperClipIcon}
         label="Load file"
-        onClick={onButtonClick}
+        onClick={() => document.getElementById("file-input")?.click()}
         tooltipPlacement="bottom"
       />
       <input

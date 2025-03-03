@@ -46,16 +46,12 @@ export default function ImageConverter() {
   const [quality, setQuality] = useState("0");
   const [error, setError] = useState<string | null>(null);
 
-  // cache computation for files
-  // the only reason we need this is that removing a file changes `files`, which causes dataUrls to be re-calculated
-  const convertFile = (file: File) => {
-    return convertToFileFormat(file, format, parseInt(quality, 10));
-  };
-
   // materialized state - we need each file as a data url
   useEffect(() => {
-    Promise.all(files.map(convertFile)).then(setDataUrls);
-  }, [files, convertFile]);
+    Promise.all(
+      files.map((it) => convertToFileFormat(it, format, parseInt(quality, 10))),
+    ).then(setDataUrls);
+  }, [files]);
 
   const onDownloadZip = async () => {
     const zip: JSZip = new JSZip();
@@ -85,14 +81,6 @@ export default function ImageConverter() {
 
     // remove the link from the DOM
     document.body.removeChild(link);
-  };
-
-  const onError = (error: string) => {
-    setError(error);
-  };
-
-  const onRemoveImage = (index: number) => {
-    setFiles(files.filter((_, i) => i !== index));
   };
 
   const onDownloadImage = (index: number) => {
@@ -173,7 +161,7 @@ export default function ImageConverter() {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          onRemoveImage(index);
+                          setFiles(files.filter((_, i) => i !== index));
                         }}
                         className="absolute top-1 right-1 text-red-600 hover:text-red-800"
                       >
@@ -233,7 +221,7 @@ export default function ImageConverter() {
             <ReadFile
               accept="image/*"
               onLoad={(it) => setFiles([...files, ...it])}
-              onError={onError}
+              onError={setError}
               multiple={true}
             />
           </div>

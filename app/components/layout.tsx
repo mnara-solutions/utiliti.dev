@@ -25,14 +25,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const prevPath = useRef(location.pathname);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
-  const toggleSearch = () => {
-    setSearchOpen(!searchOpen);
-  };
-
   // if url changes while the sidebar is open, close the sidebar
   useEffect(() => {
     if (sidebarOpen && prevPath.current !== location.pathname) {
@@ -43,6 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, [location.pathname, sidebarOpen, setSidebarOpen]);
 
   // on command + k, open search bar
+  const toggleSearch = () => setSearchOpen(!searchOpen);
   useKeyboardShortcut(["Meta", "K"], toggleSearch, keyboardShortcutOptions);
   useKeyboardShortcut(["Control", "K"], toggleSearch, keyboardShortcutOptions);
 
@@ -86,7 +79,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 type="button"
                 className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white/5"
                 aria-label="Toggle navigation"
-                onClick={toggleSidebar}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
               >
                 {sidebarOpen ? (
                   <XMarkIcon
