@@ -144,7 +144,7 @@ export default function WordCounter() {
   );
   const [info, setInfo] = useState<Info>(count(content, options));
 
-  const throttledSetContent = () => throttle(setContent, 1000);
+  const throttledSetContent = throttle(setContent, 1000);
 
   // text change handler
   const onChange = () => {
