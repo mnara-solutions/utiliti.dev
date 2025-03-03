@@ -52,21 +52,19 @@ export default function JSONEncoder() {
 
   const renderOutput = useCallback(
     (a: string, input: string, output: object) => {
+      const content = JSON.stringify(output, null, a === "Format" ? 2 : 0);
+
       if (a === Action.FORMAT || a === Action.MINIFY) {
         return (
           <Box>
             <BoxTitle title="Output">
               <div>
-                <Copy content={JSON.stringify(output)} />
+                <Copy content={content} />
               </div>
             </BoxTitle>
             <BoxContent isLast={true}>
               <div className="px-3 py-2">
-                <Code
-                  value={JSON.stringify(output, null, a === "Format" ? 2 : 0)}
-                  setValue={noop}
-                  readonly={true}
-                />
+                <Code value={content} setValue={noop} readonly={true} />
               </div>
             </BoxContent>
           </Box>
