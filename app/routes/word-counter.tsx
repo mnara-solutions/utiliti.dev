@@ -40,7 +40,7 @@ interface Info {
  *
  * @return  {Array}   The new array of code points.
  */
-function decode(input: string) {
+function decode(input: string): number[] {
   const output = [];
   let counter = 0;
   const length = input.length;

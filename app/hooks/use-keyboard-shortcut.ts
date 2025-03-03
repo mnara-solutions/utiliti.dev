@@ -33,10 +33,12 @@ const useKeyboardShortcut = (
       "The second parameter to `useKeyboardShortcut` must be a function that will be envoked when the keys are pressed.",
     );
 
-  const shortcutKeysId = () => shortcutKeys.join();
+  const shortcutKeysId = shortcutKeys.join();
 
   // Normalizes the shortcut keys a deduplicated array of lowercased keys.
-  const shortcutArray = () => [...new Set(shortcutKeys)].map((key) => String(key).toLowerCase());
+  const shortcutArray = [...new Set(shortcutKeys)].map((key) =>
+    String(key).toLowerCase(),
+  );
 
   // useRef to avoid a constant re-render on keydown and keyup.
   const heldKeys = useRef<string[]>([]);
@@ -123,13 +125,11 @@ const useKeyboardShortcut = (
       window.removeEventListener("keydown", keydownListener);
       window.removeEventListener("keyup", keyupListener);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keydownListener, keyupListener, shortcutKeysId]);
 
   // Resets the held keys array if the shortcut keys are changed.
   useEffect(() => {
     flushHeldKeys();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shortcutKeysId, flushHeldKeys]);
 
   return {

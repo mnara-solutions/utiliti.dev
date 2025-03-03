@@ -24,7 +24,7 @@ function formatSql(
 ): string | null {
   try {
     return format(input, options);
-  } catch (e) {
+  } catch {
     // do nothing
   }
 

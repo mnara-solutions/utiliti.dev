@@ -36,7 +36,7 @@ async function encode(text: string): Promise<string | JsonURL> {
 
   try {
     return encodeURI(url);
-  } catch (e) {
+  } catch {
     return encodeURIComponent(url);
   }
 }
@@ -46,7 +46,7 @@ async function decode(text: string): Promise<string | JsonURL> {
 
   try {
     return decodeURI(url);
-  } catch (e) {
+  } catch {
     return decodeURIComponent(url);
   }
 }
@@ -68,7 +68,7 @@ async function toJson(text: string): Promise<string | JsonURL> {
       searchParams: Object.fromEntries(url.searchParams),
       username: url.username,
     };
-  } catch (e) {
+  } catch {
     throw { message: "Invalid URL." };
   }
 }

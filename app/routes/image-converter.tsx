@@ -102,7 +102,8 @@ export default function ImageConverter() {
     link.click();
   };
 
-  const [{ canDrop, isOver }, drop] = useDrop(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, drop] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],
       drop(item: { files: File[] }) {
@@ -158,7 +159,6 @@ export default function ImageConverter() {
                 <div className="grid grid-cols-4 gap-4 p-2">
                   {files.map((file, index) => (
                     <div key={index} className="relative">
-                      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
                       <img
                         className="w-full h-full aspect-square object-cover rounded-sm cursor-pointer"
                         onClick={(e) => {
