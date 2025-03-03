@@ -16,6 +16,7 @@ export default function Dropdown({
   options,
   className,
   defaultValue,
+  value,
 }: Props) {
   const onChange = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => onOptionChange(e.target.value),
@@ -31,6 +32,7 @@ export default function Dropdown({
         className,
       )}
       defaultValue={defaultValue}
+      value={value}
       onChange={onChange}
     >
       {options.map((it) => (
