@@ -3,6 +3,8 @@ import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import babel from "vite-plugin-babel";
+import eslint from "vite-plugin-eslint";
 
 export default defineConfig(() => ({
   server: {
@@ -26,5 +28,13 @@ export default defineConfig(() => ({
     }),
     reactRouter(),
     tsconfigPaths(),
+    babel({
+      filter: /\.[jt]sx?$/,
+      babelConfig: {
+        presets: ["@babel/preset-typescript"],
+        plugins: [["babel-plugin-react-compiler", { target: "19" }]],
+      },
+    }),
+    eslint(),
   ],
 }));

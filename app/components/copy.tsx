@@ -1,6 +1,6 @@
 import { copyText } from "~/utils/copy";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/tooltip";
 
 interface Props {
@@ -11,7 +11,7 @@ export default function Copy({ content }: Props) {
   const [tooltipText, setTooltipText] = useState(text);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const onClick = useCallback(() => {
+  const onClick = () => {
     copyText(content)
       .then(() => setTooltipText("Copied"))
       .catch((e) => console.error("Could not copy to clipboard.", e));
@@ -23,7 +23,7 @@ export default function Copy({ content }: Props) {
       // re-set tooltip text
       setTooltipText(text);
     }, 1500);
-  }, [content]);
+  };
 
   return (
     <Tooltip>

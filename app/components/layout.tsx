@@ -1,10 +1,4 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import {
   Bars3BottomLeftIcon,
   MagnifyingGlassIcon,
@@ -31,13 +25,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const prevPath = useRef(location.pathname);
 
-  const toggleSidebar = useCallback(() => {
+  const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
-  }, [sidebarOpen, setSidebarOpen]);
+  };
 
-  const toggleSearch = useCallback(() => {
+  const toggleSearch = () => {
     setSearchOpen(!searchOpen);
-  }, [searchOpen, setSearchOpen]);
+  };
 
   // if url changes while the sidebar is open, close the sidebar
   useEffect(() => {

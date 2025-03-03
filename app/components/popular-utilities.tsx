@@ -1,6 +1,5 @@
 import { Link } from "react-router";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
-import { memo } from "react";
 import { utilities } from "~/utilities";
 import { ClientOnly } from "~/components/client-only";
 
@@ -20,7 +19,7 @@ function shuffle<T>(arr: T[]) {
   return arr;
 }
 
-export default memo(PopularUtilities);
+export default PopularUtilities;
 
 /**
  * Since we are using a random() function to show popular utilities, react router fails to match server side

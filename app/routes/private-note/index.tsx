@@ -1,5 +1,5 @@
 import Button from "~/components/button";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useFetcher } from "react-router";
 import { init } from "@paralleldrive/cuid2";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
@@ -56,7 +56,7 @@ export default function Index() {
   const fetcher = useFetcher<CreateActionData>();
 
   // on submit, encrypt the plaintext and then send it to the action
-  const onSubmit = useCallback(async () => {
+  const onSubmit = async () => {
     if (!inputRef.current) {
       return;
     }
@@ -79,7 +79,7 @@ export default function Index() {
       },
       { method: "post", action: Routes.PRIVATE_NOTE_CREATE },
     );
-  }, [expiry, fetcher]);
+  };
 
   // if the form was submitted, and we have action data, a note was created
   if (fetcher.state === "idle" && fetcher.data != null && passwordRef.current) {

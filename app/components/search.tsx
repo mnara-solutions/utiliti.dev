@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useState } from "react";
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { classNames } from "~/common";
@@ -23,13 +23,10 @@ export default function Search({ open, setOpen }: Props) {
           return it.name.toLowerCase().includes(query.toLowerCase());
         });
 
-  const onChange = useCallback(
-    (item: (typeof allUtilities)[0]) => {
-      setOpen(false);
-      navigate(item.url);
-    },
-    [navigate, setOpen],
-  );
+  const onChange = (item: (typeof allUtilities)[0]) => {
+    setOpen(false);
+    navigate(item.url);
+  };
 
   return (
     <Transition.Root

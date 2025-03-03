@@ -65,16 +65,13 @@ export function useTooltip({
   const role = useRole(context, { role: "tooltip" });
   const interactions = useInteractions([hover, focus, dismiss, role]);
 
-  return React.useMemo(
-    () => ({
-      open,
-      setOpen,
-      arrowRef,
-      ...interactions,
-      ...data,
-    }),
-    [open, setOpen, interactions, data],
-  );
+  return {
+    open,
+    setOpen,
+    arrowRef,
+    ...interactions,
+    ...data,
+  };
 }
 
 type ContextType = ReturnType<typeof useTooltip> | null;

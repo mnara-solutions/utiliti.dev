@@ -1,7 +1,7 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
@@ -48,19 +48,16 @@ export default function ImageConverter() {
 
   // cache computation for files
   // the only reason we need this is that removing a file changes `files`, which causes dataUrls to be re-calculated
-  const convertFile = useCallback(
-    (file: File) => {
-      return convertToFileFormat(file, format, parseInt(quality, 10));
-    },
-    [format, quality],
-  );
+  const convertFile = (file: File) => {
+    return convertToFileFormat(file, format, parseInt(quality, 10));
+  };
 
   // materialized state - we need each file as a data url
   useEffect(() => {
     Promise.all(files.map(convertFile)).then(setDataUrls);
   }, [files, convertFile]);
 
-  const onDownloadZip = useCallback(async () => {
+  const onDownloadZip = async () => {
     const zip: JSZip = new JSZip();
 
     for (let i = 0; i < files.length; i++) {
@@ -88,31 +85,22 @@ export default function ImageConverter() {
 
     // remove the link from the DOM
     document.body.removeChild(link);
-  }, [files, format]);
+  };
 
-  const onError = useCallback(
-    (error: string) => {
-      setError(error);
-    },
-    [setError],
-  );
+  const onError = (error: string) => {
+    setError(error);
+  };
 
-  const onRemoveImage = useCallback(
-    (index: number) => {
-      setFiles(files.filter((_, i) => i !== index));
-    },
-    [files],
-  );
+  const onRemoveImage = (index: number) => {
+    setFiles(files.filter((_, i) => i !== index));
+  };
 
-  const onDownloadImage = useCallback(
-    (index: number) => {
-      const link = document.createElement("a");
-      link.href = dataUrls[index];
-      link.download = renameFile(files[index], format);
-      link.click();
-    },
-    [dataUrls, files, format],
-  );
+  const onDownloadImage = (index: number) => {
+    const link = document.createElement("a");
+    link.href = dataUrls[index];
+    link.download = renameFile(files[index], format);
+    link.click();
+  };
 
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
