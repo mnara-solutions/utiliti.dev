@@ -34,14 +34,12 @@ export default function Prettier() {
     "html",
   );
 
-  const actions = () => {
-    return {
-      ["Format"]: async (input: string) =>
-        prettier.format(input, {
-          parser: language,
-          plugins: [html, typescript, estree, postcss],
-        }),
-    };
+  const actions = {
+    ["Format"]: async (input: string) =>
+      prettier.format(input, {
+        parser: language,
+        plugins: [html, typescript, estree, postcss],
+      }),
   };
 
   const renderInput = (input: string, setInput: (v: string) => void) => (
