@@ -93,7 +93,7 @@ export default function Search({ open, setOpen }: Props) {
                           (it) => (
                             <ComboboxOption
                               key={it.name}
-                              test-id="search-option"
+                              data-testid="search-option"
                               value={it}
                               className={({ focus }) =>
                                 classNames(

@@ -5,16 +5,13 @@ test("clicking on search box", async ({ page }) => {
   await page.goto("/");
 
   // click on search box
-  await page.locator('[test-id="search-box"]').first().click();
+  await page.getByTestId("search-box").first().click();
 
   // wait for search options
-  await expect(page.locator('[test-id="search-option"]').first()).toBeVisible();
+  await expect(page.getByTestId("search-option").first()).toBeVisible();
 
   // ensure the first item is private notes
-  const text = await page
-    .locator('[test-id="search-option"]')
-    .first()
-    .textContent();
+  const text = await page.getByTestId("search-option").first().textContent();
   expect(text).toContain("Private Notes");
 });
 
