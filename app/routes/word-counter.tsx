@@ -2,7 +2,7 @@ import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { throttle } from "~/utils/throttle";
 import ContentWrapper from "~/components/content-wrapper";
 import { Transition } from "@headlessui/react";
@@ -40,7 +40,7 @@ interface Info {
  *
  * @return  {Array}   The new array of code points.
  */
-function decode(input: string) {
+function decode(input: string): number[] {
   const output = [];
   let counter = 0;
   const length = input.length;
@@ -144,19 +144,16 @@ export default function WordCounter() {
   );
   const [info, setInfo] = useState<Info>(count(content, options));
 
-  const throttledSetContent = useMemo(
-    () => throttle(setContent, 1000),
-    [setContent],
-  );
+  const throttledSetContent = throttle(setContent, 1000);
 
   // text change handler
-  const onChange = useCallback(() => {
+  const onChange = () => {
     if (!inputRef.current) {
       return;
     }
 
     throttledSetContent(inputRef.current.value || "");
-  }, [throttledSetContent]);
+  };
 
   // whenever text changes (storage backend), re-calculate info
   useEffect(() => {
@@ -205,7 +202,7 @@ export default function WordCounter() {
       <Box>
         <BoxTitle title="Input">
           <div>
-            <Copy content={inputRef.current?.value || ""} />
+            <Copy content={() => inputRef.current?.value || ""} />
           </div>
         </BoxTitle>
 

@@ -1,8 +1,4 @@
-import {
-  useCallback,
-  type ChangeEvent,
-  type SelectHTMLAttributes,
-} from "react";
+import { type ChangeEvent, type SelectHTMLAttributes } from "react";
 import { classNames } from "~/common";
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -18,11 +14,6 @@ export default function Dropdown({
   defaultValue,
   value,
 }: Props) {
-  const onChange = useCallback(
-    (e: ChangeEvent<HTMLSelectElement>) => onOptionChange(e.target.value),
-    [onOptionChange],
-  );
-
   return (
     <select
       id={id}
@@ -33,7 +24,9 @@ export default function Dropdown({
       )}
       defaultValue={defaultValue}
       value={value}
-      onChange={onChange}
+      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+        onOptionChange(e.target.value)
+      }
     >
       {options.map((it) => (
         <option key={it.id} value={it.id}>

@@ -1,7 +1,7 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
@@ -46,21 +46,14 @@ export default function ImageConverter() {
   const [quality, setQuality] = useState("0");
   const [error, setError] = useState<string | null>(null);
 
-  // cache computation for files
-  // the only reason we need this is that removing a file changes `files`, which causes dataUrls to be re-calculated
-  const convertFile = useCallback(
-    (file: File) => {
-      return convertToFileFormat(file, format, parseInt(quality, 10));
-    },
-    [format, quality],
-  );
-
   // materialized state - we need each file as a data url
   useEffect(() => {
-    Promise.all(files.map(convertFile)).then(setDataUrls);
-  }, [files, convertFile]);
+    Promise.all(
+      files.map((it) => convertToFileFormat(it, format, parseInt(quality, 10))),
+    ).then(setDataUrls);
+  }, [files]);
 
-  const onDownloadZip = useCallback(async () => {
+  const onDownloadZip = async () => {
     const zip: JSZip = new JSZip();
 
     for (let i = 0; i < files.length; i++) {
@@ -88,33 +81,17 @@ export default function ImageConverter() {
 
     // remove the link from the DOM
     document.body.removeChild(link);
-  }, [files, format]);
+  };
 
-  const onError = useCallback(
-    (error: string) => {
-      setError(error);
-    },
-    [setError],
-  );
+  const onDownloadImage = (index: number) => {
+    const link = document.createElement("a");
+    link.href = dataUrls[index];
+    link.download = renameFile(files[index], format);
+    link.click();
+  };
 
-  const onRemoveImage = useCallback(
-    (index: number) => {
-      setFiles(files.filter((_, i) => i !== index));
-    },
-    [files],
-  );
-
-  const onDownloadImage = useCallback(
-    (index: number) => {
-      const link = document.createElement("a");
-      link.href = dataUrls[index];
-      link.download = renameFile(files[index], format);
-      link.click();
-    },
-    [dataUrls, files, format],
-  );
-
-  const [{ canDrop, isOver }, drop] = useDrop(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, drop] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],
       drop(item: { files: File[] }) {
@@ -170,7 +147,6 @@ export default function ImageConverter() {
                 <div className="grid grid-cols-4 gap-4 p-2">
                   {files.map((file, index) => (
                     <div key={index} className="relative">
-                      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-noninteractive-element-interactions */}
                       <img
                         className="w-full h-full aspect-square object-cover rounded-sm cursor-pointer"
                         onClick={(e) => {
@@ -185,7 +161,7 @@ export default function ImageConverter() {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          onRemoveImage(index);
+                          setFiles(files.filter((_, i) => i !== index));
                         }}
                         className="absolute top-1 right-1 text-red-600 hover:text-red-800"
                       >
@@ -245,7 +221,7 @@ export default function ImageConverter() {
             <ReadFile
               accept="image/*"
               onLoad={(it) => setFiles([...files, ...it])}
-              onError={onError}
+              onError={setError}
               multiple={true}
             />
           </div>

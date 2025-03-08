@@ -1,6 +1,5 @@
 import { Link } from "react-router";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
-import { memo } from "react";
 import { utilities } from "~/utilities";
 import { ClientOnly } from "~/components/client-only";
 
@@ -20,8 +19,6 @@ function shuffle<T>(arr: T[]) {
   return arr;
 }
 
-export default memo(PopularUtilities);
-
 /**
  * Since we are using a random() function to show popular utilities, react router fails to match server side
  * rendered content with what the client does and throws a bunch of errors. We wrap it with <ClientOnly />
@@ -29,7 +26,7 @@ export default memo(PopularUtilities);
  *
  * @constructor
  */
-function PopularUtilities() {
+export default function PopularUtilities() {
   return (
     <ClientOnly
       fallback={
@@ -69,6 +66,7 @@ interface PopularUtilityProps {
   readonly description: string;
   readonly path: string;
 }
+
 function PopularUtility({ name, description, path }: PopularUtilityProps) {
   return (
     <div>

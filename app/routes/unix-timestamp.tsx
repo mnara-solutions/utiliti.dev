@@ -1,7 +1,7 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxContent, BoxOptions, BoxTitle } from "~/components/box";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import Copy from "~/components/copy";
 import { useHydrated } from "~/hooks/use-hydrated";
@@ -112,28 +112,22 @@ export default function UnixTimestamp() {
     format: string;
   }>(null);
 
-  const initialDate = useMemo(
-    () => (hydrated ? new Date() : new Date("2023-04-16")),
-    [hydrated],
-  );
+  const initialDate = () => (hydrated ? new Date() : new Date("2023-04-16"));
 
-  const onInputConvert = useCallback(
-    (action: "timestamp" | "datetime") => {
-      const [date, format] =
-        action === "timestamp"
-          ? fromTimestamp(timestampRef.current?.value || "")
-          : [
-              new Date(
-                (dateRef.current?.valueAsNumber || 0) +
-                  initialDate.getTimezoneOffset() * 60 * 1000,
-              ),
-              "unknown",
-            ];
+  const onInputConvert = (action: "timestamp" | "datetime") => {
+    const [date, format] =
+      action === "timestamp"
+        ? fromTimestamp(timestampRef.current?.value || "")
+        : [
+            new Date(
+              (dateRef.current?.valueAsNumber || 0) +
+                initialDate.getTimezoneOffset() * 60 * 1000,
+            ),
+            "unknown",
+          ];
 
-      setInput({ action, value: date, format });
-    },
-    [setInput, initialDate],
-  );
+    setInput({ action, value: date, format });
+  };
 
   return (
     <ContentWrapper>

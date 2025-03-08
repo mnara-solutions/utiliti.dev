@@ -1,5 +1,5 @@
 import Copy from "~/components/copy";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import { JSONTree } from "react-json-tree";
 import IconButton from "~/components/icon-button";
 import {
@@ -19,33 +19,26 @@ export default function JsonViewer({ json }: Props) {
   const [shouldExpand, setShouldExpand] = useState<boolean | null>(null);
   const [expandAfter, setExpandAfter] = useState(3);
 
-  const shouldExpandNodeInitially = useCallback<ShouldExpandNodeInitially>(
-    (keyPath, data, level) => {
-      if (shouldExpand !== null) {
-        return shouldExpand;
-      }
+  const shouldExpandNodeInitially: ShouldExpandNodeInitially = (
+    keyPath,
+    data,
+    level,
+  ) => {
+    if (shouldExpand !== null) {
+      return shouldExpand;
+    }
 
-      return level < expandAfter;
-    },
-    [shouldExpand, expandAfter],
-  );
+    return level < expandAfter;
+  };
 
-  const expandAll = useCallback(() => setShouldExpand(true), [setShouldExpand]);
-  const collapseALl = useCallback(
-    () => setShouldExpand(false),
-    [setShouldExpand],
-  );
-
-  const incrementExpandAfter = useCallback(() => {
+  const incrementExpandAfter = () => {
     setExpandAfter(Math.min(10, expandAfter + 1));
     setShouldExpand(null);
-  }, [expandAfter]);
-  const decrementExpandAfter = useCallback(() => {
+  };
+  const decrementExpandAfter = () => {
     setExpandAfter(Math.max(0, expandAfter - 1));
     setShouldExpand(null);
-  }, [expandAfter]);
-
-  const serialized = useMemo(() => JSON.stringify(json), [json]);
+  };
 
   return (
     <Box>
@@ -68,16 +61,16 @@ export default function JsonViewer({ json }: Props) {
             <IconButton
               icon={ArrowsPointingInIcon}
               label="Collapse all nodes"
-              onClick={collapseALl}
+              onClick={() => setShouldExpand(false)}
             />
             <IconButton
               icon={ArrowsPointingOutIcon}
               label="Expand all nodes"
-              onClick={expandAll}
+              onClick={() => setShouldExpand(true)}
             />
           </div>
           <div className="flex flex-wrap items-center space-x-1 sm:pl-4">
-            <Copy content={serialized} />
+            <Copy content={() => JSON.stringify(json)} />
           </div>
         </div>
       </BoxTitle>
