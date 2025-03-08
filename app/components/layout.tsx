@@ -60,7 +60,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="hidden lg:block lg:max-w-md lg:flex-auto">
               <button
                 type="button"
-                test-id="search-box"
+                data-testid="search-box"
                 className="hidden h-8 w-full items-center gap-2 rounded-full pl-2 pr-3 text-sm ring-1 transition bg-white/5 text-zinc-400 ring-inset ring-white/10 hover:ring-white/20 lg:flex outline-hidden"
                 onClick={toggleSearch}
               >
@@ -106,7 +106,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="contents lg:hidden">
                 <button
                   type="button"
-                  test-id="search-box"
+                  data-testid="search-box"
                   className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white/5 lg:hidden focus:not-focus-visible:outline-hidden"
                   aria-label="Find something…"
                   onClick={toggleSearch}

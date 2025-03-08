@@ -32,16 +32,16 @@ test("searching via keyboard shortcut", async ({ page }) => {
   await page.keyboard.type("JSON");
 
   // wait for the search option to appear
-  await expect(page.locator('[test-id="search-option"]')).toBeVisible();
+  await expect(page.getByTestId("search-option")).toBeVisible();
 
   // ensure its the json search result
   const searchResultText = await page
-    .locator('[test-id="search-option"]')
+    .getByTestId("search-option")
     .textContent();
   expect(searchResultText).toContain("JSON");
 
   // click on it
-  await page.locator('[test-id="search-option"]').first().click();
+  await page.getByTestId("search-option").first().click();
 
   // ensure page URL
   await expect(page).toHaveURL("/json");
