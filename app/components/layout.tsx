@@ -164,7 +164,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <DndProvider backend={HTML5Backend}>
               <noscript className="prose prose-sm max-w-none prose-invert">
                 <div
-                  className="antialiased flex items-center p-4 mb-4 text-sm border rounded-lg bg-gray-800 text-red-400 border-red-800"
+                  className="antialiased flex items-center p-4 mb-4 text-sm border rounded-lg bg-zinc-800 text-orange-500 border-orange-500"
                   role="alert"
                 >
                   <svg
