@@ -5,7 +5,14 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import babel from "vite-plugin-babel";
 
-export default defineConfig(() => ({
+export default defineConfig(({ isSsrBuild }) => ({
+  build: {
+    rollupOptions: isSsrBuild
+      ? {
+          input: "./workers/app.ts",
+        }
+      : undefined,
+  },
   server: {
     port: 8788,
     fs: {
@@ -19,12 +26,12 @@ export default defineConfig(() => ({
     },
   },
   plugins: [
-    tailwindcss(),
     cloudflareDevProxy({
       getLoadContext({ context }) {
         return { cloudflare: context.cloudflare };
       },
     }),
+    tailwindcss(),
     reactRouter(),
     tsconfigPaths(),
     babel({
