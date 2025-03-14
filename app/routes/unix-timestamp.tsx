@@ -112,7 +112,7 @@ export default function UnixTimestamp() {
     format: string;
   }>(null);
 
-  const initialDate = () => (hydrated ? new Date() : new Date("2023-04-16"));
+  const initialDate = hydrated ? new Date() : new Date("2023-04-16");
 
   const onInputConvert = (action: "timestamp" | "datetime") => {
     const [date, format] =
