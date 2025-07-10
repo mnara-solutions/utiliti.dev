@@ -2,7 +2,7 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { type ChangeEvent, useCallback, useEffect, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
@@ -19,11 +19,21 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { classNames } from "~/common";
+import NumberInput from "~/components/number-input";
 
 export const meta = metaHelper(
   utilities.imageConverter.name,
   utilities.imageConverter.description,
 );
+
+export enum ResizeType {
+  none,
+  large,
+  small,
+  square,
+  width,
+  height,
+}
 
 const formatImage: { [format: string]: string } = {
   jpg: "image/jpeg",
@@ -40,20 +50,50 @@ function renameFile(file: File, format: string) {
 
   return `${filenameWithoutExtension}.${format}`;
 }
+
 export default function ImageConverter() {
   const [files, setFiles] = useState<File[]>([]);
   const [dataUrls, setDataUrls] = useState<string[]>([]);
   const [format, setFormat] = useState("jpg");
   const [quality, setQuality] = useState("0");
+  const [resize, setResize] = useState("none");
   const [error, setError] = useState<string | null>(null);
+  const [size, setSize] = useState(500);
 
   // cache computation for files
   // the only reason we need this is that removing a file changes `files`, which causes dataUrls to be re-calculated
   const convertFile = useCallback(
     (file: File) => {
-      return convertToFileFormat(file, format, parseInt(quality, 10));
+      let resizeType = ResizeType.none;
+      switch (resize) {
+        case "none":
+          resizeType = ResizeType.none;
+          break;
+        case "large":
+          resizeType = ResizeType.large;
+          break;
+        case "small":
+          resizeType = ResizeType.small;
+          break;
+        case "square":
+          resizeType = ResizeType.square;
+          break;
+        case "width":
+          resizeType = ResizeType.width;
+          break;
+        case "height":
+          resizeType = ResizeType.height;
+          break;
+      }
+      return convertToFileFormat(
+        file,
+        format,
+        parseInt(quality, 10),
+        resizeType,
+        size,
+      );
     },
-    [format, quality],
+    [format, quality, resize, size],
   );
 
   // materialized state - we need each file as a data url
@@ -115,6 +155,13 @@ export default function ImageConverter() {
     [dataUrls, files, format],
   );
 
+  const onChangeSize = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setSize(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
+    },
+    [setSize],
+  );
+
   const [{ canDrop, isOver }, drop] = useDrop(
     () => ({
       accept: [NativeTypes.FILE],
@@ -168,36 +215,38 @@ export default function ImageConverter() {
                 </div>
               ) : (
                 <div className="grid grid-cols-4 gap-4 p-2">
-                  {files.map((file, index) => (
-                    <div key={index} className="relative">
-                      <img
-                        className="w-full h-full aspect-square object-cover rounded cursor-pointer"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onDownloadImage(index);
-                        }}
-                        src={dataUrls[index]}
-                        key={index}
-                        alt={file.name}
-                      />
+                  {files.map((file, index) => {
+                    return dataUrls[index] ? (
+                      <div key={index} className="relative">
+                        <img
+                          className="w-full h-full aspect-square object-cover rounded cursor-pointer"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onDownloadImage(index);
+                          }}
+                          src={dataUrls[index]}
+                          key={index}
+                          alt={file.name}
+                        />
 
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onRemoveImage(index);
-                        }}
-                        className="absolute top-1 right-1 text-red-600 hover:text-red-800"
-                      >
-                        <XCircleIcon className="h-6 w-6" />
-                        <span className="sr-only">Remove Image</span>
-                      </button>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onRemoveImage(index);
+                          }}
+                          className="absolute top-1 right-1 text-red-600 hover:text-red-800"
+                        >
+                          <XCircleIcon className="h-6 w-6" />
+                          <span className="sr-only">Remove Image</span>
+                        </button>
 
-                      <button className="absolute bottom-1 right-1 text-orange-600 hover:text-orange-800">
-                        <ArrowDownOnSquareIcon className="h-6 w-6" />
-                        <span className="sr-only">Download Image</span>
-                      </button>
-                    </div>
-                  ))}
+                        <button className="absolute bottom-1 right-1 text-orange-600 hover:text-orange-800">
+                          <ArrowDownOnSquareIcon className="h-6 w-6" />
+                          <span className="sr-only">Download Image</span>
+                        </button>
+                      </div>
+                    ) : null;
+                  })}
                 </div>
               )}
             </label>
@@ -234,6 +283,28 @@ export default function ImageConverter() {
                   defaultValue={quality.toString()}
                 />
               </>
+            ) : null}
+            <div className="flex items-center">Resize</div>
+            <Dropdown
+              onOptionChange={setResize}
+              options={[
+                { id: "none", label: "None" },
+                { id: "large", label: "Largest Size" },
+                { id: "small", label: "Smallest Size" },
+                { id: "square", label: "Square" },
+                { id: "width", label: "Width" },
+                { id: "height", label: "Height" },
+              ]}
+              defaultValue={format}
+            />
+            {resize !== "none" ? (
+              <NumberInput
+                type="number"
+                min={1}
+                max={500}
+                value={size}
+                onChange={onChangeSize}
+              />
             ) : null}
             <ReadFile
               accept="image/*"

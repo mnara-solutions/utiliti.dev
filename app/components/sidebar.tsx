@@ -15,7 +15,7 @@ export default function Sidebar() {
             <div className="absolute inset-y-0 left-2 w-px bg-white/5"></div>
             <ul className="border-l border-transparent">
               {it.children.map((c) => {
-                const current = location.pathname.includes(c.url);
+                const current = location.pathname === c.url;
                 return (
                   <li key={c.name} className="relative">
                     {current && (

@@ -23,6 +23,11 @@ export const utilities: Record<
     description: "Easily encode and decode base64 content.",
     url: Routes.BASE64,
   },
+  urlEncode: {
+    name: "Url Encode / Decode",
+    description: "Easily encode and decode urlencoded content.",
+    url: Routes.URL_ENCODE,
+  },
   url: {
     name: "URL",
     description:
@@ -111,6 +116,7 @@ export const sidebar = [
       utilities.wordCounter,
       utilities.url,
       utilities.base64,
+      utilities.urlEncode,
       utilities.sqlFormatter,
       utilities.qrCode,
       utilities.hashing,
