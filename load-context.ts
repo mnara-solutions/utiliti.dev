@@ -1,5 +1,5 @@
-import { type GetLoadContextFunction } from "@react-router/cloudflare";
-import { type PlatformProxy } from "wrangler";
+import type { GetLoadContextFunction } from "@react-router/cloudflare";
+import type { PlatformProxy } from "wrangler";
 
 type Cloudflare = Omit<PlatformProxy<Env>, "dispose">;
 
