@@ -64,7 +64,7 @@ export default function CuidGenerator() {
             <div className="flex items-center space-x-1 sm:px-4">
               <div className="sm:px text-center">
                 <NumberInput
-                  id="length"
+                  id="number"
                   type="number"
                   min={1}
                   max={500}

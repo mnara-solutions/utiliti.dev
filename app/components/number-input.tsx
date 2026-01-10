@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { classNames } from "~/common";
+import { cn } from "~/common";
 
 export default forwardRef<
   HTMLInputElement,
@@ -10,7 +10,7 @@ export default forwardRef<
     <input
       ref={ref}
       type="number"
-      className={classNames(
+      className={cn(
         "block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 focus:ring-orange-500 focus:border-orange-500",
         className,
       )}
