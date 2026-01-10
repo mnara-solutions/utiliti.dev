@@ -23,6 +23,7 @@ export class Routes {
   static readonly SQL_FORMATTER = "/sql-formatter";
   static readonly QR_CODE = "/qr-code";
   static readonly HASHING = "/hashing";
+  static readonly SITEMAP = "/sitemap.xml";
 }
 
 export default [
@@ -50,4 +51,5 @@ export default [
   route(Routes.SQL_FORMATTER, "./routes/sql-formatter.tsx"),
   route(Routes.QR_CODE, "./routes/qr-code.tsx"),
   route(Routes.HASHING, "./routes/hashing.tsx"),
+  route(Routes.SITEMAP, "./routes/sitemap[.]xml.tsx"),
 ] satisfies RouteConfig;
