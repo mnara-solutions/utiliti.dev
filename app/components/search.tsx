@@ -10,7 +10,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { classNames } from "~/common";
+import { cn } from "~/common";
 import { utilities } from "~/utilities";
 import { useNavigate } from "react-router";
 
@@ -28,9 +28,9 @@ export default function Search({ open, setOpen }: Props) {
   const filteredUtilities =
     query === ""
       ? []
-      : allUtilities.filter((it) => {
-          return it.name.toLowerCase().includes(query.toLowerCase());
-        });
+      : allUtilities.filter((it) =>
+          it.name.toLowerCase().includes(query.toLowerCase()),
+        );
 
   const onChange = (item: (typeof allUtilities)[0]) => {
     setOpen(false);
@@ -96,7 +96,7 @@ export default function Search({ open, setOpen }: Props) {
                               data-testid="search-option"
                               value={it}
                               className={({ focus }) =>
-                                classNames(
+                                cn(
                                   "flex cursor-default select-none items-center rounded-md px-3 py-2",
                                   focus && "bg-zinc-800 text-orange-600",
                                 )
