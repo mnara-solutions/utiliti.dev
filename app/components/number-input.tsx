@@ -1,11 +1,11 @@
-import type { InputHTMLAttributes } from "react";
-import { forwardRef } from "react";
+import type { InputHTMLAttributes, Ref } from "react";
 import { cn } from "~/common";
 
-export default forwardRef<
-  HTMLInputElement,
-  InputHTMLAttributes<HTMLInputElement>
->(function NumberInput({ className, ...rest }, ref) {
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  ref?: Ref<HTMLInputElement>;
+}
+
+export default function NumberInput({ className, ref, ...rest }: Props) {
   return (
     <input
       ref={ref}
@@ -17,4 +17,4 @@ export default forwardRef<
       {...rest}
     />
   );
-});
+}
