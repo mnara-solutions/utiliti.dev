@@ -20,7 +20,7 @@ ${urls
     <loc>${url.loc}</loc>
     <changefreq>${url.changefreq}</changefreq>
     <priority>${url.priority}</priority>
-  </url>`
+  </url>`,
   )
   .join("\n")}
 </urlset>`;
