@@ -10,7 +10,7 @@ import { setTextInputFromFiles } from "~/utils/convert-text-file";
 
 export const meta = metaHelper(
   utilities.base64.name,
-  utilities.base64.description,
+  "Encode and decode Base64 instantly. Client-side processing means your data never leaves your browser—safe for tokens, credentials, and sensitive content.",
 );
 
 enum Action {
@@ -95,6 +95,55 @@ export default function Base64() {
 
   const renderExplanation = () => (
     <>
+      <h2>Why Encode Base64 Client-Side?</h2>
+      <p>
+        Base64 encoding is frequently used with sensitive data—authentication
+        tokens, API keys, encrypted content, and binary files. Many online
+        Base64 tools send your data to their servers, creating a security risk.
+      </p>
+      <p>
+        Utiliti&apos;s Base64 encoder runs{" "}
+        <strong>entirely in your browser</strong>. Your data never leaves your
+        device, making it safe to encode or decode:
+      </p>
+      <ul>
+        <li>
+          <strong>JWT Tokens</strong>: Decode and inspect authentication tokens
+          without exposure
+        </li>
+        <li>
+          <strong>API Credentials</strong>: Safely encode Basic Auth headers
+        </li>
+        <li>
+          <strong>Encrypted Data</strong>: Work with encrypted payloads
+          privately
+        </li>
+        <li>
+          <strong>Binary Files</strong>: Convert images and files to Base64 for
+          embedding
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Encode</strong>: Convert plain text or binary data to Base64
+          format
+        </li>
+        <li>
+          <strong>Decode</strong>: Convert Base64 strings back to their original
+          form
+        </li>
+        <li>
+          <strong>URL-Safe Mode</strong>: Generate URL-safe Base64 that replaces
+          + and / with - and _ for use in URLs and filenames
+        </li>
+        <li>
+          <strong>Instant Processing</strong>: No server round-trip means
+          immediate results
+        </li>
+      </ul>
+
       <h2>What is Base64?</h2>
 
       <p>
@@ -162,6 +211,40 @@ export default function Base64() {
         representing binary data in a text-based format, it does not provide
         encryption or security. The purpose is primarily to ensure compatibility
         with text-based systems that may not handle binary data well.
+      </p>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Embedding Images</strong>: Convert images to Base64 data URLs
+          for inline embedding in HTML or CSS
+        </li>
+        <li>
+          <strong>API Authentication</strong>: Encode credentials for HTTP Basic
+          Authentication headers
+        </li>
+        <li>
+          <strong>Data Transfer</strong>: Safely transmit binary data through
+          text-only channels like JSON or XML
+        </li>
+        <li>
+          <strong>Debugging JWTs</strong>: Decode the payload section of JSON
+          Web Tokens to inspect claims
+        </li>
+        <li>
+          <strong>Email Attachments</strong>: Understand how email systems
+          encode binary attachments
+        </li>
+      </ul>
+
+      <h2>Base64 vs URL-Safe Base64</h2>
+      <p>
+        Standard Base64 uses the characters + and / which have special meanings
+        in URLs. URL-safe Base64 (also called Base64URL) replaces these with -
+        and _ respectively, making the encoded string safe for use in URLs,
+        filenames, and other contexts where + and / might cause issues. Enable
+        the &quot;URL Safe&quot; option when encoding data that will be used in
+        URLs or file paths.
       </p>
     </>
   );

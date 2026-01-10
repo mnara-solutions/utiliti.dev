@@ -12,7 +12,7 @@ import { useLocalStorage } from "~/hooks/use-local-storage";
 
 export const meta = metaHelper(
   utilities.wordCounter.name,
-  utilities.wordCounter.description,
+  "Count words, characters, sentences, and paragraphs instantly. Get reading time estimates and word frequency analysis—all processing happens privately in your browser.",
 );
 
 interface Info {
@@ -363,6 +363,132 @@ export default function WordCounter() {
           </div>
         </div>
       </Transition>
+
+      <h2>Why Use Utiliti&apos;s Word Counter?</h2>
+      <p>
+        Writers, students, and professionals often work with sensitive
+        content—confidential reports, unpublished manuscripts, private
+        correspondence, or proprietary documentation. Many online word counters
+        send your text to their servers for analysis.
+      </p>
+      <p>
+        Utiliti&apos;s Word Counter runs{" "}
+        <strong>entirely in your browser</strong>. Your text never leaves your
+        device, making it safe to analyze:
+      </p>
+      <ul>
+        <li>
+          <strong>Confidential Documents</strong>: Count words in sensitive
+          business reports without exposure
+        </li>
+        <li>
+          <strong>Unpublished Work</strong>: Analyze drafts of articles, books,
+          or papers privately
+        </li>
+        <li>
+          <strong>Client Content</strong>: Work with client materials without
+          violating NDAs
+        </li>
+        <li>
+          <strong>Personal Writing</strong>: Keep journals and private notes
+          truly private
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Comprehensive Counts</strong>: Get word, character, sentence,
+          and paragraph counts instantly
+        </li>
+        <li>
+          <strong>Reading Time</strong>: Estimated reading time based on 275
+          words per minute average
+        </li>
+        <li>
+          <strong>Speaking Time</strong>: Estimated speaking time based on 180
+          words per minute average
+        </li>
+        <li>
+          <strong>Top Words Analysis</strong>: See the most frequently used
+          words in your text
+        </li>
+        <li>
+          <strong>Selection Support</strong>: Highlight a portion of text to
+          analyze just that selection
+        </li>
+        <li>
+          <strong>Common Words Filter</strong>: Option to exclude common words
+          (the, and, is, etc.) from top words analysis
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Enter your text</strong>: Type or paste your content into the
+          input area
+        </li>
+        <li>
+          <strong>View statistics</strong>: Word, sentence, and character counts
+          appear immediately below the input
+        </li>
+        <li>
+          <strong>Analyze sections</strong>: Highlight any portion of text with
+          your mouse to see stats for just that selection
+        </li>
+        <li>
+          <strong>Review top words</strong>: Check the Top Words panel to see
+          your most frequently used terms
+        </li>
+      </ol>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Essay Requirements</strong>: Ensure your essay meets minimum
+          or maximum word count requirements
+        </li>
+        <li>
+          <strong>Social Media</strong>: Check character counts for Twitter/X
+          posts, LinkedIn updates, or meta descriptions
+        </li>
+        <li>
+          <strong>SEO Content</strong>: Verify article length meets SEO best
+          practices (typically 1,500+ words for in-depth content)
+        </li>
+        <li>
+          <strong>Speech Preparation</strong>: Use speaking time estimates to
+          prepare presentations of the right length
+        </li>
+        <li>
+          <strong>Writing Analysis</strong>: Identify overused words to improve
+          your writing variety
+        </li>
+      </ul>
+
+      <h2>Word Count Guidelines</h2>
+      <p>Different content types have different ideal lengths:</p>
+      <ul>
+        <li>
+          <strong>Twitter/X Post</strong>: 280 characters maximum
+        </li>
+        <li>
+          <strong>Meta Description</strong>: 150-160 characters
+        </li>
+        <li>
+          <strong>Blog Post</strong>: 1,000-2,500 words for SEO
+        </li>
+        <li>
+          <strong>Short Story</strong>: 1,000-7,500 words
+        </li>
+        <li>
+          <strong>Novella</strong>: 17,500-40,000 words
+        </li>
+        <li>
+          <strong>Novel</strong>: 50,000-100,000 words
+        </li>
+      </ul>
     </ContentWrapper>
   );
 }

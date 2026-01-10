@@ -12,7 +12,7 @@ import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 
 export const meta = metaHelper(
   utilities.unixTimestamp.name,
-  utilities.unixTimestamp.description,
+  "Convert Unix timestamps to human-readable dates and vice versa. Supports seconds, milliseconds, microseconds, and nanoseconds—all processing happens locally.",
 );
 
 /**
@@ -253,6 +253,81 @@ export default function UnixTimestamp() {
         )}
       </Transition>
 
+      <h2>Why Use Utiliti&apos;s Unix Timestamp Converter?</h2>
+      <p>
+        Timestamps in logs and databases often contain sensitive timing
+        information—when users logged in, when transactions occurred, or when
+        events happened. Many online converters send your timestamps to their
+        servers for processing.
+      </p>
+      <p>
+        Utiliti&apos;s Unix Timestamp Converter runs{" "}
+        <strong>entirely in your browser</strong>. Your timestamps never leave
+        your device, making it safe to convert:
+      </p>
+      <ul>
+        <li>
+          <strong>Server Logs</strong>: Parse timestamps from production logs
+          without exposing timing data
+        </li>
+        <li>
+          <strong>Database Records</strong>: Convert timestamps from database
+          exports privately
+        </li>
+        <li>
+          <strong>API Responses</strong>: Decode timestamps from API calls
+          containing sensitive data
+        </li>
+        <li>
+          <strong>Security Events</strong>: Analyze security log timestamps
+          without external exposure
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Live Clock</strong>: See the current Unix timestamp updating
+          in real-time
+        </li>
+        <li>
+          <strong>Bidirectional Conversion</strong>: Convert timestamps to dates
+          or dates to timestamps
+        </li>
+        <li>
+          <strong>Multiple Formats</strong>: Automatically detects seconds,
+          milliseconds, microseconds, and nanoseconds
+        </li>
+        <li>
+          <strong>Time Zone Display</strong>: Shows results in both UTC and your
+          local time zone
+        </li>
+        <li>
+          <strong>Relative Time</strong>: See how long ago or in the future a
+          timestamp represents
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Convert timestamp to date</strong>: Enter a Unix timestamp in
+          the Timestamp field and click the convert button
+        </li>
+        <li>
+          <strong>Convert date to timestamp</strong>: Select a date and time
+          using the datetime picker and click convert
+        </li>
+        <li>
+          <strong>Copy current time</strong>: Use the copy button next to the
+          live clock to grab the current timestamp
+        </li>
+        <li>
+          <strong>Toggle precision</strong>: Check the Milliseconds box to
+          display the current time in milliseconds
+        </li>
+      </ol>
+
       <h2>What is a unix timestamp?</h2>
       <p>
         A Unix timestamp is a way of representing a point in time as a single
@@ -273,6 +348,66 @@ export default function UnixTimestamp() {
         time&quot; or &quot;POSIX time&quot;. It can be converted to a
         human-readable date and time using various software tools and
         programming libraries.
+      </p>
+
+      <h2>Timestamp Formats</h2>
+      <p>
+        Unix timestamps come in different precisions depending on the system:
+      </p>
+      <ul>
+        <li>
+          <strong>Seconds</strong>: The traditional format, 10 digits (e.g.,
+          1704067200). Used by most Unix systems and databases.
+        </li>
+        <li>
+          <strong>Milliseconds</strong>: 13 digits (e.g., 1704067200000). Common
+          in JavaScript, Java, and modern APIs.
+        </li>
+        <li>
+          <strong>Microseconds</strong>: 16 digits (e.g., 1704067200000000).
+          Used in high-precision logging systems.
+        </li>
+        <li>
+          <strong>Nanoseconds</strong>: 19 digits (e.g., 1704067200000000000).
+          Used in scientific applications and some databases like InfluxDB.
+        </li>
+      </ul>
+      <p>
+        Our converter automatically detects the format based on the number of
+        digits.
+      </p>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Log Analysis</strong>: Convert timestamps in server logs to
+          understand when events occurred
+        </li>
+        <li>
+          <strong>Database Queries</strong>: Generate timestamps for date range
+          queries
+        </li>
+        <li>
+          <strong>API Development</strong>: Debug timestamp fields in API
+          requests and responses
+        </li>
+        <li>
+          <strong>Scheduling</strong>: Calculate Unix timestamps for cron jobs
+          or scheduled tasks
+        </li>
+        <li>
+          <strong>Data Migration</strong>: Convert timestamps when moving data
+          between systems
+        </li>
+      </ul>
+
+      <h2>The Year 2038 Problem</h2>
+      <p>
+        Unix timestamps stored as 32-bit signed integers will overflow on
+        January 19, 2038, at 03:14:07 UTC. This is similar to the Y2K problem.
+        Modern systems use 64-bit integers, which won&apos;t overflow for
+        approximately 292 billion years. If you&apos;re working with legacy
+        systems, be aware of this limitation.
       </p>
     </ContentWrapper>
   );

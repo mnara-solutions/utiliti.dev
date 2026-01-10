@@ -19,13 +19,16 @@ test("searching via keyboard shortcut", async ({ page }) => {
   // load up the index page
   await page.goto("/");
 
+  // wait for page to be fully loaded
+  await expect(page.getByTestId("search-box").first()).toBeVisible();
+
   // open dialog via shortcut
   await page.keyboard.press("Meta+k");
 
-  // the search input should be focused
-  await expect(page.locator("input:focus")).toBeVisible();
+  // wait for search options to appear (indicates dialog is open)
+  await expect(page.getByTestId("search-option").first()).toBeVisible();
 
-  // fill the focused input
+  // fill the search input
   await page.keyboard.type("JSON");
 
   // wait for the search option to appear

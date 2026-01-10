@@ -123,6 +123,77 @@ export default function QrCode() {
 
   const renderExplanation = () => (
     <>
+      <h2>Why Use Utiliti&apos;s QR Code Generator?</h2>
+      <p>
+        QR codes often encode sensitive information—WiFi passwords, private
+        URLs, authentication secrets, or confidential contact details. Many
+        online QR code generators send your data to their servers for
+        processing, potentially logging or exposing your information.
+      </p>
+      <p>
+        Utiliti&apos;s QR Code Generator runs{" "}
+        <strong>entirely in your browser</strong>. Your data never leaves your
+        device, making it safe to generate QR codes for:
+      </p>
+      <ul>
+        <li>
+          <strong>WiFi Credentials</strong>: Share network passwords without
+          exposing them to third parties
+        </li>
+        <li>
+          <strong>Private URLs</strong>: Encode links containing tokens or
+          sensitive parameters
+        </li>
+        <li>
+          <strong>Authentication Codes</strong>: Generate QR codes for 2FA setup
+          or secure access
+        </li>
+        <li>
+          <strong>Confidential Contact Info</strong>: Share vCards with private
+          phone numbers or addresses
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>PNG or SVG Output</strong>: Choose between raster (PNG) for
+          compatibility or vector (SVG) for scalability
+        </li>
+        <li>
+          <strong>Custom Colors</strong>: Set custom foreground and background
+          colors to match your brand
+        </li>
+        <li>
+          <strong>Instant Download</strong>: Download your QR code with one
+          click—no watermarks or limitations
+        </li>
+        <li>
+          <strong>High Resolution</strong>: Generated at 256x256 pixels,
+          suitable for both digital and print use
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Enter your content</strong>: Type or paste any text, URL, or
+          data you want to encode
+        </li>
+        <li>
+          <strong>Customize appearance</strong>: Toggle SVG output if needed and
+          adjust colors using the color pickers
+        </li>
+        <li>
+          <strong>Generate</strong>: Click the Generate button to create your QR
+          code
+        </li>
+        <li>
+          <strong>Download</strong>: Click the download button to save your QR
+          code as PNG or SVG
+        </li>
+      </ol>
+
       <h2>What is a QR Code?</h2>
       <p>
         A QR code, or Quick Response code, is a two-dimensional barcode that was

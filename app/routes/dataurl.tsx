@@ -11,7 +11,7 @@ import { useDrop } from "react-dnd";
 
 export const meta = metaHelper(
   utilities.dataurl.name,
-  utilities.dataurl.description,
+  "Display and decode data URLs privately. Convert images to Base64 data URLs entirely in your browser—your files never leave your device.",
 );
 
 enum Action {
@@ -164,6 +164,81 @@ export default function DataUrl() {
 
   const renderExplanation = () => (
     <>
+      <h2>Why Use Utiliti&apos;s Data URL Tool?</h2>
+      <p>
+        Data URLs often contain embedded images, documents, or other files that
+        may be sensitive—profile pictures, scanned documents, or proprietary
+        graphics. Many online data URL tools upload your files to their servers
+        for processing.
+      </p>
+      <p>
+        Utiliti&apos;s Data URL viewer runs{" "}
+        <strong>entirely in your browser</strong>. Your files and data URLs
+        never leave your device, making it safe to work with:
+      </p>
+      <ul>
+        <li>
+          <strong>Embedded Images</strong>: Preview Base64-encoded images from
+          emails or HTML files
+        </li>
+        <li>
+          <strong>API Responses</strong>: View images returned as data URLs from
+          APIs
+        </li>
+        <li>
+          <strong>Sensitive Documents</strong>: Decode data URLs containing
+          private files
+        </li>
+        <li>
+          <strong>Debug Assets</strong>: Inspect embedded resources in web
+          applications
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Auto-detection</strong>: Automatically detects the image type
+          even if the data URL prefix is missing
+        </li>
+        <li>
+          <strong>Multiple Formats</strong>: Supports JPEG, PNG, WebP, and SVG
+          images
+        </li>
+        <li>
+          <strong>Quality Control</strong>: Adjust compression quality when
+          converting images to data URLs
+        </li>
+        <li>
+          <strong>Drag & Drop</strong>: Simply drag an image file onto the input
+          area to convert it
+        </li>
+        <li>
+          <strong>Instant Preview</strong>: See the decoded image immediately
+          after pasting
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Paste a data URL</strong>: Enter a complete data URL or just
+          the Base64-encoded string
+        </li>
+        <li>
+          <strong>Or upload a file</strong>: Drag and drop an image or use the
+          file picker to convert an image to a data URL
+        </li>
+        <li>
+          <strong>Choose format & quality</strong>: Select output format and
+          compression level for conversions
+        </li>
+        <li>
+          <strong>View the result</strong>: Click Display to see the decoded
+          image
+        </li>
+      </ol>
+
       <h2>What is a Data URL?</h2>
       <p>
         A data URL (Uniform Resource Locator) is a type of URI (Uniform Resource
@@ -193,14 +268,38 @@ export default function DataUrl() {
           otherwise, it is in plain text.
         </li>
       </ul>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Email Debugging</strong>: View embedded images from HTML
+          emails that use data URLs
+        </li>
+        <li>
+          <strong>CSS Development</strong>: Create data URLs for small icons to
+          embed directly in stylesheets
+        </li>
+        <li>
+          <strong>Single-File HTML</strong>: Generate data URLs for creating
+          self-contained HTML documents
+        </li>
+        <li>
+          <strong>API Testing</strong>: Inspect image data returned by APIs in
+          Base64 format
+        </li>
+        <li>
+          <strong>Performance Optimization</strong>: Convert small images to
+          data URLs to reduce HTTP requests
+        </li>
+      </ul>
+
+      <h2>Data URL Size Considerations</h2>
       <p>
-        Data URLs are commonly used for small amounts of data, such as small
-        images, CSS stylesheets, or even small scripts. They can be useful in
-        situations where external file references are impractical or when you
-        want to reduce the number of HTTP requests for external resources,
-        potentially improving page load performance. However, they may not be
-        suitable for large files due to increased URL length and other
-        considerations.
+        While data URLs are convenient, they increase the size of your HTML/CSS
+        by approximately 33% compared to the original binary file (due to Base64
+        encoding overhead). They&apos;re best suited for small files under 10KB.
+        For larger images, traditional file references with proper caching are
+        usually more efficient.
       </p>
     </>
   );

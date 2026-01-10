@@ -20,7 +20,7 @@ import { NativeTypes } from "react-dnd-html5-backend";
 
 export const meta = metaHelper(
   utilities.imageConverter.name,
-  utilities.imageConverter.description,
+  "Convert images between JPG, PNG, and WebP formats privately. All processing happens in your browser—your images never leave your device.",
 );
 
 const formatImage: { [format: string]: string } = {
@@ -119,6 +119,11 @@ export default function ImageConverter() {
   return (
     <ContentWrapper>
       <h1>Image Converter</h1>
+
+      <p>
+        Convert images between formats instantly and privately. All processing
+        happens in your browser—your images never touch our servers.
+      </p>
 
       <Box>
         <BoxTitle title="Images"></BoxTitle>
@@ -246,6 +251,144 @@ export default function ImageConverter() {
           </BoxContent>
         </Box>
       </Transition>
+
+      <h2>Why Use Utiliti&apos;s Image Converter?</h2>
+      <p>
+        Images often contain sensitive content—personal photos, confidential
+        documents, proprietary designs, or screenshots with private information.
+        Many online image converters upload your files to their servers for
+        processing, where they could be stored, analyzed, or exposed.
+      </p>
+      <p>
+        Utiliti&apos;s Image Converter runs{" "}
+        <strong>entirely in your browser</strong> using the Canvas API. Your
+        images never leave your device, making it safe to convert:
+      </p>
+      <ul>
+        <li>
+          <strong>Personal Photos</strong>: Convert family photos without
+          uploading them to unknown servers
+        </li>
+        <li>
+          <strong>Confidential Documents</strong>: Process scanned documents and
+          screenshots privately
+        </li>
+        <li>
+          <strong>Client Work</strong>: Handle client assets without violating
+          NDAs or privacy agreements
+        </li>
+        <li>
+          <strong>Proprietary Designs</strong>: Convert mockups and designs
+          without exposure risk
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Batch Processing</strong>: Convert multiple images at once and
+          download them all as a ZIP file
+        </li>
+        <li>
+          <strong>Quality Control</strong>: Adjust compression levels from 25%
+          to 100% for the perfect balance of quality and file size
+        </li>
+        <li>
+          <strong>Drag & Drop</strong>: Simply drag images onto the converter
+          for quick processing
+        </li>
+        <li>
+          <strong>Individual Downloads</strong>: Download converted images one
+          at a time or all together
+        </li>
+        <li>
+          <strong>Preview</strong>: See thumbnails of your converted images
+          before downloading
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Upload images</strong>: Click to browse or drag and drop
+          images onto the upload area (max 10MB per image)
+        </li>
+        <li>
+          <strong>Select output format</strong>: Choose between JPEG, PNG, or
+          WebP from the dropdown
+        </li>
+        <li>
+          <strong>Adjust quality</strong>: For JPEG and WebP, select your
+          preferred compression level
+        </li>
+        <li>
+          <strong>Download</strong>: Click individual images to download them,
+          or use &quot;Download As Zip&quot; for batch downloads
+        </li>
+      </ol>
+
+      <h2>Supported Formats</h2>
+      <ul>
+        <li>
+          <strong>JPEG</strong>: Best for photographs and complex images.
+          Supports quality adjustment for smaller file sizes.
+        </li>
+        <li>
+          <strong>PNG</strong>: Best for graphics, screenshots, and images
+          requiring transparency. Lossless compression.
+        </li>
+        <li>
+          <strong>WebP</strong>: Modern format with superior compression.
+          Supports both lossy and lossless modes. Ideal for web use.
+        </li>
+      </ul>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Web Optimization</strong>: Convert images to WebP for faster
+          website loading times
+        </li>
+        <li>
+          <strong>Compatibility</strong>: Convert WebP images to JPEG/PNG for
+          older applications that don&apos;t support WebP
+        </li>
+        <li>
+          <strong>Transparency</strong>: Convert to PNG when you need to
+          preserve transparent backgrounds
+        </li>
+        <li>
+          <strong>File Size Reduction</strong>: Use JPEG or WebP with quality
+          adjustment to reduce image sizes for email or storage
+        </li>
+        <li>
+          <strong>Batch Conversion</strong>: Convert entire folders of images to
+          a consistent format
+        </li>
+      </ul>
+
+      <h2>Quality vs File Size</h2>
+      <p>
+        The quality setting affects the trade-off between image fidelity and
+        file size:
+      </p>
+      <ul>
+        <li>
+          <strong>100% (Full)</strong>: Maximum quality, largest file size
+        </li>
+        <li>
+          <strong>80-90% (High)</strong>: Excellent quality, good compression.
+          Recommended for most uses.
+        </li>
+        <li>
+          <strong>60-75% (Medium)</strong>: Good quality, significant size
+          reduction. Great for web thumbnails.
+        </li>
+        <li>
+          <strong>25-50% (Low)</strong>: Noticeable quality loss but very small
+          files. Use for previews only.
+        </li>
+      </ul>
     </ContentWrapper>
   );
 }

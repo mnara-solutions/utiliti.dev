@@ -116,7 +116,7 @@ function generateLoremIpsum(
 
 export const meta = metaHelper(
   utilities.loremIpsum.name,
-  utilities.loremIpsum.description,
+  "Generate Lorem Ipsum placeholder text instantly. Customizable paragraphs, sentences, and word counts—all generated privately in your browser.",
 );
 
 export default function LoremIpsum() {
@@ -129,6 +129,11 @@ export default function LoremIpsum() {
   return (
     <ContentWrapper>
       <h1>{utilities.loremIpsum.name}</h1>
+
+      <p>
+        Generate placeholder text for your designs, mockups, and prototypes.
+        Customize the length and structure to fit your needs.
+      </p>
 
       <Box>
         <BoxTitle title="Settings" />
@@ -187,6 +192,124 @@ export default function LoremIpsum() {
           </Box>
         )}
       </ClientOnly>
+
+      <h2>What is Lorem Ipsum?</h2>
+      <p>
+        Lorem Ipsum is placeholder text commonly used in the design and
+        typesetting industry. It has been the industry&apos;s standard dummy
+        text since the 1500s, when an unknown printer scrambled a section of
+        Cicero&apos;s &quot;De Finibus Bonorum et Malorum&quot; to create a type
+        specimen book.
+      </p>
+      <p>
+        The text is intentionally meaningless, which allows designers and
+        developers to focus on visual elements like typography, layout, and
+        spacing without being distracted by readable content.
+      </p>
+
+      <h2>Why Use Lorem Ipsum?</h2>
+      <ul>
+        <li>
+          <strong>Focus on Design</strong>: Meaningless text lets viewers focus
+          on visual elements rather than reading content
+        </li>
+        <li>
+          <strong>Realistic Text Flow</strong>: Unlike repeating &quot;text text
+          text,&quot; Lorem Ipsum mimics natural language patterns with varied
+          word lengths
+        </li>
+        <li>
+          <strong>Industry Standard</strong>: Clients and stakeholders recognize
+          it as placeholder content
+        </li>
+        <li>
+          <strong>Neutral Content</strong>: Avoids potentially offensive or
+          distracting placeholder text
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Adjustable Length</strong>: Generate 1 to 50 paragraphs of
+          text
+        </li>
+        <li>
+          <strong>Sentence Control</strong>: Set average words per sentence
+          (4-20)
+        </li>
+        <li>
+          <strong>Paragraph Density</strong>: Control average sentences per
+          paragraph (4-20)
+        </li>
+        <li>
+          <strong>Traditional Start</strong>: Option to begin with the classic
+          &quot;Lorem ipsum dolor sit amet...&quot;
+        </li>
+        <li>
+          <strong>Natural Variation</strong>: Randomized punctuation and
+          sentence lengths for realistic text
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Set paragraph count</strong>: Use the slider to choose how
+          many paragraphs you need
+        </li>
+        <li>
+          <strong>Adjust density</strong>: Configure words per sentence and
+          sentences per paragraph to match your layout
+        </li>
+        <li>
+          <strong>Choose opening</strong>: Toggle whether to start with the
+          traditional &quot;Lorem ipsum&quot; phrase
+        </li>
+        <li>
+          <strong>Copy the output</strong>: Click the copy button to grab your
+          generated text
+        </li>
+      </ol>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Web Design Mockups</strong>: Fill page layouts with realistic
+          text before final content is ready
+        </li>
+        <li>
+          <strong>Print Layouts</strong>: Test typography and spacing in
+          brochures, magazines, and books
+        </li>
+        <li>
+          <strong>App Prototypes</strong>: Populate UI components with
+          placeholder content during development
+        </li>
+        <li>
+          <strong>Presentation Templates</strong>: Fill slide layouts to
+          demonstrate design without final copy
+        </li>
+        <li>
+          <strong>Font Testing</strong>: Evaluate typefaces with substantial
+          text samples
+        </li>
+      </ul>
+
+      <h2>The History of Lorem Ipsum</h2>
+      <p>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. It
+        derives from sections 1.10.32 and 1.10.33 of &quot;De Finibus Bonorum et
+        Malorum&quot; (The Extremes of Good and Evil) by Cicero, written in 45
+        BC. This philosophical work on ethics was popular during the Renaissance
+        and was used by typesetters as sample text.
+      </p>
+      <p>
+        The standard Lorem Ipsum passage has been used since the 1500s and was
+        popularized in the 1960s with the release of Letraset sheets containing
+        Lorem Ipsum passages, and more recently with desktop publishing software
+        like Aldus PageMaker.
+      </p>
     </ContentWrapper>
   );
 }

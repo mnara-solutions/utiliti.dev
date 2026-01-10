@@ -4,7 +4,10 @@ import { utilities } from "~/utilities";
 import Utiliti from "~/components/utiliti";
 import JsonViewer from "~/components/json-viewer";
 
-export const meta = metaHelper(utilities.url.name, utilities.url.description);
+export const meta = metaHelper(
+  utilities.url.name,
+  "Encode, decode, and parse URLs instantly. Client-side processing means your URLs with sensitive parameters never leave your browser.",
+);
 
 interface JsonURL {
   readonly hash: string;
@@ -105,6 +108,74 @@ export default function URLRoute() {
 
   const renderExplanation = () => (
     <>
+      <h2>Why Use Utiliti&apos;s URL Tool?</h2>
+      <p>
+        URLs often contain sensitive information—authentication tokens, API
+        keys, user IDs, session parameters, or tracking data. Many online URL
+        encoders send your URLs to their servers for processing, potentially
+        exposing this sensitive data.
+      </p>
+      <p>
+        Utiliti&apos;s URL encoder and decoder runs{" "}
+        <strong>entirely in your browser</strong>. Your URLs never leave your
+        device, making it safe to work with:
+      </p>
+      <ul>
+        <li>
+          <strong>OAuth Callbacks</strong>: URLs containing authorization codes
+          or tokens
+        </li>
+        <li>
+          <strong>API Endpoints</strong>: URLs with API keys or authentication
+          parameters
+        </li>
+        <li>
+          <strong>Tracking URLs</strong>: Marketing URLs with campaign data you
+          want to inspect
+        </li>
+        <li>
+          <strong>Debug URLs</strong>: URLs from error logs that may contain
+          user data
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>View</strong>: Parse any URL into its components (protocol,
+          host, path, query parameters, fragment) displayed in an interactive
+          tree view
+        </li>
+        <li>
+          <strong>Encode</strong>: Convert special characters to percent-encoded
+          format for safe URL transmission
+        </li>
+        <li>
+          <strong>Decode</strong>: Convert percent-encoded URLs back to
+          human-readable format
+        </li>
+        <li>
+          <strong>Auto-detection</strong>: Automatically detects if input is
+          already encoded and handles it appropriately
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Paste your URL</strong>: Enter any URL—encoded or decoded—into
+          the input field
+        </li>
+        <li>
+          <strong>Choose an action</strong>: Click View to parse it, Encode to
+          percent-encode it, or Decode to convert it back to readable text
+        </li>
+        <li>
+          <strong>Copy the result</strong>: Use the copy button to grab your
+          processed URL
+        </li>
+      </ol>
+
       <h2>What is a URL?</h2>
       <p>
         A URL, or Uniform Resource Locator, is a reference or address used to
@@ -196,6 +267,44 @@ export default function URLRoute() {
         utilized in various internet protocols and applications for resource
         identification and retrieval.
       </p>
+
+      <h2>What is URL Encoding?</h2>
+      <p>
+        URL encoding, also known as percent-encoding, is a mechanism for
+        encoding special characters in a URL. Since URLs can only contain a
+        limited set of characters (letters, digits, and a few special
+        characters), any other characters must be encoded.
+      </p>
+      <p>
+        For example, a space becomes <code>%20</code>, an ampersand becomes{" "}
+        <code>%26</code>, and a question mark becomes <code>%3F</code>. This
+        ensures that URLs remain valid and can be transmitted correctly across
+        the internet.
+      </p>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Debugging API Calls</strong>: Decode URLs from network logs to
+          see what parameters were actually sent
+        </li>
+        <li>
+          <strong>Building Query Strings</strong>: Properly encode parameter
+          values before constructing URLs
+        </li>
+        <li>
+          <strong>Analyzing Redirects</strong>: Parse complex redirect URLs to
+          understand the flow
+        </li>
+        <li>
+          <strong>Inspecting Deep Links</strong>: Break down mobile app deep
+          links to understand their structure
+        </li>
+        <li>
+          <strong>Fixing Broken URLs</strong>: Identify encoding issues in URLs
+          that aren&apos;t working correctly
+        </li>
+      </ul>
     </>
   );
 

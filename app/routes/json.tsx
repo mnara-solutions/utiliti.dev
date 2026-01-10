@@ -9,7 +9,10 @@ import JsonViewer from "~/components/json-viewer";
 import ReadFile from "~/components/read-file";
 import { setTextInputFromFiles } from "~/utils/convert-text-file";
 
-export const meta = metaHelper(utilities.json.name, utilities.json.description);
+export const meta = metaHelper(
+  utilities.json.name,
+  "View, format, and minify JSON instantly. Client-side processing means your data never leaves your browser—safe for API responses, configs, and sensitive data.",
+);
 
 async function decode(text: string): Promise<object> {
   try {
@@ -77,6 +80,59 @@ export default function JSONEncoder() {
 
   const renderExplanation = () => (
     <>
+      <h2>Why Use Utiliti&apos;s JSON Tool?</h2>
+      <p>
+        Many online JSON formatters send your data to their servers for
+        processing. This is a significant privacy risk—your JSON might contain
+        API keys, authentication tokens, personal information, or proprietary
+        data structures that you don&apos;t want exposed.
+      </p>
+      <p>
+        Utiliti&apos;s JSON viewer and formatter runs{" "}
+        <strong>entirely in your browser</strong>. Your data never leaves your
+        device, making it safe to paste:
+      </p>
+      <ul>
+        <li>
+          <strong>API Responses</strong>: Debug responses containing user data
+          or tokens
+        </li>
+        <li>
+          <strong>Configuration Files</strong>: Format configs with credentials
+          or secrets
+        </li>
+        <li>
+          <strong>JWT Payloads</strong>: Examine decoded tokens without exposure
+        </li>
+        <li>
+          <strong>Database Exports</strong>: View exported data safely
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Tree View</strong>: Explore complex nested JSON with an
+          interactive, collapsible tree structure
+        </li>
+        <li>
+          <strong>Format</strong>: Pretty-print minified JSON with proper
+          indentation for readability
+        </li>
+        <li>
+          <strong>Minify</strong>: Compress formatted JSON to a single line for
+          smaller payloads
+        </li>
+        <li>
+          <strong>Syntax Highlighting</strong>: Color-coded display makes
+          structure easy to understand
+        </li>
+        <li>
+          <strong>Error Detection</strong>: Instantly identify syntax errors in
+          malformed JSON
+        </li>
+      </ul>
+
       <h2>What is JSON?</h2>
       <p>
         JSON, which stands for JavaScript Object Notation, is a lightweight data
@@ -163,6 +219,30 @@ export default function JSONEncoder() {
         built-in functions to work with JSON, making it a versatile and widely
         adopted data format for various applications.
       </p>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Debugging API Responses</strong>: Paste raw API responses to
+          visualize the data structure and find the values you need.
+        </li>
+        <li>
+          <strong>Validating JSON Syntax</strong>: Quickly check if your JSON is
+          valid before using it in your application.
+        </li>
+        <li>
+          <strong>Formatting for Documentation</strong>: Pretty-print JSON
+          examples for README files and API documentation.
+        </li>
+        <li>
+          <strong>Minifying for Production</strong>: Reduce JSON payload size by
+          removing unnecessary whitespace.
+        </li>
+        <li>
+          <strong>Exploring Unknown Data</strong>: Use the tree view to navigate
+          complex nested structures you&apos;re unfamiliar with.
+        </li>
+      </ul>
     </>
   );
 
