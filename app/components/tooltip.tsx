@@ -48,6 +48,7 @@ function useTooltip({
         padding: 5,
       }),
       shift({ padding: 5 }),
+      // eslint-disable-next-line react-compiler/react-compiler
       arrow({ element: arrowRef }),
     ],
   });
