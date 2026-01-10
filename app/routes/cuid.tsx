@@ -13,7 +13,7 @@ export const meta = metaHelper(
   "Generate collision-resistant CUIDs optimized for horizontal scaling. Client-side generation means your IDs never touch our servers.",
 );
 
-export default function UuidGenerator() {
+export default function CuidGenerator() {
   const [number, setNumber] = useState(1);
   const [length, setLength] = useState(24);
 
