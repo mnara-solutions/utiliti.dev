@@ -13,7 +13,7 @@ import { setTextInputFromFiles } from "~/utils/convert-text-file";
 
 export const meta = metaHelper(
   utilities.markdownToHtml.name,
-  utilities.markdownToHtml.description,
+  "Convert Markdown to HTML instantly. Client-side processing means your documentation and notes never leave your browser.",
 );
 
 enum Action {
@@ -89,6 +89,75 @@ export default function MarkdownToHtml() {
 
   const renderExplanation = () => (
     <>
+      <h2>Why Use Utiliti&apos;s Markdown Converter?</h2>
+      <p>
+        Markdown files often contain sensitive content—internal documentation,
+        private notes, draft blog posts, or proprietary technical
+        specifications. Many online Markdown converters send your content to
+        their servers for processing.
+      </p>
+      <p>
+        Utiliti&apos;s Markdown to HTML converter runs{" "}
+        <strong>entirely in your browser</strong>. Your content never leaves
+        your device, making it safe to convert:
+      </p>
+      <ul>
+        <li>
+          <strong>Internal Documentation</strong>: Company docs with sensitive
+          procedures or credentials
+        </li>
+        <li>
+          <strong>Draft Content</strong>: Unpublished blog posts or articles
+        </li>
+        <li>
+          <strong>Personal Notes</strong>: Private notes and journals
+        </li>
+        <li>
+          <strong>Technical Specs</strong>: Proprietary API documentation or
+          architecture notes
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Preview</strong>: See your rendered Markdown with full styling
+          in real-time
+        </li>
+        <li>
+          <strong>HTML Output</strong>: Get clean, properly formatted HTML code
+        </li>
+        <li>
+          <strong>Minify</strong>: Compress the HTML output by removing
+          whitespace for production use
+        </li>
+        <li>
+          <strong>Syntax Highlighting</strong>: Input editor with Markdown
+          syntax highlighting
+        </li>
+        <li>
+          <strong>Sanitized Output</strong>: HTML is sanitized to prevent XSS
+          attacks
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Paste your Markdown</strong>: Enter or paste Markdown content
+          into the input field
+        </li>
+        <li>
+          <strong>Choose output format</strong>: Click Preview to see the
+          rendered result, HTML for the source code, or Minify for compressed
+          output
+        </li>
+        <li>
+          <strong>Copy the result</strong>: Use the copy button to grab your
+          converted HTML
+        </li>
+      </ol>
+
       <h2>What is markdown?</h2>
       <p>
         Markdown is a lightweight markup language that is easy to read and
@@ -151,6 +220,39 @@ export default function MarkdownToHtml() {
         {"  "}&#x3C;li&#x3E;Ordered item 2&#x3C;/li&#x3E;{"\n"}
         &#x3C;/ol&#x3E;{"\n"}
       </pre>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>README Files</strong>: Preview how your GitHub README will
+          look before committing
+        </li>
+        <li>
+          <strong>Blog Posts</strong>: Convert Markdown drafts to HTML for CMS
+          platforms
+        </li>
+        <li>
+          <strong>Email Templates</strong>: Generate HTML from Markdown for
+          email newsletters
+        </li>
+        <li>
+          <strong>Documentation</strong>: Convert technical docs to HTML for
+          static site generators
+        </li>
+        <li>
+          <strong>Note Export</strong>: Convert notes from Markdown-based apps
+          to HTML format
+        </li>
+      </ul>
+
+      <h2>Supported Markdown Features</h2>
+      <p>
+        Our converter supports standard Markdown syntax including headings,
+        bold/italic text, links, images, code blocks, blockquotes, ordered and
+        unordered lists, horizontal rules, and inline HTML. The output is
+        sanitized using DOMPurify to ensure safe HTML that&apos;s free from XSS
+        vulnerabilities.
+      </p>
     </>
   );
 

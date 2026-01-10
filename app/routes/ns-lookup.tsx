@@ -10,7 +10,7 @@ import Copy from "~/components/copy";
 
 export const meta = metaHelper(
   utilities.nsLookup.name,
-  utilities.nsLookup.description,
+  "Look up DNS records for any domain. Query A, AAAA, MX, TXT, NS, CNAME, and SPF records using Cloudflare's DNS-over-HTTPS API.",
 );
 
 type Response = [
@@ -225,6 +225,118 @@ export default function NsLookup() {
           </table>
         </div>
       </Transition>
+
+      <h2>What is NS Lookup?</h2>
+      <p>
+        NS Lookup (Name Server Lookup) is a tool used to query the Domain Name
+        System (DNS) to obtain information about domain names. DNS is the
+        internet&apos;s phonebook—it translates human-readable domain names like
+        &quot;utiliti.dev&quot; into IP addresses that computers use to
+        communicate.
+      </p>
+      <p>
+        When you perform an NS lookup, you&apos;re asking DNS servers for
+        specific records associated with a domain. This information is crucial
+        for troubleshooting network issues, verifying DNS configurations, and
+        understanding how a domain is set up.
+      </p>
+
+      <h2>How This Tool Works</h2>
+      <p>
+        Utiliti uses Cloudflare&apos;s DNS-over-HTTPS (DoH) service to perform
+        lookups. DoH encrypts DNS queries, providing privacy benefits over
+        traditional DNS lookups. Your queries go directly from your browser to
+        Cloudflare—we don&apos;t proxy or log your lookups.
+      </p>
+
+      <h2>DNS Record Types Explained</h2>
+      <ul>
+        <li>
+          <strong>A Record</strong>: Maps a domain to an IPv4 address (e.g.,
+          93.184.216.34). The most fundamental DNS record type.
+        </li>
+        <li>
+          <strong>AAAA Record</strong>: Maps a domain to an IPv6 address. The
+          modern equivalent of A records for IPv6.
+        </li>
+        <li>
+          <strong>CNAME Record</strong>: Creates an alias from one domain to
+          another. Often used for subdomains like www.
+        </li>
+        <li>
+          <strong>MX Record</strong>: Specifies mail servers responsible for
+          receiving email for the domain.
+        </li>
+        <li>
+          <strong>TXT Record</strong>: Holds text information. Used for domain
+          verification, SPF, DKIM, and other purposes.
+        </li>
+        <li>
+          <strong>NS Record</strong>: Indicates which name servers are
+          authoritative for the domain.
+        </li>
+        <li>
+          <strong>SPF Record</strong>: Specifies which servers are allowed to
+          send email on behalf of the domain.
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Enter a domain</strong>: Type the domain name you want to look
+          up (e.g., &quot;example.com&quot;)
+        </li>
+        <li>
+          <strong>Click Search</strong>: The tool will query multiple record
+          types simultaneously
+        </li>
+        <li>
+          <strong>Review results</strong>: See all DNS records in a table with
+          record type, TTL, and data
+        </li>
+        <li>
+          <strong>Copy values</strong>: Use the copy button to grab specific
+          record values
+        </li>
+      </ol>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Domain Migration</strong>: Verify DNS records before and after
+          migrating to a new host
+        </li>
+        <li>
+          <strong>Email Troubleshooting</strong>: Check MX records when email
+          isn&apos;t being delivered
+        </li>
+        <li>
+          <strong>SSL Verification</strong>: Confirm DNS records for SSL
+          certificate validation
+        </li>
+        <li>
+          <strong>Domain Verification</strong>: Look up TXT records for service
+          verifications (Google, Microsoft 365, etc.)
+        </li>
+        <li>
+          <strong>Network Debugging</strong>: Check if DNS is resolving
+          correctly when websites aren&apos;t loading
+        </li>
+        <li>
+          <strong>Security Audits</strong>: Review SPF and DKIM records for
+          email security
+        </li>
+      </ul>
+
+      <h2>Understanding TTL</h2>
+      <p>
+        TTL (Time To Live) is shown in seconds and indicates how long DNS
+        resolvers should cache the record before checking for updates. Lower
+        TTLs mean changes propagate faster but increase DNS query load. Common
+        values are 300 (5 minutes) for frequently changing records and 86400 (24
+        hours) for stable records.
+      </p>
     </ContentWrapper>
   );
 }
