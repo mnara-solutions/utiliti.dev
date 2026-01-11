@@ -1,14 +1,10 @@
-import type { ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 import PopularUtilities from "~/components/popular-utilities";
 
-interface Props {
-  readonly children: ReactNode;
-}
-
-export default function ContentWrapper({ children }: Props) {
+export default function ContentWrapper(props: PropsWithChildren<object>) {
   return (
     <>
-      {children}
+      {props.children}
       <PopularUtilities />
     </>
   );

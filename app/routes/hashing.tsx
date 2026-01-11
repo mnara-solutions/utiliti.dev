@@ -17,7 +17,7 @@ enum Action {
   HASH = "Hash",
 }
 
-export default function Hashing() {
+export default function QrCode() {
   const [algorithm, setAlgorithm] = useState("SHA-512");
 
   const actions = {

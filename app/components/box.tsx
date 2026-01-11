@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { cn } from "~/common";
+import { classNames } from "~/common";
 
 export default function Box({
   children,
@@ -7,7 +7,7 @@ export default function Box({
 }: PropsWithChildren<{ className?: string }>) {
   return (
     <div
-      className={cn(
+      className={classNames(
         "w-full border rounded-lg bg-zinc-700 border-zinc-600",
         className,
       )}
@@ -39,7 +39,7 @@ export function BoxContent({
 }>) {
   return (
     <div
-      className={cn(
+      className={classNames(
         "bg-zinc-800 max-h-96 overflow-auto not-prose",
         isLast && "rounded-b-lg",
         className,
@@ -56,7 +56,7 @@ export function BoxButtons({
 }: PropsWithChildren<{ readonly className?: string | undefined }>) {
   return (
     <div
-      className={cn(
+      className={classNames(
         "px-3 py-2 flex items-center justify-between border-t border-gray-600",
         className,
       )}
@@ -76,7 +76,7 @@ export function BoxOptions({
 }>) {
   return (
     <div
-      className={cn(
+      className={classNames(
         "px-3 py-2 flex border-t border-gray-600 bg-zinc-800/50 items-center",
         isLast && "rounded-b-lg",
         className,
