@@ -14,7 +14,7 @@ import {
   CloudArrowUpIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
-import { cn } from "~/common";
+import { classNames } from "~/common";
 import { type DropTargetMonitor, useDrop } from "react-dnd";
 import { NativeTypes } from "react-dnd-html5-backend";
 
@@ -132,7 +132,7 @@ export default function ImageConverter() {
           <div className="flex items-center justify-center w-full" ref={drop}>
             <label
               htmlFor="file-input"
-              className={cn(
+              className={classNames(
                 "flex flex-col m-2 items-center justify-center w-full h-full border-2 border-dashed rounded-lg bg-zinc-800",
                 isActive ? "border-green-700" : "border-gray-600",
                 files.length === 0 && "cursor-pointer hover:bg-zinc-700",

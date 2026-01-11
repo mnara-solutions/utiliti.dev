@@ -1,12 +1,3 @@
-interface Props {
-  readonly id: string;
-  readonly label: string;
-  readonly value: number;
-  readonly min: number;
-  readonly max: number;
-  readonly onChange: (value: number) => void;
-}
-
 export default function Slider({
   id,
   label,
@@ -14,7 +5,14 @@ export default function Slider({
   min,
   max,
   onChange,
-}: Props) {
+}: {
+  id: string;
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  onChange: (v: number) => void;
+}) {
   return (
     <div>
       <label htmlFor={id} className="block text-sm font-medium text-white">

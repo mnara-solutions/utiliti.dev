@@ -13,7 +13,7 @@ export const meta = metaHelper(
   "Generate collision-resistant CUIDs optimized for horizontal scaling. Client-side generation means your IDs never touch our servers.",
 );
 
-export default function CuidGenerator() {
+export default function UuidGenerator() {
   const [number, setNumber] = useState(1);
   const [length, setLength] = useState(24);
 
@@ -64,7 +64,7 @@ export default function CuidGenerator() {
             <div className="flex items-center space-x-1 sm:px-4">
               <div className="sm:px text-center">
                 <NumberInput
-                  id="number"
+                  id="length"
                   type="number"
                   min={1}
                   max={500}
