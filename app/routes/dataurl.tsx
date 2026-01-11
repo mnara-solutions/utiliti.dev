@@ -1,13 +1,12 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Dropdown from "~/components/dropdown";
 import Utiliti from "~/components/utiliti";
 import ReadFile from "~/components/read-file";
 import { convertFileToDataUrl } from "~/utils/convert-image-file";
-import { NativeTypes } from "react-dnd-html5-backend";
-import { useDrop } from "react-dnd";
+import { useFileDrop } from "~/hooks/use-file-drop";
 
 export const meta = metaHelper(
   utilities.dataurl.name,
@@ -38,16 +37,19 @@ function DroppableInput({
   readonly format: string;
   readonly quality: string;
 }) {
-  const [{ canDrop, isOver }, drop] = useDrop(() => ({
-    accept: [NativeTypes.FILE],
-    async drop(item: { files: File[] }) {
-      setInput(await convertFileToDataUrl(item.files[0], format, quality));
+  const handleDrop = useCallback(
+    async (files: File[]) => {
+      if (files.length > 0) {
+        setInput(await convertFileToDataUrl(files[0], format, quality));
+      }
     },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  }));
+    [setInput, format, quality],
+  );
+
+  const { ref: drop, isOver } = useFileDrop({
+    onDrop: handleDrop,
+    accept: "image/*",
+  });
 
   return (
     <textarea
@@ -55,7 +57,7 @@ function DroppableInput({
       rows={10}
       className={
         "block px-2 py-2 font-mono w-full lg:text-sm bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 " +
-        (isOver && canDrop
+        (isOver
           ? "border-green-700 focus:border-green-700"
           : "border-zinc-800 focus:border-zinc-800")
       }
