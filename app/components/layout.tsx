@@ -32,6 +32,21 @@ export default function Layout({ children }: { children: ReactNode }) {
     prevPath.current = location.pathname;
   }, [location.pathname, sidebarOpen, setSidebarOpen]);
 
+  // Prevent browser from opening files when dropped outside drop zones
+  useEffect(() => {
+    const preventDefaults = (e: DragEvent) => {
+      e.preventDefault();
+    };
+
+    document.addEventListener("dragover", preventDefaults);
+    document.addEventListener("drop", preventDefaults);
+
+    return () => {
+      document.removeEventListener("dragover", preventDefaults);
+      document.removeEventListener("drop", preventDefaults);
+    };
+  }, []);
+
   // on command + k, open search bar
   const toggleSearch = () => setSearchOpen(!searchOpen);
   useKeyboardShortcut(["Meta", "K"], toggleSearch, keyboardShortcutOptions);
