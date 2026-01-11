@@ -1,9 +1,10 @@
 import type { Config } from "@react-router/dev/config";
-// import { utilities } from "./app/utilities";
+import { utilities } from "./app/utilities";
 
 export default {
   ssr: true,
-  // async prerender() {
-  //   return Object.values(utilities).map((it) => it.url);
-  // },
+  async prerender() {
+    // Prerender all utility pages for faster initial paint
+    return ["/", ...Object.values(utilities).map((it) => it.url)];
+  },
 } satisfies Config;

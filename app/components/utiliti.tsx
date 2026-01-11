@@ -2,7 +2,7 @@ import Copy from "~/components/copy";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
 import type { ReactNode } from "react";
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { useLocalStorage } from "~/hooks/use-local-storage";
@@ -42,25 +42,43 @@ export default function Utiliti<T>({
   const [input, setInput] = useLocalStorage(label, "");
   const [output, setOutput] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // using an effect to calculate the value after input has changed
   // this allows us to re-render when actions array has changed, which happens when options change
-  useLayoutEffect(() => {
+  // debounced to prevent expensive operations (like Prettier) on every keystroke
+  useEffect(() => {
     const fn = actions[action];
 
     if (!fn || !input) {
+      setOutput(null);
+      setError(null);
       return;
     }
 
-    fn(input)
-      .then((it) => {
-        setOutput(it);
-        setError(null);
-      })
-      .catch((e) => {
-        setError(e.message);
-        setOutput(null);
-      });
+    // Clear any pending debounced call
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    // Debounce the action execution by 300ms
+    debounceRef.current = setTimeout(() => {
+      fn(input)
+        .then((it) => {
+          setOutput(it);
+          setError(null);
+        })
+        .catch((e) => {
+          setError(e.message);
+          setOutput(null);
+        });
+    }, 300);
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
   }, [action, actions, input]);
 
   return (
