@@ -1,7 +1,11 @@
 import Copy from "~/components/copy";
-import { useState } from "react";
-import { JSONTree } from "react-json-tree";
+import { useState, Suspense, lazy } from "react";
 import IconButton from "~/components/icon-button";
+
+// Lazy load the heavy react-json-tree dependency
+const JSONTree = lazy(() =>
+  import("react-json-tree").then((mod) => ({ default: mod.JSONTree })),
+);
 import {
   ArrowsPointingInIcon,
   ArrowsPointingOutIcon,
@@ -76,19 +80,23 @@ export default function JsonViewer({ json }: Props) {
       </BoxTitle>
 
       <BoxContent isLast={true} className="font-mono text-sm pl-2">
-        <JSONTree
-          key={`tree-${shouldExpand}-${expandAfter}`}
-          data={json}
-          hideRoot={true}
-          shouldExpandNodeInitially={shouldExpandNodeInitially}
-          theme={{
-            base00: "#27272a", // background
-            base0D: "#9876aa", // label + arrow
-            base09: "#6897bb", // number + boolean
-            base0B: "#6a8759", // string + date + item string
-            base03: "#6a8759", // item string expanded
-          }}
-        />
+        <Suspense
+          fallback={<div className="text-zinc-400 p-2">Loading viewer...</div>}
+        >
+          <JSONTree
+            key={`tree-${shouldExpand}-${expandAfter}`}
+            data={json}
+            hideRoot={true}
+            shouldExpandNodeInitially={shouldExpandNodeInitially}
+            theme={{
+              base00: "#27272a", // background
+              base0D: "#9876aa", // label + arrow
+              base09: "#6897bb", // number + boolean
+              base0B: "#6a8759", // string + date + item string
+              base03: "#6a8759", // item string expanded
+            }}
+          />
+        </Suspense>
       </BoxContent>
     </Box>
   );
