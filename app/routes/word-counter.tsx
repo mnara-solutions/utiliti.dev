@@ -132,10 +132,10 @@ function count(
   const cleaned = trimmed
     .replace(/\s-+/g, " ")
     .replace(/-+\s/g, " ")
-    .replace(/'/g, "'")
-    .replace(/'/g, "'")
-    .replace(/"/g, '"')
-    .replace(/"/g, '"')
+    .replace(/’/g, "'")
+    .replace(/‘/g, "'")
+    .replace(/“/g, '"')
+    .replace(/”/g, '"')
     .replace(/–/g, "-")
     .replace(/…/g, "...");
 
