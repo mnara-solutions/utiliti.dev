@@ -15,8 +15,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import { cn } from "~/common";
-import { type DropTargetMonitor, useDrop } from "react-dnd";
-import { NativeTypes } from "react-dnd-html5-backend";
+import { useFileDrop } from "~/hooks/use-file-drop";
 
 export const meta = metaHelper(
   utilities.imageConverter.name,
@@ -45,6 +44,18 @@ export default function ImageConverter() {
   const [format, setFormat] = useState("jpg");
   const [quality, setQuality] = useState("0");
   const [error, setError] = useState<string | null>(null);
+
+  const { ref: drop, isOver } = useFileDrop({
+    onDrop: (droppedFiles) => {
+      setFiles((prevFiles) => [
+        ...prevFiles,
+        ...droppedFiles.filter(
+          (it) => it.size < 10 * 1024 * 1024 && it.type.startsWith("image/"),
+        ),
+      ]);
+    },
+    accept: "image/*",
+  });
 
   // materialized state - we need each file as a data url
   useEffect(() => {
@@ -90,31 +101,7 @@ export default function ImageConverter() {
     link.click();
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, drop] = useDrop(
-    () => ({
-      accept: [NativeTypes.FILE],
-      drop(item: { files: File[] }) {
-        setFiles([
-          ...files,
-          ...item.files.filter(
-            (it) => it.size < 10 * 1024 * 1024 && it.type.startsWith("image/"),
-          ),
-        ]);
-      },
-
-      collect: (monitor: DropTargetMonitor) => {
-        return {
-          isOver: monitor.isOver(),
-          canDrop: monitor.canDrop(),
-        };
-      },
-    }),
-    [files],
-  );
-
-  // const isActive = canDrop && isOver;
-  const isActive = false;
+  const isActive = isOver;
 
   return (
     <ContentWrapper>

@@ -9,8 +9,6 @@ import Sidebar from "~/components/sidebar";
 import { Dialog, Transition } from "@headlessui/react";
 import Search from "~/components/search";
 import useKeyboardShortcut from "~/hooks/use-keyboard-shortcut";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
 
 const keyboardShortcutOptions = {
   overrideSystem: true,
@@ -161,29 +159,27 @@ export default function Layout({ children }: { children: ReactNode }) {
                 </div>
               </div>
             </div>
-            <DndProvider backend={HTML5Backend}>
-              <noscript className="prose prose-sm max-w-none prose-invert">
-                <div
-                  className="antialiased flex items-center p-4 mb-4 text-sm border rounded-lg bg-zinc-800 text-orange-500 border-orange-500"
-                  role="alert"
+            <noscript className="prose prose-sm max-w-none prose-invert">
+              <div
+                className="antialiased flex items-center p-4 mb-4 text-sm border rounded-lg bg-zinc-800 text-orange-500 border-orange-500"
+                role="alert"
+              >
+                <svg
+                  className="shrink-0 inline w-4 h-4 me-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
                 >
-                  <svg
-                    className="shrink-0 inline w-4 h-4 me-3"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                  </svg>
-                  <span>
-                    JavaScript is required for full functionality of this
-                    website. Please enable JavaScript in your browser settings.
-                  </span>
-                </div>
-              </noscript>
-              {children}
-            </DndProvider>
+                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span>
+                  JavaScript is required for full functionality of this website.
+                  Please enable JavaScript in your browser settings.
+                </span>
+              </div>
+            </noscript>
+            {children}
           </article>
         </main>
       </div>

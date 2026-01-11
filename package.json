@@ -31,8 +31,6 @@
     "prettier": "^3.7.4",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.3",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.2.3",
     "react-json-tree": "^0.20.0",
     "react-router": "^7.12.0",
