@@ -86,6 +86,7 @@ export default function Code({
 
   return (
     <CodeEditor
+      key={`${language}-${isLanguageLoaded}`}
       value={value}
       onValueChange={setValue}
       highlight={highlight}
