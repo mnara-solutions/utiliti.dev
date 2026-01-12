@@ -1,39 +1,31 @@
 import Editor from "react-simple-code-editor";
 import hljs from "highlight.js/lib/core";
-import { useEffect, useState, useRef } from "react";
+import javascript from "highlight.js/lib/languages/javascript";
+import sql from "highlight.js/lib/languages/sql";
+import markdown from "highlight.js/lib/languages/markdown";
+import xml from "highlight.js/lib/languages/xml";
+import css from "highlight.js/lib/languages/css";
+import typescript from "highlight.js/lib/languages/typescript";
 
-type Language =
-  | "sql"
-  | "javascript"
-  | "markdown"
-  | "xml"
-  | "css"
-  | "typescript";
-
-// Track which languages have been registered to avoid re-registering
-const registeredLanguages = new Set<Language>();
-
-// Lazy load and register a highlight.js language
-async function loadLanguage(language: Language): Promise<void> {
-  if (registeredLanguages.has(language)) {
-    return;
-  }
-
-  const languageModule = await import(
-    /* webpackChunkName: "hljs-[request]" */
-    `highlight.js/lib/languages/${language}`
-  );
-
-  hljs.registerLanguage(language, languageModule.default);
-  registeredLanguages.add(language);
-}
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("sql", sql);
+hljs.registerLanguage("markdown", markdown);
+hljs.registerLanguage("xml", xml);
+hljs.registerLanguage("css", css);
+hljs.registerLanguage("typescript", typescript);
 
 interface Props {
   readonly readonly: boolean;
   readonly value: string;
   readonly setValue: (value: string) => void;
   readonly minHeight?: string;
-  readonly language?: Language;
+  readonly language?:
+    | "sql"
+    | "javascript"
+    | "markdown"
+    | "xml"
+    | "css"
+    | "typescript";
   readonly placeholder?: string;
 }
 
@@ -45,56 +37,17 @@ export default function Code({
   language = "javascript",
   placeholder = "Paste some JSON…",
 }: Props) {
-  const [isLanguageLoaded, setIsLanguageLoaded] = useState(
-    registeredLanguages.has(language),
-  );
-  const loadingRef = useRef<Language | null>(null);
-
-  // Load the language module when it changes
-  useEffect(() => {
-    if (registeredLanguages.has(language)) {
-      setIsLanguageLoaded(true);
-      return;
-    }
-
-    // Prevent duplicate loads
-    if (loadingRef.current === language) {
-      return;
-    }
-
-    loadingRef.current = language;
-    setIsLanguageLoaded(false);
-
-    loadLanguage(language).then(() => {
-      if (loadingRef.current === language) {
-        setIsLanguageLoaded(true);
-      }
-    });
-  }, [language]);
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const CodeEditor = (Editor as any).default || Editor;
-
-  // Highlight function that only uses hljs when the language is loaded
-  const highlight = (code: string) => {
-    if (isLanguageLoaded) {
-      return hljs.highlight(code, { language }).value;
-    }
-    // Return escaped HTML while language is loading
-    return code
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  };
 
   return (
     <CodeEditor
       value={value}
       onValueChange={setValue}
-      highlight={highlight}
+      highlight={(code: string) => hljs.highlight(code, { language }).value}
       placeholder={placeholder}
       style={{
-        fontFamily: '"Fira Code", monospace',
+        fontFamily: '"Fira code", monospace',
         minHeight,
         fontSize: "0.875rem",
         lineHeight: "1.25rem",
