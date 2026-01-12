@@ -4,6 +4,6 @@ import type { Config } from "@react-router/dev/config";
 export default {
   ssr: true,
   //async prerender() {
-    // return ["/", ...Object.values(utilities).map((it) => it.url)];
+  // return ["/", ...Object.values(utilities).map((it) => it.url)];
   //},
 } satisfies Config;
