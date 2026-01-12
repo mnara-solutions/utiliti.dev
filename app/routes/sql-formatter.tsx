@@ -3,33 +3,20 @@ import ContentWrapper from "~/components/content-wrapper";
 import { utilities } from "~/utilities";
 import { metaHelper } from "~/utils/meta";
 import Code from "~/components/code";
-import type { FormatOptionsWithLanguage, KeywordCase } from "sql-formatter";
-import { format } from "sql-formatter";
 import { Transition } from "@headlessui/react";
 import Copy from "~/components/copy";
 import { noop } from "~/common";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import NumberInput from "~/components/number-input";
 import Dropdown from "~/components/dropdown";
-import { type ChangeEvent } from "react";
+import { type ChangeEvent, useState, useEffect, useRef } from "react";
 
 export const meta = metaHelper(
   utilities.sqlFormatter.name,
   "Format and beautify SQL queries instantly. Supports multiple SQL dialects with customizable formatting. Client-side processing keeps your queries private.",
 );
 
-function formatSql(
-  input: string,
-  options: FormatOptionsWithLanguage,
-): string | null {
-  try {
-    return format(input, options);
-  } catch {
-    // do nothing
-  }
-
-  return null;
-}
+type KeywordCase = "preserve" | "upper" | "lower";
 
 export default function SqlFormatter() {
   const [input, setInput] = useLocalStorage("sql-formatter-query", "");
@@ -41,6 +28,9 @@ export default function SqlFormatter() {
     "sql-formatter-tab-width",
     "2",
   );
+  const [formatted, setFormatted] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const formatterRef = useRef<typeof import("sql-formatter") | null>(null);
 
   const onChangeTabWidth = (e: ChangeEvent<HTMLInputElement>) => {
     setTabWidth(
@@ -48,12 +38,47 @@ export default function SqlFormatter() {
     );
   };
 
-  // @note: this could become a performance issue as input changes quite often
-  // could introduce debounce here, but going to leave it until it becomes a problem
-  const formatted = formatSql(input, {
-    tabWidth: parseInt(tabWidth, 10),
-    keywordCase: keywordCase,
-  });
+  useEffect(() => {
+    if (!input) {
+      setFormatted(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function formatSql() {
+      setIsLoading(true);
+      try {
+        // Lazy load sql-formatter only when needed
+        if (!formatterRef.current) {
+          formatterRef.current = await import("sql-formatter");
+        }
+
+        const result = formatterRef.current.format(input, {
+          tabWidth: parseInt(tabWidth, 10),
+          keywordCase: keywordCase,
+        });
+
+        if (!cancelled) {
+          setFormatted(result);
+        }
+      } catch {
+        if (!cancelled) {
+          setFormatted(null);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    formatSql();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [input, tabWidth, keywordCase]);
 
   return (
     <ContentWrapper>
@@ -129,7 +154,9 @@ export default function SqlFormatter() {
           </BoxTitle>
           <BoxContent isLast={true}>
             <div className="px-3 py-2">
-              {formatted === null ? (
+              {isLoading ? (
+                <span className="text-zinc-400">Formatting...</span>
+              ) : formatted === null ? (
                 "Error in SQL query."
               ) : (
                 <Code

@@ -11,6 +11,7 @@ import {
 } from "react-router";
 import Layout from "~/components/layout";
 import tailwind from "./styles/tailwind.css?url";
+import fonts from "./styles/fonts.css?url";
 import dark from "../node_modules/highlight.js/styles/stackoverflow-dark.css?url";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 
@@ -72,12 +73,7 @@ export const links: LinksFunction = () => [
   },
   { rel: "shortcut icon", href: "/assets/favicon.ico" },
   { rel: "manifest", href: "/assets/site.webmanifest" },
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  { rel: "preconnect", href: "https://fonts.gstatic.com" },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap",
-  },
+  { rel: "stylesheet", href: fonts },
   { rel: "stylesheet", href: tailwind },
   { rel: "stylesheet", href: dark },
 ];

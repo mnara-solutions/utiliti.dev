@@ -7,7 +7,7 @@ import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
 import Dropdown from "~/components/dropdown";
-import JSZip from "jszip";
+
 import { convertToFileFormat } from "~/utils/convert-image-file";
 import {
   ArrowDownOnSquareIcon,
@@ -65,7 +65,9 @@ export default function ImageConverter() {
   }, [files]);
 
   const onDownloadZip = async () => {
-    const zip: JSZip = new JSZip();
+    // Lazy load JSZip only when needed
+    const JSZip = (await import("jszip")).default;
+    const zip = new JSZip();
 
     for (let i = 0; i < files.length; i++) {
       const f = files[i];

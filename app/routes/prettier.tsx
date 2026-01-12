@@ -9,11 +9,6 @@ import ReadFile from "~/components/read-file";
 import { setTextInputFromFiles } from "~/utils/convert-text-file";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import Dropdown from "~/components/dropdown";
-import * as prettier from "prettier";
-import html from "prettier/plugins/html";
-import estree from "prettier/plugins/estree";
-import typescript from "prettier/plugins/typescript";
-import postcss from "prettier/plugins/postcss";
 
 export const meta = metaHelper(
   utilities.prettier.name,
@@ -28,6 +23,27 @@ const languages = {
 
 type Language = keyof typeof languages;
 
+// Lazy load prettier and plugins only when needed
+async function formatWithPrettier(input: string, language: Language) {
+  const [prettier, html, estree, typescript, postcss] = await Promise.all([
+    import("prettier"),
+    import("prettier/plugins/html"),
+    import("prettier/plugins/estree"),
+    import("prettier/plugins/typescript"),
+    import("prettier/plugins/postcss"),
+  ]);
+
+  return prettier.format(input, {
+    parser: language,
+    plugins: [
+      html.default,
+      typescript.default,
+      estree.default,
+      postcss.default,
+    ],
+  });
+}
+
 export default function Prettier() {
   const [language, setLanguage] = useLocalStorage<Language>(
     "prettier-language",
@@ -35,11 +51,7 @@ export default function Prettier() {
   );
 
   const actions = {
-    ["Format"]: async (input: string) =>
-      prettier.format(input, {
-        parser: language,
-        plugins: [html, typescript, estree, postcss],
-      }),
+    ["Format"]: async (input: string) => formatWithPrettier(input, language),
   };
 
   const renderInput = (input: string, setInput: (v: string) => void) => (
