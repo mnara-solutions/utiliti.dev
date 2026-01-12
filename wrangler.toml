@@ -1,7 +1,0 @@
-name = "utiliti"
-compatibility_date = "2025-11-17"
-compatibility_flags = ["nodejs_compat"]
-
-[[kv_namespaces]]
-binding = "PRIVATE_NOTES"
-id = "PRIVATE_NOTES"

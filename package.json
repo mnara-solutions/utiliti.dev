@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build",
-    "start": "wrangler pages dev ./build/client",
+    "build": "react-router build && wrangler pages functions build --outdir=./build/worker/",
+    "start": "wrangler dev",
     "typecheck": "react-router typegen && tsc",
     "prettier": "prettier --write --ignore-path .gitignore .",
     "test:e2e": "playwright test",
