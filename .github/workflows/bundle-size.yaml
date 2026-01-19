@@ -29,14 +29,20 @@ jobs:
       - name: Extract client bundle size
         id: client_bundle_size
         run: |
-          BUNDLE_SIZE=$(du -sk build/client/assets | awk '{print $1}')
-          echo "size=$BUNDLE_SIZE" >> $GITHUB_OUTPUT
+          # Get JS-only size (excludes fonts, CSS, etc.)
+          JS_SIZE=$(find build/client/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
+          JS_GZIP=$(find build/client/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
+          echo "size=$JS_SIZE" >> $GITHUB_OUTPUT
+          echo "gzip=$JS_GZIP" >> $GITHUB_OUTPUT
 
       - name: Extract worker bundle size
         id: worker_bundle_size
         run: |
-          BUNDLE_SIZE=$(du -sk build/server | awk '{print $1}')
-          echo "size=$BUNDLE_SIZE" >> $GITHUB_OUTPUT
+          # Get JS-only size for server bundle
+          JS_SIZE=$(find build/server/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
+          JS_GZIP=$(find build/server/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
+          echo "size=$JS_SIZE" >> $GITHUB_OUTPUT
+          echo "gzip=$JS_GZIP" >> $GITHUB_OUTPUT
 
       - name: Comment bundle size
         uses: marocchino/sticky-pull-request-comment@v2
@@ -44,7 +50,7 @@ jobs:
           header: bundle-size
           message: |
             ## Bundle Size Report
-            | Bundle | Size |
-            |--------|------|
-            | Client | ${{ steps.client_bundle_size.outputs.size }} KB |
-            | Worker | ${{ steps.worker_bundle_size.outputs.size }} KB |
+            | Bundle | Size | Gzipped |
+            |--------|------|---------|
+            | Client (JS) | ${{ steps.client_bundle_size.outputs.size }} KB | ${{ steps.client_bundle_size.outputs.gzip }} KB |
+            | Worker (JS) | ${{ steps.worker_bundle_size.outputs.size }} KB | ${{ steps.worker_bundle_size.outputs.gzip }} KB |
