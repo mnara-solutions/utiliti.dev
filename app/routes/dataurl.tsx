@@ -8,10 +8,7 @@ import ReadFile from "~/components/read-file";
 import { convertFileToDataUrl } from "~/utils/convert-image-file";
 import { useFileDrop } from "~/hooks/use-file-drop";
 
-export const meta = metaHelper(
-  utilities.dataurl.name,
-  "Display and decode data URLs privately. Convert images to Base64 data URLs entirely in your browser—your files never leave your device.",
-);
+export const meta = metaHelper(utilities.dataurl);
 
 enum Action {
   DISPLAY = "Display",

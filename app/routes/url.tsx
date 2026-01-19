@@ -6,10 +6,7 @@ import { lazy } from "react";
 
 const JsonViewer = lazy(() => import("~/components/json-viewer.client"));
 
-export const meta = metaHelper(
-  utilities.url.name,
-  "Encode, decode, and parse URLs instantly. Client-side processing means your URLs with sensitive parameters never leave your browser.",
-);
+export const meta = metaHelper(utilities.url);
 
 interface JsonURL {
   readonly hash: string;

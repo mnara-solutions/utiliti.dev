@@ -7,11 +7,7 @@ import { BoxOptions } from "~/components/box";
 import Utiliti from "~/components/utiliti";
 import ReadFile from "~/components/read-file";
 import { setTextInputFromFiles } from "~/utils/convert-text-file";
-
-export const meta = metaHelper(
-  utilities.base64.name,
-  "Encode and decode Base64 instantly. Client-side processing means your data never leaves your browser—safe for tokens, credentials, and sensitive content.",
-);
+export const meta = metaHelper(utilities.base64);
 
 enum Action {
   ENCODE = "Encode",

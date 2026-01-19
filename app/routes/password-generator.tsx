@@ -10,10 +10,7 @@ import Copy from "~/components/copy";
 import Button from "~/components/button";
 import NumberInput from "~/components/number-input";
 
-export const meta = metaHelper(
-  utilities.password.name,
-  "Generate cryptographically secure passwords instantly. Client-side generation using Web Crypto API means your passwords never leave your browser.",
-);
+export const meta = metaHelper(utilities.password);
 
 // Currently not necessary, but if you want to add more potential for password (utf-8 > 255) characters, you can use this function
 function getCryptoGraphicallyRandomIntLargerMax(max: number) {

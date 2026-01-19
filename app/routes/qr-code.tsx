@@ -15,10 +15,7 @@ import IconButton from "~/components/icon-button";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 
-export const meta = metaHelper(
-  utilities.qrCode.name,
-  utilities.qrCode.description,
-);
+export const meta = metaHelper(utilities.qrCode);
 
 enum Action {
   GENERATE = "Generate",

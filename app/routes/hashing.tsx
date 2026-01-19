@@ -8,10 +8,7 @@ import Dropdown from "~/components/dropdown";
 import ReadFile from "~/components/read-file";
 import { setTextInputFromFiles } from "~/utils/convert-text-file";
 
-export const meta = metaHelper(
-  utilities.hashing.name,
-  "Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes instantly. Client-side processing means your sensitive data never leaves your browser.",
-);
+export const meta = metaHelper(utilities.hashing);
 
 enum Action {
   HASH = "Hash",

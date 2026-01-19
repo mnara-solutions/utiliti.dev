@@ -9,10 +9,7 @@ import { utilities } from "~/utilities";
 import NumberInput from "~/components/number-input";
 import Dropdown from "~/components/dropdown";
 
-export const meta = metaHelper(
-  utilities.uuid.name,
-  "Generate random UUIDs (v1, v4, v6, v7) instantly. Client-side generation means your IDs never touch our servers. RFC 4122 compliant.",
-);
+export const meta = metaHelper(utilities.uuid);
 
 export default function UuidGenerator() {
   const [number, setNumber] = useState(1);
