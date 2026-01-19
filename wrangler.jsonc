@@ -7,8 +7,16 @@
   "workers_dev": false,
   "preview_urls": true,
   "routes": [
-    { "pattern": "utiliti.dev", "custom_domain": true },
-    { "pattern": "www.utiliti.dev", "custom_domain": true },
+    {
+      "pattern": "utiliti.dev",
+      "custom_domain": true,
+      "override_existing_dns_record": true,
+    },
+    {
+      "pattern": "www.utiliti.dev",
+      "custom_domain": true,
+      "override_existing_dns_record": true,
+    },
   ],
   "observability": {
     "enabled": true,
