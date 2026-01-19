@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   Bars3BottomLeftIcon,
   MagnifyingGlassIcon,
@@ -7,8 +14,10 @@ import {
 import { Link, useLocation } from "react-router";
 import Sidebar from "~/components/sidebar";
 import useKeyboardShortcut from "~/hooks/use-keyboard-shortcut";
-import Search from "~/components/search.client";
-import MobileSidebar from "~/components/mobile-sidebar.client";
+import { ClientOnly } from "~/components/client-only";
+
+const Search = lazy(() => import("~/components/search.client"));
+const MobileSidebar = lazy(() => import("~/components/mobile-sidebar.client"));
 
 const keyboardShortcutOptions = {
   overrideSystem: true,
@@ -199,8 +208,14 @@ export default function Layout({ children }: { children: ReactNode }) {
         </main>
       </div>
 
-      <Search open={searchOpen} setOpen={setSearchOpen} />
-      <MobileSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+      <ClientOnly>
+        {() => (
+          <Suspense fallback={null}>
+            <Search open={searchOpen} setOpen={setSearchOpen} />
+            <MobileSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+          </Suspense>
+        )}
+      </ClientOnly>
     </div>
   );
 }

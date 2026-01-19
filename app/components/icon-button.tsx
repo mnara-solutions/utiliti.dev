@@ -1,6 +1,6 @@
 import type { ComponentType, SVGProps } from "react";
 import type { Placement } from "@floating-ui/react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip.client";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
 interface Props {
   readonly icon: ComponentType<SVGProps<SVGSVGElement>>;
