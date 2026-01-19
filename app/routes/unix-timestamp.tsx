@@ -6,7 +6,7 @@ import ContentWrapper from "~/components/content-wrapper";
 import Copy from "~/components/copy";
 import { useHydrated } from "~/hooks/use-hydrated";
 import NumberInput from "~/components/number-input";
-import { format, formatDistanceToNow } from "~/utils/date-fns.client";
+import { format, formatDistanceToNow } from "date-fns";
 import FadeIn from "~/components/fade-in";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 

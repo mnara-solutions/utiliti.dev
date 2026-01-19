@@ -7,6 +7,7 @@ import {
 import { Link, useLocation } from "react-router";
 import Sidebar from "~/components/sidebar";
 import useKeyboardShortcut from "~/hooks/use-keyboard-shortcut";
+import { ClientOnly } from "./client-only";
 
 const Search = lazy(() => import("~/components/search.client"));
 const MobileSidebar = lazy(() => import("~/components/mobile-sidebar.client"));
@@ -200,8 +201,14 @@ export default function Layout({ children }: { children: ReactNode }) {
         </main>
       </div>
 
-      <Search open={searchOpen} setOpen={setSearchOpen} />
-      <MobileSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+      <ClientOnly>
+        {() => (
+          <>
+            <Search open={searchOpen} setOpen={setSearchOpen} />
+            <MobileSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+          </>
+        )}
+      </ClientOnly>
     </div>
   );
 }

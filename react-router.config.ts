@@ -1,9 +1,9 @@
 import type { Config } from "@react-router/dev/config";
-// import { utilities } from "./app/utilities";
+import { utilities } from "./app/utilities";
 
 export default {
   ssr: true,
-  // prerender: ["/", ...Object.values(utilities).map((it) => it.url)],
+  prerender: ["/", ...Object.values(utilities).map((it) => it.url)],
   future: {
     v8_viteEnvironmentApi: true,
   },

@@ -1,6 +1,14 @@
-import { useRef, useState } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
 import Utiliti from "~/components/utiliti";
-import { QRCodeCanvas, QRCodeSVG } from "~/components/qr-code.client";
+
+const QRCodeCanvas = lazy(() =>
+  import("~/components/qr-code.client").then((m) => ({
+    default: m.QRCodeCanvas,
+  })),
+);
+const QRCodeSVG = lazy(() =>
+  import("~/components/qr-code.client").then((m) => ({ default: m.QRCodeSVG })),
+);
 import Box, { BoxContent, BoxOptions, BoxTitle } from "~/components/box";
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import IconButton from "~/components/icon-button";
@@ -61,12 +69,18 @@ export default function QrCode() {
           className="max-h-full flex justify-center py-4"
         >
           <div ref={componentRef}>
-            <Component
-              value={input}
-              size={256}
-              bgColor={background}
-              fgColor={foreground}
-            />
+            <Suspense
+              fallback={
+                <div className="w-64 h-64 bg-zinc-700/50 animate-pulse" />
+              }
+            >
+              <Component
+                value={input}
+                size={256}
+                bgColor={background}
+                fgColor={foreground}
+              />
+            </Suspense>
           </div>
         </BoxContent>
       </Box>
