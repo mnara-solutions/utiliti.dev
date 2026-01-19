@@ -3,7 +3,7 @@ type Language = "html" | "typescript" | "css";
 // Lazy load prettier and plugins only when needed (client-side only)
 export async function formatWithPrettier(
   input: string,
-  language: Language
+  language: Language,
 ): Promise<string> {
   const [prettier, html, estree, typescript, postcss] = await Promise.all([
     import("prettier"),

@@ -8,7 +8,7 @@ export async function formatSql(
   options: {
     tabWidth?: number;
     keywordCase?: KeywordCase;
-  } = {}
+  } = {},
 ): Promise<string> {
   if (!formatterModule) {
     formatterModule = await import("sql-formatter");
