@@ -2,7 +2,7 @@ import Copy from "~/components/copy";
 import Button from "~/components/button";
 import { Transition } from "@headlessui/react";
 import type { ReactNode } from "react";
-import { useState, useLayoutEffect } from "react";
+import { Suspense, useState, useLayoutEffect } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { useLocalStorage } from "~/hooks/use-local-storage";
@@ -108,7 +108,13 @@ export default function Utiliti<T>({
             </BoxContent>
           </Box>
         ) : (
-          action && input && output && renderOutput(action, input, output)
+          <Suspense
+            fallback={
+              <div className="text-zinc-400 p-4">Loading output...</div>
+            }
+          >
+            {action && input && output && renderOutput(action, input, output)}
+          </Suspense>
         )}
       </Transition>
 
