@@ -47,16 +47,10 @@ export default function Search({ open, setOpen }: Props) {
 
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-50">
-      <DialogBackdrop
-        transition
-        className="fixed inset-0 backdrop-blur-xs bg-black/40 transition duration-300 ease-out data-[closed]:opacity-0 data-[leave]:duration-200 data-[leave]:ease-in"
-      />
+      <DialogBackdrop className="fixed inset-0 backdrop-blur-xs bg-black/40" />
 
       <div className="fixed inset-0 overflow-y-auto px-4 py-4 sm:py-20 sm:px-6 md:py-32 lg:px-8 lg:py-[15vh]">
-        <DialogPanel
-          transition
-          className="mx-auto max-w-2xl transform divide-y divide-gray-500 divide-opacity-20 overflow-hidden rounded-xl bg-zinc-900 shadow-2xl transition duration-300 ease-out data-[closed]:opacity-0 data-[closed]:scale-95 data-[leave]:duration-200 data-[leave]:ease-in"
-        >
+        <DialogPanel className="mx-auto max-w-2xl divide-y divide-gray-500 divide-opacity-20 overflow-hidden rounded-xl bg-zinc-900 shadow-2xl">
           <Combobox onChange={onChange}>
             <div className="relative">
               <MagnifyingGlassIcon
