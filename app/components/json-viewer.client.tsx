@@ -8,7 +8,7 @@ import {
   MinusIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
-import type { ShouldExpandNodeInitially } from "react-json-tree/src/types";
+import type { ShouldExpandNodeInitially } from "react-json-tree/lib/types";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 
 interface Props {
