@@ -1,4 +1,4 @@
-name: Lint
+name: Bundle Size
 on:
   pull_request:
     branches: [main]
@@ -7,7 +7,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  lint:
+  bundle-size:
     name: Bundle Size
     runs-on: ubuntu-latest
     steps:
@@ -30,13 +30,13 @@ jobs:
         id: client_bundle_size
         run: |
           BUNDLE_SIZE=$(du -sk build/client/assets | awk '{print $1}')
-          echo "::set-output name=size::$BUNDLE_SIZE"
+          echo "size=$BUNDLE_SIZE" >> $GITHUB_OUTPUT
 
-      - name: Extract server bundle size
-        id: server_bundle_size
+      - name: Extract worker bundle size
+        id: worker_bundle_size
         run: |
           BUNDLE_SIZE=$(du -sk build/server | awk '{print $1}')
-          echo "::set-output name=size::$BUNDLE_SIZE"
+          echo "size=$BUNDLE_SIZE" >> $GITHUB_OUTPUT
 
       - name: Comment bundle size
         uses: marocchino/sticky-pull-request-comment@v2
@@ -44,5 +44,7 @@ jobs:
           header: bundle-size
           message: |
             ## Bundle Size Report
-            Client bundle size: ${{ steps.client_bundle_size.outputs.size }} kb
-            Server bundle size: ${{ steps.server_bundle_size.outputs.size }} kb
+            | Bundle | Size |
+            |--------|------|
+            | Client | ${{ steps.client_bundle_size.outputs.size }} KB |
+            | Worker | ${{ steps.worker_bundle_size.outputs.size }} KB |

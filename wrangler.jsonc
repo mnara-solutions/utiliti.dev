@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "utiliti",
+  "compatibility_date": "2025-11-17",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./workers/app.ts",
+  "workers_dev": false,
+  "preview_urls": true,
+  "routes": [
+    { "pattern": "utiliti.dev", "custom_domain": true },
+    { "pattern": "www.utiliti.dev", "custom_domain": true },
+  ],
+  "observability": {
+    "enabled": true,
+  },
+  "kv_namespaces": [
+    {
+      "binding": "PRIVATE_NOTES",
+      "id": "2a37be4cea0a423b9cebf7bfd16bd013",
+    },
+  ],
+}

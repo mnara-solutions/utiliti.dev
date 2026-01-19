@@ -2,14 +2,15 @@ import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { utilities } from "~/utilities";
 import { metaHelper } from "~/utils/meta";
-import Code from "~/components/code";
+import Code from "~/components/code.client";
 import FadeIn from "~/components/fade-in";
 import Copy from "~/components/copy";
 import { noop } from "~/common";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 import NumberInput from "~/components/number-input";
 import Dropdown from "~/components/dropdown";
-import { type ChangeEvent, useState, useEffect, useRef } from "react";
+import { type ChangeEvent, useState, useEffect } from "react";
+import { formatSql } from "~/utils/sql-formatter.client";
 
 export const meta = metaHelper(
   utilities.sqlFormatter.name,
@@ -30,7 +31,6 @@ export default function SqlFormatter() {
   );
   const [formatted, setFormatted] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const formatterRef = useRef<typeof import("sql-formatter") | null>(null);
 
   const onChangeTabWidth = (e: ChangeEvent<HTMLInputElement>) => {
     setTabWidth(
@@ -46,15 +46,10 @@ export default function SqlFormatter() {
 
     let cancelled = false;
 
-    async function formatSql() {
+    async function doFormat() {
       setIsLoading(true);
       try {
-        // Lazy load sql-formatter only when needed
-        if (!formatterRef.current) {
-          formatterRef.current = await import("sql-formatter");
-        }
-
-        const result = formatterRef.current.format(input, {
+        const result = await formatSql(input, {
           tabWidth: parseInt(tabWidth, 10),
           keywordCase: keywordCase,
         });
@@ -73,7 +68,7 @@ export default function SqlFormatter() {
       }
     }
 
-    formatSql();
+    doFormat();
 
     return () => {
       cancelled = true;
