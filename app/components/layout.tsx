@@ -1,11 +1,4 @@
-import {
-  lazy,
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { lazy, useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Bars3BottomLeftIcon,
   MagnifyingGlassIcon,
@@ -14,7 +7,6 @@ import {
 import { Link, useLocation } from "react-router";
 import Sidebar from "~/components/sidebar";
 import useKeyboardShortcut from "~/hooks/use-keyboard-shortcut";
-import { ClientOnly } from "~/components/client-only";
 
 const Search = lazy(() => import("~/components/search.client"));
 const MobileSidebar = lazy(() => import("~/components/mobile-sidebar.client"));
@@ -208,14 +200,8 @@ export default function Layout({ children }: { children: ReactNode }) {
         </main>
       </div>
 
-      <ClientOnly>
-        {() => (
-          <Suspense fallback={null}>
-            <Search open={searchOpen} setOpen={setSearchOpen} />
-            <MobileSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
-          </Suspense>
-        )}
-      </ClientOnly>
+      <Search open={searchOpen} setOpen={setSearchOpen} />
+      <MobileSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
     </div>
   );
 }
