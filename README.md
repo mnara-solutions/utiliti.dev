@@ -13,9 +13,9 @@ A collection of open source utilities hosted online at [utiliti.dev](https://uti
 
 - Built on top of [React Router](https://reactrouter.com/)
 - Styled with [Tailwind](https://tailwindcss.com/)
-- Hosted on [Cloudflare Pages](https://pages.cloudflare.com/) + Functions
+- Hosted on [Cloudflare Workers](https://workers.cloudflare.com/)
 
-Running a framework like React Router on Cloudflare Pages means that we utilize edge functions to deliver a server side rendered initial page. This increases the cost of hosting a project like this, but our users get a performance benefit and more importantly it unlocks more powerful utilities like private notes.
+Running a framework like React Router on Cloudflare Workers means that we utilize edge functions to deliver a server side rendered initial page. This increases the cost of hosting a project like this, but our users get a performance benefit and more importantly it unlocks more powerful utilities like private notes.
 
 ## Roadmap
 
@@ -31,7 +31,7 @@ Each page will have a small, non-intrusive advertisement to cover the cost of ho
 
 ## Local Development
 
-To develop locally, you need to have a machine with `git` and `node 16.13.0` installed.
+To develop locally, you need to have a machine with `git` and `node >= 22.16.0` installed.
 
 Clone this repository on your machine and run the following commands:
 
@@ -45,8 +45,3 @@ Open up [http://127.0.0.1:8788](http://127.0.0.1:8788) and you should be ready t
 ## Deployment
 
 Deployment is done automatically when the PR is merged via GitHub Actions.
-
-## Todo
-
-- [ ] Spinners when processing a large amount of data
-- [ ] Temporarily store input in localStorage
