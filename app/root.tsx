@@ -21,7 +21,7 @@ export const meta: MetaFunction = () => {
   const title = "Utiliti";
   const description =
     "Open source developer utilities. All processing happens in your browser—your data never leaves your device. No tracking.";
-  const ogImage = `${siteUrl}/assets/og-image.png`;
+  const ogImage = `${siteUrl}/assets/mstile-310x150.png`;
 
   return [
     { title },
@@ -41,11 +41,6 @@ export const meta: MetaFunction = () => {
     { property: "og:url", content: siteUrl },
     { property: "og:image", content: ogImage },
     { property: "og:site_name", content: "Utiliti" },
-    // Twitter Card
-    { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:title", content: title },
-    { name: "twitter:description", content: description },
-    { name: "twitter:image", content: ogImage },
     // Canonical
     { tagName: "link", rel: "canonical", href: siteUrl },
   ];
