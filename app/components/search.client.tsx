@@ -1,0 +1,117 @@
+import { useState } from "react";
+import {
+  Combobox,
+  ComboboxOption,
+  ComboboxOptions,
+  ComboboxInput,
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+} from "@headlessui/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { cn } from "~/common";
+import { utilities } from "~/utilities";
+import { useNavigate } from "react-router";
+
+const allUtilities = Object.values(utilities);
+
+interface Props {
+  readonly open: boolean;
+  readonly setOpen: (value: boolean) => void;
+}
+
+export default function Search({ open, setOpen }: Props) {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  const onClose = () => {
+    setOpen(false);
+    setQuery("");
+  };
+
+  const filteredUtilities =
+    query === ""
+      ? []
+      : allUtilities.filter((it) =>
+          it.name.toLowerCase().includes(query.toLowerCase()),
+        );
+
+  const onChange = (item: (typeof allUtilities)[0] | null) => {
+    if (!item) return;
+    setOpen(false);
+    navigate(item.url);
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} className="relative z-50">
+      <DialogBackdrop className="fixed inset-0 backdrop-blur-xs bg-black/40" />
+
+      <div className="fixed inset-0 overflow-y-auto px-4 py-4 sm:py-20 sm:px-6 md:py-32 lg:px-8 lg:py-[15vh]">
+        <DialogPanel className="mx-auto max-w-2xl divide-y divide-gray-500 divide-opacity-20 overflow-hidden rounded-xl bg-zinc-900 shadow-2xl">
+          <Combobox onChange={onChange}>
+            <div className="relative">
+              <MagnifyingGlassIcon
+                className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-500"
+                aria-hidden="true"
+              />
+              <ComboboxInput
+                className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-white placeholder-gray-500 focus:ring-0 sm:text-sm"
+                placeholder="Search..."
+                onChange={(event) => setQuery(event.target.value)}
+                autoFocus={true}
+              />
+            </div>
+
+            {(query === "" || filteredUtilities.length > 0) && (
+              <ComboboxOptions
+                static={true}
+                className="max-h-80 scroll-py-2 divide-y divide-gray-500 divide-opacity-20 overflow-y-auto"
+              >
+                <li className="list-none p-2">
+                  <ul className="text-sm text-gray-400">
+                    {(query === "" ? allUtilities : filteredUtilities).map(
+                      (it) => (
+                        <ComboboxOption
+                          key={it.name}
+                          data-testid="search-option"
+                          value={it}
+                          className={({ focus }) =>
+                            cn(
+                              "flex cursor-default select-none items-center rounded-md px-3 py-2",
+                              focus && "bg-zinc-800 text-orange-600",
+                            )
+                          }
+                        >
+                          {({ focus }) => (
+                            <>
+                              <span className="ml-3 flex-auto truncate">
+                                {it.name}
+                              </span>
+                              {focus && (
+                                <span className="ml-3 flex-none text-gray-400">
+                                  Jump to...
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </ComboboxOption>
+                      ),
+                    )}
+                  </ul>
+                </li>
+              </ComboboxOptions>
+            )}
+
+            {query !== "" && filteredUtilities.length === 0 && (
+              <div className="py-14 px-6 text-center sm:px-14">
+                <p className="text-sm text-gray-200">
+                  We couldn&apos;t find any utilities with that term.
+                </p>
+              </div>
+            )}
+          </Combobox>
+        </DialogPanel>
+      </div>
+    </Dialog>
+  );
+}
