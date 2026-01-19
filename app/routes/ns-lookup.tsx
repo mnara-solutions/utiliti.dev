@@ -5,7 +5,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/button";
 import type { ActionFunction } from "react-router";
 import { Form, useActionData, useNavigation } from "react-router";
-import { Transition } from "@headlessui/react";
+import FadeIn from "~/components/fade-in";
 import Copy from "~/components/copy";
 
 export const meta = metaHelper(
@@ -156,14 +156,7 @@ export default function NsLookup() {
         </div>
       </Form>
 
-      <Transition
-        show={!!data}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        className="not-prose mt-6"
-        as="div"
-      >
+      <FadeIn show={!!data} className="not-prose mt-6">
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left text-gray-400">
             <thead className="text-xs uppercase bg-zinc-700 text-gray-400">
@@ -224,7 +217,7 @@ export default function NsLookup() {
             </tbody>
           </table>
         </div>
-      </Transition>
+      </FadeIn>
 
       <h2>What is NS Lookup?</h2>
       <p>

@@ -3,7 +3,7 @@ import ContentWrapper from "~/components/content-wrapper";
 import { utilities } from "~/utilities";
 import { metaHelper } from "~/utils/meta";
 import Code from "~/components/code";
-import { Transition } from "@headlessui/react";
+import FadeIn from "~/components/fade-in";
 import Copy from "~/components/copy";
 import { noop } from "~/common";
 import { useLocalStorage } from "~/hooks/use-local-storage";
@@ -138,14 +138,7 @@ export default function SqlFormatter() {
         </BoxContent>
       </Box>
 
-      <Transition
-        show={!!input}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        className="mt-6"
-        as="div"
-      >
+      <FadeIn show={!!input} className="mt-6">
         <Box>
           <BoxTitle title="Output">
             <div>
@@ -169,7 +162,7 @@ export default function SqlFormatter() {
             </div>
           </BoxContent>
         </Box>
-      </Transition>
+      </FadeIn>
 
       <h2>What is SQL Formatting?</h2>
       <p>

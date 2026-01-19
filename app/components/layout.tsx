@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Bars3BottomLeftIcon,
   MagnifyingGlassIcon,
@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link, useLocation } from "react-router";
 import Sidebar from "~/components/sidebar";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, DialogPanel } from "@headlessui/react";
 import Search from "~/components/search";
 import useKeyboardShortcut from "~/hooks/use-keyboard-shortcut";
 
@@ -201,33 +201,25 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       <Search open={searchOpen} setOpen={setSearchOpen} />
 
-      <Transition.Root show={sidebarOpen} as={Fragment}>
-        <Dialog
-          onClose={setSidebarOpen}
-          as="div"
-          className="relative z-40 md:hidden"
-        >
-          <div className="fixed inset-0 z-40 flex top-14">
-            <Transition.Child
-              as={Fragment}
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="-translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition ease-in-out duration-300 transform"
-              leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
-            >
-              <Dialog.Panel className="relative flex w-full  flex-1 flex-col bg-zinc-900 pt-5 pb-4">
-                <div className="mt-5 h-0 flex-1 overflow-y-auto">
-                  <nav className="space-y-1 px-2">
-                    <Sidebar />
-                  </nav>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition.Root>
+      <Dialog
+        open={sidebarOpen}
+        onClose={setSidebarOpen}
+        as="div"
+        className="relative z-40 md:hidden"
+      >
+        <div className="fixed inset-0 z-40 flex top-14">
+          <DialogPanel
+            transition
+            className="relative flex w-full flex-1 flex-col bg-zinc-900 pt-5 pb-4 transition ease-in-out duration-300 transform data-[closed]:-translate-x-full"
+          >
+            <div className="mt-5 h-0 flex-1 overflow-y-auto">
+              <nav className="space-y-1 px-2">
+                <Sidebar />
+              </nav>
+            </div>
+          </DialogPanel>
+        </div>
+      </Dialog>
     </div>
   );
 }

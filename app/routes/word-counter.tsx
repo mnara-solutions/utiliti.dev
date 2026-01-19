@@ -24,7 +24,7 @@ async function getCommonWords(): Promise<Set<string>> {
 
   return commonWordsPromise;
 }
-import { Transition } from "@headlessui/react";
+import FadeIn from "~/components/fade-in";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/tooltip";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { useLocalStorage } from "~/hooks/use-local-storage";
@@ -275,14 +275,7 @@ export default function WordCounter() {
         </BoxInfo>
       </Box>
 
-      <Transition
-        show={info.words !== 0}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        className="mt-6"
-        as="div"
-      >
+      <FadeIn show={info.words !== 0} className="mt-6">
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
           <div className="flex flex-col w-full border rounded-lg bg-zinc-700 border-zinc-600">
             <div className="px-3 py-2 border-b border-gray-600 font-bold">
@@ -403,7 +396,7 @@ export default function WordCounter() {
             </div>
           </div>
         </div>
-      </Transition>
+      </FadeIn>
 
       <h2>Why Use Utiliti&apos;s Word Counter?</h2>
       <p>
