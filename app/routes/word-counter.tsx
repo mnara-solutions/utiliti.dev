@@ -25,7 +25,11 @@ async function getCommonWords(): Promise<Set<string>> {
   return commonWordsPromise;
 }
 import FadeIn from "~/components/fade-in";
-import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/tooltip.client";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "~/components/tooltip.client";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 

@@ -1,7 +1,11 @@
 import { copyText } from "~/utils/copy";
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/tooltip.client";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "~/components/tooltip.client";
 
 interface Props {
   readonly content: string | (() => string);
