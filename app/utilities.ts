@@ -1,77 +1,83 @@
 import { Routes } from "./routes";
 
 /**
+ * Represents a utility tool available on the site.
+ */
+export type Utility = {
+  readonly name: string;
+  readonly description: string;
+  readonly url: string;
+};
+
+/**
  * This file serves as an index of all available utilities and the content gets re-used in places like the sidebar
  * and the popular utilities component.
  */
-export const utilities: Record<
-  string,
-  { readonly name: string; readonly description: string; readonly url: string }
-> = {
+export const utilities: Record<string, Utility> = {
   privateNotes: {
     name: "Private Notes",
     description:
-      "Share secrets securely with self-destructing, encrypted notes. Zero-knowledge architecture.",
+      "Create self-destructing encrypted notes. Share passwords, API keys, and secrets securely. Zero-knowledge architecture.",
     url: Routes.PRIVATE_NOTES,
   },
   json: {
     name: "JSON",
     description:
-      "View, format, and minify JSON privately. Your data never leaves your browser.",
+      "View, format, and minify JSON instantly. Client-side processing means your data never leaves your browser—safe for API responses, configs, and sensitive data.",
     url: Routes.JSON,
   },
   prettier: {
     name: "Prettier",
     description:
-      "Format HTML, TypeScript, and CSS code instantly. Client-side processing keeps your code private.",
+      "Format HTML, TypeScript, and CSS code instantly. Client-side processing keeps your code private and never leaves your browser.",
     url: Routes.PRETTIER,
   },
   base64: {
     name: "Base64",
     description:
-      "Encode and decode Base64 securely. Safe for tokens, credentials, and sensitive data.",
+      "Encode and decode Base64 instantly. Safe for tokens, credentials, and sensitive data—your input never leaves your browser.",
     url: Routes.BASE64,
   },
   url: {
     name: "URL",
     description:
-      "Encode and decode URLs instantly. Client-side processing for complete privacy.",
+      "Encode, decode, and parse URLs instantly. Client-side processing means your URLs with sensitive parameters never leave your browser.",
     url: Routes.URL,
   },
   dataurl: {
     name: "Data URL",
     description:
-      "Display and decode data URLs privately. Your files never leave your browser.",
+      "Display and decode data URLs privately. Convert images to Base64 data URLs entirely in your browser—your files never leave your device.",
     url: Routes.DATAURL,
   },
   imageConverter: {
     name: "Image Converter",
     description:
-      "Convert images between formats locally. No uploads—your images stay on your device.",
+      "Convert images between JPG, PNG, and WebP formats privately. All processing happens in your browser—your images never leave your device.",
     url: Routes.IMAGE_CONVERTER,
   },
   wordCounter: {
     name: "Word Counter",
     description:
-      "Count characters, words, and sentences instantly. Your text stays private.",
+      "Count words, characters, sentences, and paragraphs instantly. Get reading time estimates and word frequency analysis—all privately in your browser.",
     url: Routes.WORD_COUNTER,
   },
   markdownToHtml: {
     name: "Markdown to HTML",
     description:
-      "Convert Markdown to HTML in your browser. No server processing required.",
+      "Convert Markdown to HTML instantly. Client-side processing means your documentation and notes never leave your browser.",
     url: Routes.MARKDOWN_TO_HTML,
   },
   loremIpsum: {
     name: "Lorem Ipsum",
     description:
-      "Generate placeholder text instantly. Customizable paragraphs, sentences, and words.",
+      "Generate Lorem Ipsum placeholder text instantly. Customizable paragraphs, sentences, and words.",
     url: Routes.LOREM_IPSUM,
   },
   password: {
     name: "Password Generator",
     description:
-      "Generate cryptographically secure passwords. Created locally using Web Crypto API.",
+      "Generate cryptographically secure passwords instantly. Created locally using Web Crypto API—your passwords never leave your browser.",
     url: Routes.PASSWORD_GENERATOR,
   },
   uuid: {
@@ -83,31 +89,31 @@ export const utilities: Record<
   cuid: {
     name: "CUID Generator",
     description:
-      "Generate collision-resistant IDs for distributed systems. Created locally in your browser.",
+      "Generate collision-resistant CUIDs optimized for horizontal scaling. Client-side generation means your IDs never touch our servers.",
     url: Routes.CUID,
   },
   nsLookup: {
     name: "NS Lookup",
     description:
-      "Find DNS records for any domain. Query A, AAAA, MX, TXT, and more record types.",
+      "Look up DNS records for any domain. Query A, AAAA, MX, TXT, NS, CNAME, and more record types.",
     url: Routes.NS_LOOKUP,
   },
   whois: {
     name: "Whois",
     description:
-      "Look up domain registration information. Find registrar, dates, and nameservers.",
+      "Look up domain registration information. Find registrar, owner details, registration dates, and nameservers.",
     url: Routes.WHOIS,
   },
   unixTimestamp: {
     name: "Unix Timestamp",
     description:
-      "Convert Unix timestamps to human-readable dates and vice versa. All processing is local.",
+      "Convert Unix timestamps to human-readable dates and vice versa. Supports seconds, milliseconds, microseconds, and nanoseconds.",
     url: Routes.UNIX_TIMESTAMP,
   },
   sqlFormatter: {
     name: "SQL Formatter",
     description:
-      "Format SQL queries privately. Your queries never leave your browser—safe for sensitive schemas.",
+      "Format and beautify SQL queries instantly. Supports multiple dialects. Your queries never leave your browser—safe for sensitive schemas.",
     url: Routes.SQL_FORMATTER,
   },
   qrCode: {
@@ -119,7 +125,7 @@ export const utilities: Record<
   hashing: {
     name: "Hash Generator",
     description:
-      "Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes locally. Your data stays private.",
+      "Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes instantly. Client-side processing means your sensitive data never leaves your browser.",
     url: Routes.HASHING,
   },
 };

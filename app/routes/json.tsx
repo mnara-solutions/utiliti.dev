@@ -4,6 +4,7 @@ import Code from "~/components/code";
 import { noop } from "~/common";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+
 import Utiliti from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ReadFile from "~/components/read-file";
@@ -11,10 +12,7 @@ import { setTextInputFromFiles } from "~/utils/convert-text-file";
 
 const JsonViewer = lazy(() => import("~/components/json-viewer.client"));
 
-export const meta = metaHelper(
-  utilities.json.name,
-  "View, format, and minify JSON instantly. Client-side processing means your data never leaves your browser—safe for API responses, configs, and sensitive data.",
-);
+export const meta = metaHelper(utilities.json);
 
 async function decode(text: string): Promise<object> {
   try {

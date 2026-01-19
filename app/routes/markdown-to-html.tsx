@@ -10,10 +10,7 @@ import ReadFile from "~/components/read-file";
 import { setTextInputFromFiles } from "~/utils/convert-text-file";
 import { convertMarkdownToHtml, minimizeHtml } from "~/utils/markdown.client";
 
-export const meta = metaHelper(
-  utilities.markdownToHtml.name,
-  "Convert Markdown to HTML instantly. Client-side processing means your documentation and notes never leave your browser.",
-);
+export const meta = metaHelper(utilities.markdownToHtml);
 
 enum Action {
   PREVIEW = "Preview",

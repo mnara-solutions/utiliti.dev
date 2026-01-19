@@ -8,10 +8,7 @@ import { Form, useActionData, useNavigation } from "react-router";
 import FadeIn from "~/components/fade-in";
 import Copy from "~/components/copy";
 
-export const meta = metaHelper(
-  utilities.nsLookup.name,
-  "Look up DNS records for any domain. Query A, AAAA, MX, TXT, NS, CNAME, and SPF records using Cloudflare's DNS-over-HTTPS API.",
-);
+export const meta = metaHelper(utilities.nsLookup);
 
 type Response = [
   string,

@@ -8,10 +8,7 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import NumberInput from "~/components/number-input";
 
-export const meta = metaHelper(
-  utilities.cuid.name,
-  "Generate collision-resistant CUIDs optimized for horizontal scaling. Client-side generation means your IDs never touch our servers.",
-);
+export const meta = metaHelper(utilities.cuid);
 
 export default function CuidGenerator() {
   const [number, setNumber] = useState(1);

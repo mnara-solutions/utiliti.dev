@@ -1,6 +1,7 @@
 import ContentWrapper from "~/components/content-wrapper";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/button";
 import type { ActionFunction } from "react-router";
@@ -9,10 +10,7 @@ import FadeIn from "~/components/fade-in";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
 
-export const meta = metaHelper(
-  utilities.whois.name,
-  "Look up domain registration information. Find registrar, owner details, registration dates, and nameservers for any domain.",
-);
+export const meta = metaHelper(utilities.whois);
 
 type Response = {
   result: {

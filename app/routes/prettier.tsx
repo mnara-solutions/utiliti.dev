@@ -11,10 +11,7 @@ import { useLocalStorage } from "~/hooks/use-local-storage";
 import Dropdown from "~/components/dropdown";
 import { formatWithPrettier } from "~/utils/prettier.client";
 
-export const meta = metaHelper(
-  utilities.prettier.name,
-  "Format HTML, TypeScript, and CSS code instantly with Prettier. Client-side processing means your code stays private and never leaves your browser.",
-);
+export const meta = metaHelper(utilities.prettier);
 
 const languages = {
   html: "HTML",

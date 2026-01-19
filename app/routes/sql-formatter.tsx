@@ -1,6 +1,7 @@
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { utilities } from "~/utilities";
+
 import { metaHelper } from "~/utils/meta";
 import Code from "~/components/code";
 import FadeIn from "~/components/fade-in";
@@ -12,10 +13,7 @@ import Dropdown from "~/components/dropdown";
 import { type ChangeEvent, useState, useEffect } from "react";
 import { formatSql } from "~/utils/sql-formatter.client";
 
-export const meta = metaHelper(
-  utilities.sqlFormatter.name,
-  "Format and beautify SQL queries instantly. Supports multiple SQL dialects with customizable formatting. Client-side processing keeps your queries private.",
-);
+export const meta = metaHelper(utilities.sqlFormatter);
 
 type KeywordCase = "preserve" | "upper" | "lower";
 

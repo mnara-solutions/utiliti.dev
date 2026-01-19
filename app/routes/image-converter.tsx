@@ -18,10 +18,7 @@ import {
 import { cn } from "~/common";
 import { useFileDrop } from "~/hooks/use-file-drop";
 
-export const meta = metaHelper(
-  utilities.imageConverter.name,
-  "Convert images between JPG, PNG, and WebP formats privately. All processing happens in your browser—your images never leave your device.",
-);
+export const meta = metaHelper(utilities.imageConverter);
 
 const formatImage: { [format: string]: string } = {
   jpg: "image/jpeg",
