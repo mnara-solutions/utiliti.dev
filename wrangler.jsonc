@@ -4,7 +4,7 @@
   "compatibility_date": "2025-11-17",
   "compatibility_flags": ["nodejs_compat"],
   "main": "./workers/app.ts",
-  "workers_dev": false,
+  "workers_dev": true,
   "preview_urls": true,
   "routes": [
     { "pattern": "utiliti.dev", "custom_domain": true },
