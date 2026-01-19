@@ -7,12 +7,10 @@
     "build": "react-router build",
     "deploy": "npm run build && wrangler deploy",
     "start": "wrangler dev",
-    "typecheck": "npm run cf-typegen && react-router typegen && tsc -b",
+    "typecheck": "react-router typegen && tsc -b",
     "prettier": "prettier --write --ignore-path .gitignore .",
     "test:e2e": "playwright test",
-    "cf-typegen": "wrangler types",
-    "lint": "eslint",
-    "postinstall": "npm run cf-typegen"
+    "lint": "eslint"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.16",
@@ -44,6 +42,7 @@
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.20.1",
+    "@cloudflare/workers-types": "^4.20260118.0",
     "@eslint/compat": "^2.0.1",
     "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.57.0",
