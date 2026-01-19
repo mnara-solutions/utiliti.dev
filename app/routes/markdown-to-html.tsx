@@ -3,6 +3,7 @@ import Code from "~/components/code";
 import { noop } from "~/common";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import { Routes } from "~/routes";
 import Utiliti from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ShadowDom from "~/components/shadow-dom";
@@ -13,6 +14,7 @@ import { convertMarkdownToHtml, minimizeHtml } from "~/utils/markdown.client";
 export const meta = metaHelper(
   utilities.markdownToHtml.name,
   "Convert Markdown to HTML instantly. Client-side processing means your documentation and notes never leave your browser.",
+  Routes.MARKDOWN_TO_HTML,
 );
 
 enum Action {

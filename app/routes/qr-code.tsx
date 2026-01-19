@@ -14,10 +14,12 @@ import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import IconButton from "~/components/icon-button";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import { Routes } from "~/routes";
 
 export const meta = metaHelper(
   utilities.qrCode.name,
   utilities.qrCode.description,
+  Routes.QR_CODE,
 );
 
 enum Action {

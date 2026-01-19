@@ -1,11 +1,13 @@
 import { Outlet } from "react-router";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import { Routes } from "~/routes";
 import ContentWrapper from "~/components/content-wrapper";
 
 export const meta = metaHelper(
   utilities.privateNotes.name,
   "Create self-destructing encrypted notes. Share passwords, API keys, and secrets securely. Client-side encryption means we never see your data.",
+  Routes.PRIVATE_NOTES,
 );
 
 export default function Index() {

@@ -3,6 +3,7 @@ import Utiliti from "~/components/utiliti";
 import { BoxOptions } from "~/components/box";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import { Routes } from "~/routes";
 import SimpleOutput from "~/components/simple-output";
 import Dropdown from "~/components/dropdown";
 import ReadFile from "~/components/read-file";
@@ -11,6 +12,7 @@ import { setTextInputFromFiles } from "~/utils/convert-text-file";
 export const meta = metaHelper(
   utilities.hashing.name,
   "Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes instantly. Client-side processing means your sensitive data never leaves your browser.",
+  Routes.HASHING,
 );
 
 enum Action {

@@ -5,6 +5,7 @@ import Copy from "~/components/copy";
 import { ClientOnly } from "~/components/client-only";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import { Routes } from "~/routes";
 import Slider from "~/components/slider";
 import Checkbox from "~/components/checkbox";
 
@@ -117,6 +118,7 @@ function generateLoremIpsum(
 export const meta = metaHelper(
   utilities.loremIpsum.name,
   "Generate Lorem Ipsum placeholder text instantly. Customizable paragraphs, sentences, and word counts—all generated privately in your browser.",
+  Routes.LOREM_IPSUM,
 );
 
 export default function LoremIpsum() {

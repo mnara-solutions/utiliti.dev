@@ -2,13 +2,20 @@ import { utilities } from "~/utilities";
 
 export async function loader() {
   const baseUrl = "https://utiliti.dev";
+  const today = new Date().toISOString().split("T")[0];
 
   const urls = [
-    { loc: baseUrl, priority: "1.0", changefreq: "weekly" },
+    {
+      loc: baseUrl,
+      priority: "1.0",
+      changefreq: "weekly",
+      lastmod: today,
+    },
     ...Object.values(utilities).map((utility) => ({
       loc: `${baseUrl}${utility.url}`,
       priority: "0.8",
       changefreq: "monthly",
+      lastmod: today,
     })),
   ];
 
@@ -18,6 +25,7 @@ ${urls
   .map(
     (url) => `  <url>
     <loc>${url.loc}</loc>
+    <lastmod>${url.lastmod}</lastmod>
     <changefreq>${url.changefreq}</changefreq>
     <priority>${url.priority}</priority>
   </url>`,

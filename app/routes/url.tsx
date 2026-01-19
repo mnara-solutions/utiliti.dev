@@ -3,12 +3,14 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Utiliti from "~/components/utiliti";
 import { lazy } from "react";
+import { Routes } from "~/routes";
 
 const JsonViewer = lazy(() => import("~/components/json-viewer.client"));
 
 export const meta = metaHelper(
   utilities.url.name,
   "Encode, decode, and parse URLs instantly. Client-side processing means your URLs with sensitive parameters never leave your browser.",
+  Routes.URL,
 );
 
 interface JsonURL {

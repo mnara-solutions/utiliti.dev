@@ -2,6 +2,7 @@ import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import { Routes } from "~/routes";
 import { useEffect, useRef, useState } from "react";
 import { throttle } from "~/utils/throttle";
 import ContentWrapper from "~/components/content-wrapper";
@@ -32,6 +33,7 @@ import { useLocalStorage } from "~/hooks/use-local-storage";
 export const meta = metaHelper(
   utilities.wordCounter.name,
   "Count words, characters, sentences, and paragraphs instantly. Get reading time estimates and word frequency analysis—all processing happens privately in your browser.",
+  Routes.WORD_COUNTER,
 );
 
 interface Info {

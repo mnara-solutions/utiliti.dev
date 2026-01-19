@@ -15,10 +15,14 @@ import fonts from "./styles/fonts.css?url";
 import dark from "../node_modules/highlight.js/styles/stackoverflow-dark.css?url";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 
+const siteUrl = "https://utiliti.dev";
+
 export const meta: MetaFunction = () => {
   const title = "Utiliti";
   const description =
-    "A collection of high quality, secure, and open source utilities.";
+    "Open source developer utilities. All processing happens in your browser—your data never leaves your device. No tracking.";
+  const ogImage = `${siteUrl}/assets/og-image.png`;
+
   return [
     { title },
     { name: "description", content: description },
@@ -30,13 +34,20 @@ export const meta: MetaFunction = () => {
     { name: "theme-color", content: "#f97316" },
     { name: "application-TileColor", content: "#f97316" },
     { name: "application-config", content: "/assets/browserconfig.xml" },
+    // Open Graph
     { property: "og:title", content: title },
     { property: "og:description", content: description },
     { property: "og:type", content: "website" },
-    {
-      property: "og:image",
-      content: "https://utiliti.dev/assets/android-chrome-512x512.png",
-    },
+    { property: "og:url", content: siteUrl },
+    { property: "og:image", content: ogImage },
+    { property: "og:site_name", content: "Utiliti" },
+    // Twitter Card
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { name: "twitter:image", content: ogImage },
+    // Canonical
+    { tagName: "link", rel: "canonical", href: siteUrl },
   ];
 };
 

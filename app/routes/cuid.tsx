@@ -6,11 +6,13 @@ import ReadOnlyTextArea from "~/components/read-only-textarea";
 import { init } from "@paralleldrive/cuid2";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
+import { Routes } from "~/routes";
 import NumberInput from "~/components/number-input";
 
 export const meta = metaHelper(
   utilities.cuid.name,
   "Generate collision-resistant CUIDs optimized for horizontal scaling. Client-side generation means your IDs never touch our servers.",
+  Routes.CUID,
 );
 
 export default function CuidGenerator() {
