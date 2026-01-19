@@ -2,7 +2,7 @@ import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { utilities } from "~/utilities";
 import { metaHelper } from "~/utils/meta";
-import Code from "~/components/code";
+import Code from "~/components/code.client";
 import FadeIn from "~/components/fade-in";
 import Copy from "~/components/copy";
 import { noop } from "~/common";

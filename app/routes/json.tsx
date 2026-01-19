@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import Copy from "~/components/copy";
-import Code from "~/components/code";
+import Code from "~/components/code.client";
 import { noop } from "~/common";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
@@ -9,7 +9,7 @@ import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ReadFile from "~/components/read-file";
 import { setTextInputFromFiles } from "~/utils/convert-text-file";
 
-const JsonViewer = lazy(() => import("~/components/json-viewer"));
+const JsonViewer = lazy(() => import("~/components/json-viewer.client"));
 
 export const meta = metaHelper(
   utilities.json.name,

@@ -4,7 +4,7 @@ import { utilities } from "~/utilities";
 import Utiliti from "~/components/utiliti";
 import { lazy } from "react";
 
-const JsonViewer = lazy(() => import("~/components/json-viewer"));
+const JsonViewer = lazy(() => import("~/components/json-viewer.client"));
 
 export const meta = metaHelper(
   utilities.url.name,

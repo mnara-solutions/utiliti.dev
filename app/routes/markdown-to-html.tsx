@@ -1,5 +1,5 @@
 import Copy from "~/components/copy";
-import Code from "~/components/code";
+import Code from "~/components/code.client";
 import { noop } from "~/common";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
