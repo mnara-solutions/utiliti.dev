@@ -16,15 +16,28 @@ export const meta = metaHelper(
 
 type Response = {
   result: {
+    found: boolean;
     domain: string;
-    created_date: string;
-    updated_date: string;
-    registrant: string;
-    registrant_org: string;
-    registrant_country: string;
-    registrant_email: string;
-    registrar: string;
+    dnssec: boolean;
     nameservers: string[];
+    registrar: string;
+    registrant: string;
+    id: string;
+    punycode: string;
+    name: string;
+    extension: string;
+    whois_server: string;
+    status: string[];
+    created_date: string;
+    created_date_raw: string;
+    updated_date: string;
+    updated_date_raw: string;
+    expiration_date: string;
+    expiration_date_raw: string;
+    registrar_referral_url: string;
+    registrar_name: string;
+    registrar_email: string;
+    registrar_phone: string;
   };
   success: boolean;
   errors: { code: number; message: string }[];
@@ -112,7 +125,7 @@ export default function Whois() {
       </Form>
 
       <FadeIn show={!!data} className="not-prose mt-6">
-        {data && !data.success && (
+        {data && (!data.success || !data.result.found) && (
           <Box>
             <BoxTitle title="Error" />
             <BoxContent isLast={true} className="px-3 py-2 text-red-400">
@@ -120,25 +133,61 @@ export default function Whois() {
             </BoxContent>
           </Box>
         )}
-        {data && data.success && (
+        {data && data.success && data.result.found && (
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-400">
               <tbody>
-                <Header title="Registrar" />
-                <Row title="Name" value={data.result.registrar} />
+                <Header title="Domain" />
+                <Row title="Name" value={data.result.domain} />
+                <Row
+                  title="DNSSEC"
+                  value={data.result.dnssec ? "Enabled" : "Disabled"}
+                />
+                {data.result.status && data.result.status.length > 0 && (
+                  <Row title="Status" value={data.result.status.join(", ")} />
+                )}
 
-                <Header title="Registrant" />
-                <Row title="Name" value={data.result.registrant} />
-                <Row title="Organization" value={data.result.registrant_org} />
-                <Row title="Country" value={data.result.registrant_country} />
-                <Row title="Email" value={data.result.registrant_email} />
+                <Header title="Registrar" />
+                <Row
+                  title="Name"
+                  value={data.result.registrar_name || data.result.registrar}
+                />
+                {data.result.registrar_email && (
+                  <Row title="Email" value={data.result.registrar_email} />
+                )}
+                {data.result.registrar_phone && (
+                  <Row title="Phone" value={data.result.registrar_phone} />
+                )}
+                {data.result.registrar_referral_url && (
+                  <Row
+                    title="Website"
+                    value={data.result.registrar_referral_url}
+                  />
+                )}
+
+                {data.result.registrant && (
+                  <>
+                    <Header title="Registrant" />
+                    <Row title="Name" value={data.result.registrant} />
+                  </>
+                )}
 
                 <Header title="Important Dates" />
-                <Row title="Registered On" value={data.result.created_date} />
-                <Row title="Updated On" value={data.result.updated_date} />
+                <Row
+                  title="Registered On"
+                  value={formatDate(data.result.created_date)}
+                />
+                <Row
+                  title="Updated On"
+                  value={formatDate(data.result.updated_date)}
+                />
+                <Row
+                  title="Expires On"
+                  value={formatDate(data.result.expiration_date)}
+                />
 
                 <Header title="Nameservers" />
-                {data.result.nameservers.map((it) => (
+                {data.result.nameservers?.map((it) => (
                   <Row key={it} title="" value={it} />
                 ))}
               </tbody>
@@ -150,6 +199,19 @@ export default function Whois() {
       <WhoisExplanation />
     </ContentWrapper>
   );
+}
+
+function formatDate(dateString: string): string {
+  if (!dateString) return "";
+  try {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  } catch {
+    return dateString;
+  }
 }
 
 function Row({ title, value }: { title: string; value: string }) {
