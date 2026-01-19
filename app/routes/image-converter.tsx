@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
-import { Transition } from "@headlessui/react";
+import FadeIn from "~/components/fade-in";
 import Dropdown from "~/components/dropdown";
-import JSZip from "jszip";
+
 import { convertToFileFormat } from "~/utils/convert-image-file";
 import {
   ArrowDownOnSquareIcon,
@@ -65,7 +65,9 @@ export default function ImageConverter() {
   }, [files]);
 
   const onDownloadZip = async () => {
-    const zip: JSZip = new JSZip();
+    // Lazy load JSZip only when needed
+    const JSZip = (await import("jszip")).default;
+    const zip = new JSZip();
 
     for (let i = 0; i < files.length; i++) {
       const f = files[i];
@@ -223,21 +225,14 @@ export default function ImageConverter() {
         </BoxButtons>
       </Box>
 
-      <Transition
-        show={error != null}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        className="mt-6"
-        as="div"
-      >
+      <FadeIn show={error != null} className="mt-6">
         <Box>
           <BoxTitle title="Error" />
           <BoxContent isLast={true} className="px-3 py-2 text-red-400">
             {error}
           </BoxContent>
         </Box>
-      </Transition>
+      </FadeIn>
 
       <h2>Why Use Utiliti&apos;s Image Converter?</h2>
       <p>

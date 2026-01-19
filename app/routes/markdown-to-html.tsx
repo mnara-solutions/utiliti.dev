@@ -5,8 +5,6 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Utiliti from "~/components/utiliti";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { marked } from "marked";
-import DOMPurify from "dompurify";
 import ShadowDom from "~/components/shadow-dom";
 import ReadFile from "~/components/read-file";
 import { setTextInputFromFiles } from "~/utils/convert-text-file";
@@ -23,6 +21,11 @@ enum Action {
 }
 
 async function convert(markdown: string): Promise<string> {
+  const [{ marked }, DOMPurify] = await Promise.all([
+    import("marked"),
+    import("dompurify").then((m) => m.default),
+  ]);
+
   const html = await marked(markdown);
 
   return DOMPurify.sanitize(html).toString();

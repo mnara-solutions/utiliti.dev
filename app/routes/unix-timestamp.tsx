@@ -7,7 +7,7 @@ import Copy from "~/components/copy";
 import { useHydrated } from "~/hooks/use-hydrated";
 import NumberInput from "~/components/number-input";
 import { format, formatDistanceToNow } from "date-fns";
-import { Transition } from "@headlessui/react";
+import FadeIn from "~/components/fade-in";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 
 export const meta = metaHelper(
@@ -197,14 +197,7 @@ export default function UnixTimestamp() {
         </BoxContent>
       </Box>
 
-      <Transition
-        show={input != null}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        className="mt-6"
-        as="div"
-      >
+      <FadeIn show={input != null} className="mt-6">
         {input && isNaN(input.value.getDate()) ? (
           <Box>
             <BoxTitle title="Error" />
@@ -251,7 +244,7 @@ export default function UnixTimestamp() {
             </Box>
           )
         )}
-      </Transition>
+      </FadeIn>
 
       <h2>Why Use Utiliti&apos;s Unix Timestamp Converter?</h2>
       <p>

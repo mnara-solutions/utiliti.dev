@@ -5,7 +5,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/button";
 import type { ActionFunction } from "react-router";
 import { Form, useActionData, useNavigation } from "react-router";
-import { Transition } from "@headlessui/react";
+import FadeIn from "~/components/fade-in";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
 
@@ -111,14 +111,7 @@ export default function Whois() {
         </div>
       </Form>
 
-      <Transition
-        show={!!data}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        className="not-prose mt-6"
-        as="div"
-      >
+      <FadeIn show={!!data} className="not-prose mt-6">
         {data && !data.success && (
           <Box>
             <BoxTitle title="Error" />
@@ -152,7 +145,7 @@ export default function Whois() {
             </table>
           </div>
         )}
-      </Transition>
+      </FadeIn>
 
       <WhoisExplanation />
     </ContentWrapper>

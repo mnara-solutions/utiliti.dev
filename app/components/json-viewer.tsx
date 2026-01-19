@@ -1,7 +1,7 @@
 import Copy from "~/components/copy";
 import { useState } from "react";
-import { JSONTree } from "react-json-tree";
 import IconButton from "~/components/icon-button";
+import { JSONTree } from "react-json-tree";
 import {
   ArrowsPointingInIcon,
   ArrowsPointingOutIcon,

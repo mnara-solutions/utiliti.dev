@@ -1,8 +1,8 @@
 import Copy from "~/components/copy";
 import Button from "~/components/button";
-import { Transition } from "@headlessui/react";
+import FadeIn from "~/components/fade-in";
 import type { ReactNode } from "react";
-import { useState, useLayoutEffect } from "react";
+import { Suspense, useState, useLayoutEffect } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { useLocalStorage } from "~/hooks/use-local-storage";
@@ -92,25 +92,24 @@ export default function Utiliti<T>({
         </BoxButtons>
       </Box>
 
-      <Transition
-        show={output != null || error != null}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        className="mt-6"
-        as="div"
-      >
-        {error ? (
+      {error ? (
+        <FadeIn show={true} className="mt-6">
           <Box>
             <BoxTitle title="Error" />
             <BoxContent isLast={true} className="px-3 py-2 text-red-400">
               {error}
             </BoxContent>
           </Box>
-        ) : (
-          action && input && output && renderOutput(action, input, output)
-        )}
-      </Transition>
+        </FadeIn>
+      ) : (
+        <Suspense fallback={null}>
+          {action && input && output && (
+            <FadeIn show={true} className="mt-6">
+              {renderOutput(action, input, output)}
+            </FadeIn>
+          )}
+        </Suspense>
+      )}
 
       {renderExplanation && renderExplanation()}
     </ContentWrapper>
