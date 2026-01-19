@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Combobox,
   ComboboxOption,
@@ -24,13 +24,10 @@ export default function Search({ open, setOpen }: Props) {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
-  // Clear query after dialog closes (replaces afterLeave)
-  useEffect(() => {
-    if (!open) {
-      const timeout = setTimeout(() => setQuery(""), 200);
-      return () => clearTimeout(timeout);
-    }
-  }, [open]);
+  const onClose = () => {
+    setOpen(false);
+    setQuery("");
+  };
 
   const filteredUtilities =
     query === ""
@@ -46,7 +43,7 @@ export default function Search({ open, setOpen }: Props) {
   };
 
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-50">
+    <Dialog open={open} onClose={onClose} className="relative z-50">
       <DialogBackdrop className="fixed inset-0 backdrop-blur-xs bg-black/40" />
 
       <div className="fixed inset-0 overflow-y-auto px-4 py-4 sm:py-20 sm:px-6 md:py-32 lg:px-8 lg:py-[15vh]">
