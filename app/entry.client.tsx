@@ -1,4 +1,4 @@
-import { RemixBrowser } from "@remix-run/react";
+import { HydratedRouter } from "react-router/dom";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
@@ -6,19 +6,18 @@ startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
-      <RemixBrowser />
+      <HydratedRouter />
     </StrictMode>,
   );
 });
 
 // add a service worker, only in production for now
+// @todo: disabled for now, causing more problems
 if (
   "serviceWorker" in navigator &&
   window.location.origin === "https://utiliti.dev"
 ) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js").catch((error) => {
-      console.error("Service worker registration failed", error);
-    });
+  navigator.serviceWorker.ready.then((registration) => {
+    registration.unregister();
   });
 }

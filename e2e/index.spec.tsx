@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import Routes from "~/routes";
+import { Routes } from "../app/routes";
 
 test("navigate to a few pages and perform smoke test", async ({ page }) => {
   // load up the index page

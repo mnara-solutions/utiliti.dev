@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
+import type { MetaFunction } from "react-router";
 
 export function metaHelper(
   titlePrefix: string,
@@ -8,7 +8,7 @@ export function metaHelper(
 
   return () => [
     { title },
-    { meta: "description", content: description },
+    { name: "description", content: description },
     { property: "og:title", content: title },
     { property: "og:description", content: description },
   ];

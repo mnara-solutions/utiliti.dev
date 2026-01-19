@@ -1,11 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
 const PORT = process.env.PORT || 8787;
 const baseURL = `http://localhost:${PORT}`;
 

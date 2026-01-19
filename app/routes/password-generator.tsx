@@ -1,10 +1,4 @@
-import {
-  type ChangeEvent,
-  useCallback,
-  useLayoutEffect,
-  useReducer,
-  useState,
-} from "react";
+import { type ChangeEvent, useLayoutEffect, useReducer, useState } from "react";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { metaHelper } from "~/utils/meta";
@@ -18,7 +12,7 @@ import NumberInput from "~/components/number-input";
 
 export const meta = metaHelper(
   utilities.password.name,
-  utilities.password.description,
+  "Generate cryptographically secure passwords instantly. Client-side generation using Web Crypto API means your passwords never leave your browser.",
 );
 
 // Currently not necessary, but if you want to add more potential for password (utf-8 > 255) characters, you can use this function
@@ -100,12 +94,9 @@ export default function PasswordGenerator() {
   // hack: we don't have a way to re-render inside a function component without something changing
   const [forceUpdate, setForceUpdate] = useReducer((x) => x + 1, 0);
 
-  const onChangeNumber = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setNumber(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
-    },
-    [setNumber],
-  );
+  const onChangeNumber = (e: ChangeEvent<HTMLInputElement>) => {
+    setNumber(Math.min(Math.max(parseInt(e.target.value, 10), 1), 500));
+  };
 
   // we need to use a layout effect here because `generatePassword` calls upon `window.crypto`, which is not available
   // when rendering on the server side (node).
@@ -209,6 +200,117 @@ export default function PasswordGenerator() {
           <ReadOnlyTextArea value={generatedPassword} />
         </BoxContent>
       </Box>
+
+      <h2>What Makes a Password Secure?</h2>
+      <p>
+        A secure password is one that is difficult for both humans and computers
+        to guess. The strength of a password depends on three main factors:
+        length, complexity, and randomness. Our password generator maximizes all
+        three to create passwords that would take centuries to crack with
+        current technology.
+      </p>
+      <p>
+        The most common password attacks involve trying dictionary words, common
+        substitutions (like &quot;p@ssw0rd&quot;), and patterns. Truly random
+        passwords—like the ones generated here—are immune to these attacks
+        because there&apos;s no pattern to exploit.
+      </p>
+
+      <h2>Why Generate Passwords Client-Side?</h2>
+      <p>
+        Many password generators send requests to their servers to generate
+        passwords. This is a critical security flaw—your new password could be
+        logged, intercepted, or stored by the service provider.
+      </p>
+      <p>
+        Utiliti&apos;s Password Generator runs entirely in your browser using
+        the Web Crypto API, which provides cryptographically secure random
+        number generation. Your passwords are:
+      </p>
+      <ul>
+        <li>
+          <strong>Never transmitted</strong>: Generated locally, your passwords
+          never touch our servers
+        </li>
+        <li>
+          <strong>Truly random</strong>: We use{" "}
+          <code>crypto.getRandomValues()</code>, the gold standard for secure
+          randomness in browsers
+        </li>
+        <li>
+          <strong>Instantly available</strong>: No network requests means
+          instant generation, even offline
+        </li>
+      </ul>
+
+      <h2>How to Use This Generator</h2>
+      <ol>
+        <li>
+          <strong>Set the length</strong>: Use the slider to choose between
+          10-255 characters. Longer is generally better—we recommend at least 16
+          characters for important accounts.
+        </li>
+        <li>
+          <strong>Choose character types</strong>: Select which character sets
+          to include. More variety means stronger passwords.
+        </li>
+        <li>
+          <strong>Generate multiple</strong>: Need passwords for several
+          accounts? Set the quantity and generate them all at once.
+        </li>
+        <li>
+          <strong>Copy and use</strong>: Click the copy button to grab your
+          password(s) and store them in your password manager.
+        </li>
+      </ol>
+
+      <h2>Password Strength Recommendations</h2>
+      <p>
+        Different accounts warrant different password strengths. Here are our
+        recommendations:
+      </p>
+      <ul>
+        <li>
+          <strong>Critical accounts (banking, email)</strong>: 20+ characters
+          with all character types enabled
+        </li>
+        <li>
+          <strong>Important accounts (social media, shopping)</strong>: 16+
+          characters with uppercase, lowercase, and numbers
+        </li>
+        <li>
+          <strong>Low-risk accounts</strong>: 12+ characters minimum
+        </li>
+        <li>
+          <strong>Wi-Fi passwords</strong>: 20+ characters (you only enter it
+          once per device)
+        </li>
+      </ul>
+
+      <h2>Why You Should Use a Password Manager</h2>
+      <p>
+        Random passwords are only useful if you can remember them—and you
+        shouldn&apos;t try. Instead, use a password manager like Bitwarden,
+        1Password, or KeePass to store your generated passwords securely. This
+        allows you to:
+      </p>
+      <ul>
+        <li>Use unique passwords for every account</li>
+        <li>Generate and store complex passwords without memorization</li>
+        <li>Autofill credentials securely across devices</li>
+        <li>
+          Detect if any of your passwords have been compromised in data breaches
+        </li>
+      </ul>
+
+      <h2>The Math Behind Password Security</h2>
+      <p>
+        Password strength is measured in bits of entropy. A password with 20
+        characters using all character types (uppercase, lowercase, digits, and
+        special characters—roughly 95 possible characters) has about 131 bits of
+        entropy. At current computing speeds, cracking such a password through
+        brute force would take longer than the age of the universe.
+      </p>
     </ContentWrapper>
   );
 }

@@ -1,6 +1,0 @@
-compatibility_date = "2023-06-21"
-compatibility_flags = []
-
-[[kv_namespaces]]
-binding = "PRIVATE_NOTES"
-id = "PRIVATE_NOTES"

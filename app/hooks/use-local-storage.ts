@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useHydrated } from "~/hooks/use-hydrated";
-import { useIsomorphicLayoutEffect } from "~/hooks/use-isomorphic-layout-effect";
 
 export function useLocalStorage<T>(
   key: string,
@@ -10,8 +9,8 @@ export function useLocalStorage<T>(
   const isHydrated = useHydrated();
   const [storedValue, setStoredValue] = useState(initialValue);
 
-  // moved the loading of stored value into an effect, so that we don't have any hydration issues with remix
-  useIsomorphicLayoutEffect(() => {
+  // moved the loading of stored value into an effect, so that we don't have any hydration issues with react router
+  useLayoutEffect(() => {
     if (typeof window === "undefined" || !isHydrated) {
       return;
     }

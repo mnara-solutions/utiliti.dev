@@ -1,22 +1,16 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Bars3BottomLeftIcon,
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Link, useLocation } from "@remix-run/react";
+import { Link, useLocation } from "react-router";
 import Sidebar from "~/components/sidebar";
-import { Dialog, Transition } from "@headlessui/react";
-import Search from "~/components/search";
 import useKeyboardShortcut from "~/hooks/use-keyboard-shortcut";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
+import { ClientOnly } from "./client-only";
+
+import Search from "~/components/search.client";
+import MobileSidebar from "~/components/mobile-sidebar.client";
 
 const keyboardShortcutOptions = {
   overrideSystem: true,
@@ -24,20 +18,12 @@ const keyboardShortcutOptions = {
   repeatOnHold: false,
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
   const location = useLocation();
   const prevPath = useRef(location.pathname);
-
-  const toggleSidebar = useCallback(() => {
-    setSidebarOpen(!sidebarOpen);
-  }, [sidebarOpen, setSidebarOpen]);
-
-  const toggleSearch = useCallback(() => {
-    setSearchOpen(!searchOpen);
-  }, [searchOpen, setSearchOpen]);
 
   // if url changes while the sidebar is open, close the sidebar
   useEffect(() => {
@@ -48,7 +34,23 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     prevPath.current = location.pathname;
   }, [location.pathname, sidebarOpen, setSidebarOpen]);
 
+  // Prevent browser from opening files when dropped outside drop zones
+  useEffect(() => {
+    const preventDefaults = (e: DragEvent) => {
+      e.preventDefault();
+    };
+
+    document.addEventListener("dragover", preventDefaults);
+    document.addEventListener("drop", preventDefaults);
+
+    return () => {
+      document.removeEventListener("dragover", preventDefaults);
+      document.removeEventListener("drop", preventDefaults);
+    };
+  }, []);
+
   // on command + k, open search bar
+  const toggleSearch = () => setSearchOpen(!searchOpen);
   useKeyboardShortcut(["Meta", "K"], toggleSearch, keyboardShortcutOptions);
   useKeyboardShortcut(["Control", "K"], toggleSearch, keyboardShortcutOptions);
 
@@ -68,19 +70,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* top bar */}
-          <div className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80 backdrop-blur-sm backdrop-blur lg:left-72 xl:left-80 bg-zinc-900/[var(--bg-opacity-dark)]">
+          <div className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80 backdrop-blur-xs backdrop-blur-sm lg:left-72 xl:left-80 bg-zinc-900/[var(--bg-opacity-dark)]">
             <div className="absolute inset-x-0 top-full h-px transition bg-white/10"></div>
             <div className="hidden lg:block lg:max-w-md lg:flex-auto">
               <button
                 type="button"
-                className="hidden h-8 w-full items-center gap-2 rounded-full pl-2 pr-3 text-sm ring-1 transition bg-white/5 text-zinc-400 ring-inset ring-white/10 hover:ring-white/20 lg:flex outline-none"
+                data-testid="search-box"
+                className="hidden h-8 w-full items-center gap-2 rounded-full pl-2 pr-3 text-sm ring-1 transition bg-white/5 text-zinc-400 ring-inset ring-white/10 hover:ring-white/20 lg:flex outline-hidden"
                 onClick={toggleSearch}
               >
                 <MagnifyingGlassIcon
                   className="h-5 w-5 stroke-current"
                   aria-hidden="true"
                 />
-                Find something...
+                Find something…
                 <kbd className="ml-auto text-2xs text-zinc-500">
                   <kbd className="font-sans">⌘</kbd>
                   <kbd className="font-sans">K</kbd>
@@ -92,7 +95,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 type="button"
                 className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white/5"
                 aria-label="Toggle navigation"
-                onClick={toggleSidebar}
+                onClick={() => setSidebarOpen(!sidebarOpen)}
               >
                 {sidebarOpen ? (
                   <XMarkIcon
@@ -118,8 +121,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="contents lg:hidden">
                 <button
                   type="button"
-                  className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white/5 lg:hidden focus:[&:not(:focus-visible)]:outline-none"
-                  aria-label="Find something..."
+                  data-testid="search-box"
+                  className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white/5 lg:hidden focus:not-focus-visible:outline-hidden"
+                  aria-label="Find something…"
                   onClick={toggleSearch}
                 >
                   <MagnifyingGlassIcon
@@ -161,7 +165,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <article className="prose prose-sm max-w-none prose-invert">
             <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
               <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] [mask-image:linear-gradient(white,transparent)]">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#ea580c]/30 to-[#fdba74]/30 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] opacity-100">
+                <div className="absolute inset-0 bg-linear-to-r from-[#ea580c]/30 to-[#fdba74]/30 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] opacity-100">
                   <div
                     className="absolute inset-0 opacity-30"
                     style={{
@@ -172,40 +176,39 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </div>
               </div>
             </div>
-            <DndProvider backend={HTML5Backend}>{children}</DndProvider>
+            <noscript className="prose prose-sm max-w-none prose-invert">
+              <div
+                className="antialiased flex items-center p-4 mb-4 text-sm border rounded-lg bg-zinc-800 text-orange-500 border-orange-500"
+                role="alert"
+              >
+                <svg
+                  className="shrink-0 inline w-4 h-4 me-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span>
+                  JavaScript is required for full functionality of this website.
+                  Please enable JavaScript in your browser settings.
+                </span>
+              </div>
+            </noscript>
+            {children}
           </article>
         </main>
       </div>
 
-      <Search open={searchOpen} setOpen={setSearchOpen} />
-
-      <Transition.Root show={sidebarOpen} as={Fragment}>
-        <Dialog
-          onClose={setSidebarOpen}
-          as="div"
-          className="relative z-40 md:hidden"
-        >
-          <div className="fixed inset-0 z-40 flex top-14">
-            <Transition.Child
-              as={Fragment}
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="-translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition ease-in-out duration-300 transform"
-              leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
-            >
-              <Dialog.Panel className="relative flex w-full  flex-1 flex-col bg-zinc-900 pt-5 pb-4">
-                <div className="mt-5 h-0 flex-1 overflow-y-auto">
-                  <nav className="space-y-1 px-2">
-                    <Sidebar />
-                  </nav>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </Dialog>
-      </Transition.Root>
+      <ClientOnly>
+        {() => (
+          <>
+            <Search open={searchOpen} setOpen={setSearchOpen} />
+            <MobileSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
+          </>
+        )}
+      </ClientOnly>
     </div>
   );
 }

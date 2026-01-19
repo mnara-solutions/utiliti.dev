@@ -2,9 +2,12 @@ node_modules
 
 /.cache
 /build
+*.tsbuildinfo
 .env
 
 .wrangler
+.dev.vars
+.react-router/
 
 /playwright-report/
 /playwright/.cache/

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import Routes from "~/routes";
+import { Routes } from "../app/routes";
 
 test("Immediately expiring private note", async ({ page }) => {
   await page.goto(Routes.PRIVATE_NOTES);
@@ -10,7 +10,7 @@ test("Immediately expiring private note", async ({ page }) => {
   await expect(page.getByText("Popular Utilities")).toBeVisible();
   const note = page.getByPlaceholder("Write your note here…");
   await note.fill(noteText);
-  await page.getByText("Create").click();
+  await page.getByRole("button", { name: "Create" }).click();
 
   // ensure note was created successfully
   await expect(page.getByText("Success")).toBeVisible();
@@ -59,7 +59,7 @@ test("A note that is expiring in 1 hour", async ({ page }) => {
   const note = page.getByPlaceholder("Write your note here…");
   await note.fill(noteText);
   await page.locator("select").selectOption("1 hour from now");
-  await page.getByText("Create").click();
+  await page.getByRole("button", { name: "Create" }).click();
 
   // ensure note was created successfully
   await expect(page.getByText("Success")).toBeVisible();

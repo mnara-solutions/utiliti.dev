@@ -1,6 +1,5 @@
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
-import { memo } from "react";
 import { utilities } from "~/utilities";
 import { ClientOnly } from "~/components/client-only";
 
@@ -20,16 +19,14 @@ function shuffle<T>(arr: T[]) {
   return arr;
 }
 
-export default memo(PopularUtilities);
-
 /**
- * Since we are using a random() function to show popular utilities, remix fails to match server side
+ * Since we are using a random() function to show popular utilities, react router fails to match server side
  * rendered content with what the client does and throws a bunch of errors. We wrap it with <ClientOnly />
  * to only render fully on the client side.
  *
  * @constructor
  */
-function PopularUtilities() {
+export default function PopularUtilities() {
   return (
     <ClientOnly
       fallback={
@@ -69,6 +66,7 @@ interface PopularUtilityProps {
   readonly description: string;
   readonly path: string;
 }
+
 function PopularUtility({ name, description, path }: PopularUtilityProps) {
   return (
     <div>
@@ -82,6 +80,7 @@ function PopularUtility({ name, description, path }: PopularUtilityProps) {
         <Link
           className="inline-flex gap-0.5 justify-center items-center text-sm font-medium transition text-orange-500 hover:text-orange-600"
           to={path}
+          viewTransition={true}
         >
           Try
           <ArrowRightIcon

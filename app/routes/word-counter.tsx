@@ -2,17 +2,36 @@ import Box, { BoxContent, BoxInfo, BoxTitle } from "~/components/box";
 import Copy from "~/components/copy";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { throttle } from "~/utils/throttle";
 import ContentWrapper from "~/components/content-wrapper";
-import { Transition } from "@headlessui/react";
+
+// Lazy-loaded common words - cached after first load
+let commonWordsCache: Set<string> | null = null;
+let commonWordsPromise: Promise<Set<string>> | null = null;
+
+async function getCommonWords(): Promise<Set<string>> {
+  if (commonWordsCache) {
+    return commonWordsCache;
+  }
+
+  if (!commonWordsPromise) {
+    commonWordsPromise = import("~/data/common-words").then((mod) => {
+      commonWordsCache = mod.commonWords;
+      return commonWordsCache;
+    });
+  }
+
+  return commonWordsPromise;
+}
+import FadeIn from "~/components/fade-in";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/tooltip";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { useLocalStorage } from "~/hooks/use-local-storage";
 
 export const meta = metaHelper(
   utilities.wordCounter.name,
-  utilities.wordCounter.description,
+  "Count words, characters, sentences, and paragraphs instantly. Get reading time estimates and word frequency analysis—all processing happens privately in your browser.",
 );
 
 interface Info {
@@ -40,7 +59,7 @@ interface Info {
  *
  * @return  {Array}   The new array of code points.
  */
-function decode(input: string) {
+function decode(input: string): number[] {
   const output = [];
   let counter = 0;
   const length = input.length;
@@ -72,12 +91,14 @@ function decode(input: string) {
 function topWords(
   input: string,
   filterCommonWords: boolean,
+  commonWords: Set<string> | null,
 ): { word: string; count: number }[] {
   // unique words
   const words: string[] = input.toLowerCase().match(/[\w'-]+/g) || [];
-  const filteredWords = filterCommonWords
-    ? words.filter((it) => !commonWords.has(it))
-    : words;
+  const filteredWords =
+    filterCommonWords && commonWords
+      ? words.filter((it) => !commonWords.has(it))
+      : words;
 
   // count the words
   const countHash = filteredWords.reduce<Record<string, number>>((acc, it) => {
@@ -102,7 +123,11 @@ interface Options {
  * @param input
  * @param options
  */
-function count(input: string, { filterCommonWords = true }: Options): Info {
+function count(
+  input: string,
+  { filterCommonWords = true }: Options,
+  commonWords: Set<string> | null,
+): Info {
   const trimmed = input.trim();
   const cleaned = trimmed
     .replace(/\s-+/g, " ")
@@ -119,7 +144,7 @@ function count(input: string, { filterCommonWords = true }: Options): Info {
     words: (cleaned.replace(/['";:,.?¿\-!¡]+/g, "").match(/\S+/g) || []).length,
     characters: decode(cleaned.replace(/\s/g, "")).length,
     all: decode(input).length,
-    topWords: topWords(cleaned, filterCommonWords),
+    topWords: topWords(cleaned, filterCommonWords, commonWords),
     paragraphs: cleaned.match(/(\n\n?|^).+?(?=\n?\n?|$)/g)?.length || 0,
   };
 }
@@ -142,26 +167,33 @@ export default function WordCounter() {
     { filterCommonWords: true },
     true,
   );
-  const [info, setInfo] = useState<Info>(count(content, options));
-
-  const throttledSetContent = useMemo(
-    () => throttle(setContent, 1000),
-    [setContent],
+  const [commonWords, setCommonWords] = useState<Set<string> | null>(
+    commonWordsCache,
   );
+  const [info, setInfo] = useState<Info>(count(content, options, commonWords));
+
+  const throttledSetContent = throttle(setContent, 1000);
+
+  // Lazy load common words when filter option is enabled
+  useEffect(() => {
+    if (options.filterCommonWords && !commonWords) {
+      getCommonWords().then(setCommonWords);
+    }
+  }, [options.filterCommonWords, commonWords]);
 
   // text change handler
-  const onChange = useCallback(() => {
+  const onChange = () => {
     if (!inputRef.current) {
       return;
     }
 
     throttledSetContent(inputRef.current.value || "");
-  }, [throttledSetContent]);
+  };
 
   // whenever text changes (storage backend), re-calculate info
   useEffect(() => {
-    setInfo(count(content, options));
-  }, [content, options]);
+    setInfo(count(content, options, commonWords));
+  }, [content, options, commonWords]);
 
   // on highlight of text, only perform logic on selection
   useEffect(() => {
@@ -179,9 +211,15 @@ export default function WordCounter() {
       const hasSelection = start != end;
 
       if (hasSelection) {
-        setInfo(count(inputRef.current.value.substring(start, end), options));
+        setInfo(
+          count(
+            inputRef.current.value.substring(start, end),
+            options,
+            commonWords,
+          ),
+        );
       } else if (hadSelected.current) {
-        setInfo(count(inputRef?.current?.value || "", options));
+        setInfo(count(inputRef?.current?.value || "", options, commonWords));
       }
 
       hadSelected.current = hasSelection;
@@ -190,7 +228,7 @@ export default function WordCounter() {
     document.addEventListener("mouseup", handler);
 
     return () => document.removeEventListener("mouseup", handler);
-  }, [setInfo, options]);
+  }, [setInfo, options, commonWords]);
 
   return (
     <ContentWrapper>
@@ -205,7 +243,7 @@ export default function WordCounter() {
       <Box>
         <BoxTitle title="Input">
           <div>
-            <Copy content={inputRef.current?.value || ""} />
+            <Copy content={() => inputRef.current?.value || ""} />
           </div>
         </BoxTitle>
 
@@ -237,19 +275,13 @@ export default function WordCounter() {
         </BoxInfo>
       </Box>
 
-      <Transition
-        show={info.words !== 0}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        className="mt-6"
-      >
+      <FadeIn show={info.words !== 0} className="mt-6">
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-6">
           <div className="flex flex-col w-full border rounded-lg bg-zinc-700 border-zinc-600">
             <div className="px-3 py-2 border-b border-gray-600 font-bold">
               Detail
             </div>
-            <div className="flex flex-grow bg-zinc-800 not-prose rounded-b-lg">
+            <div className="flex grow bg-zinc-800 not-prose rounded-b-lg">
               <div className="w-full">
                 <table className="w-full">
                   <tbody>
@@ -283,7 +315,7 @@ export default function WordCounter() {
                               aria-hidden="true"
                             />
                           </TooltipTrigger>
-                          <TooltipContent className="inline-block px-2 py-1 text-sm font-medium text-white rounded-lg shadow-sm bg-zinc-700">
+                          <TooltipContent className="inline-block px-2 py-1 text-sm font-medium text-white rounded-lg shadow-xs bg-zinc-700">
                             Based on an average reading speed of 275 words per
                             minute.
                           </TooltipContent>
@@ -303,7 +335,7 @@ export default function WordCounter() {
                               aria-hidden="true"
                             />
                           </TooltipTrigger>
-                          <TooltipContent className="inline-block px-2 py-1 text-sm font-medium text-white rounded-lg shadow-sm bg-zinc-700">
+                          <TooltipContent className="inline-block px-2 py-1 text-sm font-medium text-white rounded-lg shadow-xs bg-zinc-700">
                             Based on an average speaking speed of 180 words per
                             minute.
                           </TooltipContent>
@@ -324,7 +356,7 @@ export default function WordCounter() {
                     id="filter-common-words"
                     type="checkbox"
                     checked={options.filterCommonWords}
-                    className="w-4 h-4 border rounded focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
+                    className="w-4 h-4 border rounded-sm focus:ring-3 bg-zinc-700 border-zinc-600 focus:ring-orange-600 ring-offset-zinc-800 focus:ring-offset-zinc-800 text-orange-600"
                     onChange={(e) => {
                       setOptions({
                         ...options,
@@ -364,684 +396,133 @@ export default function WordCounter() {
             </div>
           </div>
         </div>
-      </Transition>
+      </FadeIn>
+
+      <h2>Why Use Utiliti&apos;s Word Counter?</h2>
+      <p>
+        Writers, students, and professionals often work with sensitive
+        content—confidential reports, unpublished manuscripts, private
+        correspondence, or proprietary documentation. Many online word counters
+        send your text to their servers for analysis.
+      </p>
+      <p>
+        Utiliti&apos;s Word Counter runs{" "}
+        <strong>entirely in your browser</strong>. Your text never leaves your
+        device, making it safe to analyze:
+      </p>
+      <ul>
+        <li>
+          <strong>Confidential Documents</strong>: Count words in sensitive
+          business reports without exposure
+        </li>
+        <li>
+          <strong>Unpublished Work</strong>: Analyze drafts of articles, books,
+          or papers privately
+        </li>
+        <li>
+          <strong>Client Content</strong>: Work with client materials without
+          violating NDAs
+        </li>
+        <li>
+          <strong>Personal Writing</strong>: Keep journals and private notes
+          truly private
+        </li>
+      </ul>
+
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Comprehensive Counts</strong>: Get word, character, sentence,
+          and paragraph counts instantly
+        </li>
+        <li>
+          <strong>Reading Time</strong>: Estimated reading time based on 275
+          words per minute average
+        </li>
+        <li>
+          <strong>Speaking Time</strong>: Estimated speaking time based on 180
+          words per minute average
+        </li>
+        <li>
+          <strong>Top Words Analysis</strong>: See the most frequently used
+          words in your text
+        </li>
+        <li>
+          <strong>Selection Support</strong>: Highlight a portion of text to
+          analyze just that selection
+        </li>
+        <li>
+          <strong>Common Words Filter</strong>: Option to exclude common words
+          (the, and, is, etc.) from top words analysis
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Enter your text</strong>: Type or paste your content into the
+          input area
+        </li>
+        <li>
+          <strong>View statistics</strong>: Word, sentence, and character counts
+          appear immediately below the input
+        </li>
+        <li>
+          <strong>Analyze sections</strong>: Highlight any portion of text with
+          your mouse to see stats for just that selection
+        </li>
+        <li>
+          <strong>Review top words</strong>: Check the Top Words panel to see
+          your most frequently used terms
+        </li>
+      </ol>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Essay Requirements</strong>: Ensure your essay meets minimum
+          or maximum word count requirements
+        </li>
+        <li>
+          <strong>Social Media</strong>: Check character counts for Twitter/X
+          posts, LinkedIn updates, or meta descriptions
+        </li>
+        <li>
+          <strong>SEO Content</strong>: Verify article length meets SEO best
+          practices (typically 1,500+ words for in-depth content)
+        </li>
+        <li>
+          <strong>Speech Preparation</strong>: Use speaking time estimates to
+          prepare presentations of the right length
+        </li>
+        <li>
+          <strong>Writing Analysis</strong>: Identify overused words to improve
+          your writing variety
+        </li>
+      </ul>
+
+      <h2>Word Count Guidelines</h2>
+      <p>Different content types have different ideal lengths:</p>
+      <ul>
+        <li>
+          <strong>Twitter/X Post</strong>: 280 characters maximum
+        </li>
+        <li>
+          <strong>Meta Description</strong>: 150-160 characters
+        </li>
+        <li>
+          <strong>Blog Post</strong>: 1,000-2,500 words for SEO
+        </li>
+        <li>
+          <strong>Short Story</strong>: 1,000-7,500 words
+        </li>
+        <li>
+          <strong>Novella</strong>: 17,500-40,000 words
+        </li>
+        <li>
+          <strong>Novel</strong>: 50,000-100,000 words
+        </li>
+      </ul>
     </ContentWrapper>
   );
 }
-
-const commonWords = new Set([
-  "&",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "a",
-  "aaliyah",
-  "aaron",
-  "abby",
-  "abel",
-  "abigail",
-  "adalyn",
-  "adalynn",
-  "adam",
-  "addison",
-  "adeline",
-  "adelyn",
-  "adrian",
-  "adriana",
-  "ahmad",
-  "aidan",
-  "aiden",
-  "aj ",
-  "alaina",
-  "alana",
-  "alayna",
-  "alejandro",
-  "alex",
-  "alexa",
-  "alexander",
-  "alexandra",
-  "alexandria",
-  "alexis",
-  "ali",
-  "alice",
-  "alina",
-  "alivia",
-  "aliyah",
-  "allie",
-  "allison",
-  "alyssa",
-  "am",
-  "amaya",
-  "amelia",
-  "amir",
-  "an",
-  "ana",
-  "anastasia",
-  "anaya",
-  "and",
-  "andrea",
-  "andrew",
-  "angel",
-  "angelina",
-  "anna",
-  "annabelle",
-  "anthony",
-  "antonio",
-  "arabella",
-  "archer",
-  "are",
-  "aren't",
-  "aria",
-  "ariana",
-  "arianna",
-  "ariel",
-  "arthur",
-  "arya",
-  "as",
-  "asher",
-  "ashton",
-  "at",
-  "athena",
-  "aubree",
-  "aubrey",
-  "audrey",
-  "august",
-  "aurora",
-  "austin",
-  "autumn",
-  "ava",
-  "avery",
-  "axel",
-  "ayden",
-  "ayla",
-  "b",
-  "bailey",
-  "be",
-  "beau",
-  "beckett",
-  "bella",
-  "ben",
-  "benjamin",
-  "bennett",
-  "bentley",
-  "blake",
-  "bradley",
-  "brady",
-  "brandon",
-  "brantley",
-  "braxton",
-  "brayden",
-  "brian",
-  "brianna",
-  "brielle",
-  "brody",
-  "brooke",
-  "brooklyn",
-  "brooklynn",
-  "brooks",
-  "bryce",
-  "brynn",
-  "bryson",
-  "but",
-  "by",
-  "c",
-  "caden",
-  "caiden",
-  "caleb",
-  "callie",
-  "calvin",
-  "camden",
-  "cameron",
-  "camila",
-  "camille",
-  "can",
-  "can't",
-  "cannot",
-  "cant",
-  "carlos",
-  "caroline",
-  "carson",
-  "carter",
-  "cash",
-  "cayden",
-  "cecilia",
-  "charles",
-  "charlie",
-  "charlotte",
-  "chase",
-  "chloe",
-  "christian",
-  "christopher",
-  "claire",
-  "clara",
-  "cole",
-  "colin",
-  "colton",
-  "conner",
-  "connor",
-  "cooper",
-  "cora",
-  "corbin",
-  "d",
-  "daisy",
-  "damian",
-  "damien",
-  "daniel",
-  "dante",
-  "david",
-  "dean",
-  "declan",
-  "delaney",
-  "delilah",
-  "derek",
-  "did",
-  "didn't",
-  "diego",
-  "do",
-  "does",
-  "doesn't",
-  "doing",
-  "dominic",
-  "don't",
-  "done",
-  "drew",
-  "dylan",
-  "e",
-  "easton",
-  "eden",
-  "edward",
-  "eleanor",
-  "elena",
-  "eli",
-  "eliana",
-  "elias",
-  "elijah",
-  "elise",
-  "eliza",
-  "elizabeth",
-  "ella",
-  "ellie",
-  "elliot",
-  "elliott",
-  "eloise",
-  "emerson",
-  "emery",
-  "emilia",
-  "emily",
-  "emma",
-  "emmanuel",
-  "emmett",
-  "enzo",
-  "eric",
-  "erin",
-  "etc",
-  "ethan",
-  "eva",
-  "evan",
-  "evangeline",
-  "evelyn",
-  "everett",
-  "everly",
-  "evie",
-  "ex",
-  "ezekiel",
-  "ezra",
-  "f",
-  "faith",
-  "felix",
-  "finley",
-  "finn",
-  "fiona",
-  "for",
-  "from",
-  "g",
-  "gabriel",
-  "gabriela",
-  "gabriella",
-  "gabrielle",
-  "gage",
-  "garrett",
-  "gavin",
-  "genesis",
-  "genevieve",
-  "george",
-  "georgia",
-  "gia",
-  "gianna",
-  "giovanni",
-  "got",
-  "grace",
-  "gracie",
-  "graham",
-  "grant",
-  "grayson",
-  "greyson",
-  "griffin",
-  "h",
-  "had",
-  "hadley",
-  "hadn't",
-  "hailey",
-  "hannah",
-  "harmony",
-  "harper",
-  "harrison",
-  "has",
-  "hasn't",
-  "have",
-  "haven't",
-  "having",
-  "hayden",
-  "hazel",
-  "he",
-  "he'd",
-  "he'll",
-  "he's",
-  "helena",
-  "henry",
-  "her",
-  "hers",
-  "herself",
-  "him",
-  "himself",
-  "his",
-  "hudson",
-  "hunter",
-  "i",
-  "i'd",
-  "i'll",
-  "i'm",
-  "i've",
-  "ian",
-  "if",
-  "in",
-  "into",
-  "iris",
-  "is",
-  "isaac",
-  "isabel",
-  "isabella",
-  "isabelle",
-  "isaiah",
-  "isla",
-  "isn't",
-  "it",
-  "it'd",
-  "it'll",
-  "it's",
-  "its",
-  "itself",
-  "ivan",
-  "ivy",
-  "j",
-  "jace",
-  "jack",
-  "jackson",
-  "jacob",
-  "jade",
-  "jaden",
-  "jake",
-  "james",
-  "jameson",
-  "jase",
-  "jasmine",
-  "jason",
-  "jasper",
-  "jax",
-  "jaxon",
-  "jaxson",
-  "jayce",
-  "jayden",
-  "jeremiah",
-  "jeremy",
-  "jesse",
-  "jocelyn",
-  "joel",
-  "joey",
-  "john",
-  "jonah",
-  "jonathan",
-  "jordan",
-  "jordyn",
-  "jose",
-  "joseph",
-  "josephine",
-  "joshua",
-  "josiah",
-  "josie",
-  "juan",
-  "judah",
-  "jude",
-  "julia",
-  "julian",
-  "juliana",
-  "julianna",
-  "juliette",
-  "justin",
-  "kaden",
-  "kai",
-  "kaiden",
-  "kaitlyn",
-  "kaleb",
-  "karter",
-  "kate",
-  "katelyn",
-  "katherine",
-  "katie",
-  "kayden",
-  "kayla",
-  "kaylee",
-  "keira",
-  "kendall",
-  "kennedy",
-  "kenzie",
-  "kevin",
-  "khloe",
-  "kingston",
-  "kinley",
-  "kinsley",
-  "kyle",
-  "kylie",
-  "laila",
-  "lana",
-  "landon",
-  "lara",
-  "laura",
-  "lauren",
-  "layla",
-  "leah",
-  "leila",
-  "leilani",
-  "lena",
-  "leo",
-  "leon",
-  "leonardo",
-  "levi",
-  "lexi",
-  "liam",
-  "lila",
-  "liliana",
-  "lillian",
-  "lilly",
-  "lily",
-  "lincoln",
-  "logan",
-  "lola",
-  "london",
-  "londyn",
-  "lorenzo",
-  "luca",
-  "lucas",
-  "lucia",
-  "lucy",
-  "luis",
-  "lukas",
-  "luke",
-  "luna",
-  "lydia",
-  "lyla",
-  "mackenzie",
-  "maddox",
-  "madeline",
-  "madelyn",
-  "madison",
-  "maggie",
-  "makayla",
-  "makenzie",
-  "malachi",
-  "marcus",
-  "maria",
-  "mariah",
-  "mark",
-  "marley",
-  "mary",
-  "maryam",
-  "mason",
-  "mateo",
-  "matteo",
-  "matthew",
-  "maverick",
-  "max",
-  "maximus",
-  "maxwell",
-  "maya",
-  "mckenna",
-  "mckenzie",
-  "me",
-  "melanie",
-  "melody",
-  "mia",
-  "micah",
-  "michael",
-  "miguel",
-  "mikayla",
-  "mila",
-  "miles",
-  "milo",
-  "mohammed",
-  "molly",
-  "morgan",
-  "mr",
-  "mrs",
-  "muhammad",
-  "my",
-  "mya",
-  "myles",
-  "myself",
-  "naomi",
-  "natalia",
-  "natalie",
-  "nathan",
-  "nathaniel",
-  "nevaeh",
-  "nicholas",
-  "nicolas",
-  "nicole",
-  "nina",
-  "no",
-  "noah",
-  "noelle",
-  "nolan",
-  "nora",
-  "norah",
-  "not",
-  "nova",
-  "nur",
-  "of",
-  "off",
-  "oh",
-  "ok",
-  "okay",
-  "olive",
-  "oliver",
-  "olivia",
-  "omar",
-  "on",
-  "or",
-  "oscar",
-  "our",
-  "ours",
-  "ourselves",
-  "out",
-  "owen",
-  "paige",
-  "paisley",
-  "parker",
-  "patrick",
-  "paul",
-  "paxton",
-  "payton",
-  "penelope",
-  "per",
-  "peter",
-  "peyton",
-  "phoebe",
-  "piper",
-  "presley",
-  "preston",
-  "quinn",
-  "rachel",
-  "raelynn",
-  "rafael",
-  "reagan",
-  "rebecca",
-  "reese",
-  "reid",
-  "richard",
-  "riley",
-  "river",
-  "robert",
-  "roman",
-  "rose",
-  "rowan",
-  "ruby",
-  "ryan",
-  "ryder",
-  "ryker",
-  "rylan",
-  "rylee",
-  "ryleigh",
-  "sadie",
-  "said",
-  "sam",
-  "samantha",
-  "samuel",
-  "santiago",
-  "sara",
-  "sarah",
-  "savannah",
-  "sawyer",
-  "scarlett",
-  "sean",
-  "sebastian",
-  "serenity",
-  "seth",
-  "she",
-  "she'd",
-  "she'll",
-  "she's",
-  "sienna",
-  "silas",
-  "simon",
-  "skylar",
-  "so",
-  "sofia",
-  "sophia",
-  "sophie",
-  "spencer",
-  "stella",
-  "summer",
-  "sydney",
-  "talia",
-  "tanner",
-  "taylor",
-  "teagan",
-  "tessa",
-  "than",
-  "that",
-  "that'll",
-  "that's",
-  "that've",
-  "thats",
-  "the",
-  "their",
-  "theirs",
-  "them",
-  "themselves",
-  "then",
-  "theo",
-  "theodore",
-  "there",
-  "there'd",
-  "there'll",
-  "there's",
-  "these",
-  "they",
-  "they'd",
-  "they'll",
-  "they're",
-  "they've",
-  "this",
-  "thomas",
-  "those",
-  "timothy",
-  "to",
-  "too",
-  "trinity",
-  "tristan",
-  "tucker",
-  "tyler",
-  "up",
-  "us",
-  "use",
-  "used",
-  "uses",
-  "valentina",
-  "valerie",
-  "victor",
-  "victoria",
-  "vincent",
-  "violet",
-  "vivian",
-  "vivienne",
-  "was",
-  "wasn't",
-  "way",
-  "we",
-  "we'd",
-  "we'll",
-  "we're",
-  "we've",
-  "well",
-  "went",
-  "were",
-  "weren't",
-  "wesley",
-  "weston",
-  "what",
-  "what's",
-  "where",
-  "where's",
-  "which",
-  "who",
-  "who'd",
-  "who'll",
-  "who's",
-  "whose",
-  "why",
-  "will",
-  "william",
-  "willow",
-  "with",
-  "won't",
-  "would",
-  "wouldn't",
-  "wyatt",
-  "xander",
-  "xavier",
-  "yes",
-  "yet",
-  "you",
-  "you'd",
-  "you'll",
-  "you're",
-  "you've",
-  "your",
-  "yours",
-  "yourself",
-  "yourselves",
-  "zachary",
-  "zander",
-  "zane",
-  "zara",
-  "zayden",
-  "zion",
-  "zoe",
-  "zoey",
-]);

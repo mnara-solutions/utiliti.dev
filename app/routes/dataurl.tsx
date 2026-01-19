@@ -1,17 +1,16 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
-import { useCallback, useMemo, useState } from "react";
+import { useState, useCallback } from "react";
 import Dropdown from "~/components/dropdown";
 import Utiliti from "~/components/utiliti";
 import ReadFile from "~/components/read-file";
 import { convertFileToDataUrl } from "~/utils/convert-image-file";
-import { NativeTypes } from "react-dnd-html5-backend";
-import { useDrop } from "react-dnd";
+import { useFileDrop } from "~/hooks/use-file-drop";
 
 export const meta = metaHelper(
   utilities.dataurl.name,
-  utilities.dataurl.description,
+  "Display and decode data URLs privately. Convert images to Base64 data URLs entirely in your browser—your files never leave your device.",
 );
 
 enum Action {
@@ -38,16 +37,19 @@ function DroppableInput({
   readonly format: string;
   readonly quality: string;
 }) {
-  const [{ canDrop, isOver }, drop] = useDrop(() => ({
-    accept: [NativeTypes.FILE],
-    async drop(item: { files: File[] }) {
-      setInput(await convertFileToDataUrl(item.files[0], format, quality));
+  const handleDrop = useCallback(
+    async (files: File[]) => {
+      if (files.length > 0) {
+        setInput(await convertFileToDataUrl(files[0], format, quality));
+      }
     },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  }));
+    [setInput, format, quality],
+  );
+
+  const { ref: drop, isOver } = useFileDrop({
+    onDrop: handleDrop,
+    accept: "image/*",
+  });
 
   return (
     <textarea
@@ -55,7 +57,7 @@ function DroppableInput({
       rows={10}
       className={
         "block px-2 py-2 font-mono w-full lg:text-sm bg-zinc-800 focus:ring-0 text-white placeholder-zinc-400 " +
-        (isOver && canDrop
+        (isOver
           ? "border-green-700 focus:border-green-700"
           : "border-zinc-800 focus:border-zinc-800")
       }
@@ -71,153 +73,237 @@ function DroppableInput({
 export default function DataUrl() {
   const [format, setFormat] = useState("jpg");
   const [quality, setQuality] = useState("0");
-  const actions = useMemo(
-    () => ({
-      [Action.DISPLAY]: async (input: string) => {
-        if (!input || input.substring(0, 5) === "data:") {
-          return input;
+  const actions = {
+    [Action.DISPLAY]: async (input: string) => {
+      if (!input || input.substring(0, 5) === "data:") {
+        return input;
+      }
+
+      const fileTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/svg+xml",
+      ];
+
+      for (let i = 0; i < fileTypes.length; i++) {
+        if (await isImage(input, fileTypes[i])) {
+          return `data:${fileTypes[i]};base64,${input}`;
         }
+      }
 
-        const fileTypes = [
-          "image/jpeg",
-          "image/png",
-          "image/webp",
-          "image/svg+xml",
-        ];
+      return Promise.reject({
+        message: "Does not appear to be a valid Data URL.",
+      });
+    },
+  };
 
-        for (let i = 0; i < fileTypes.length; i++) {
-          if (await isImage(input, fileTypes[i])) {
-            return `data:${fileTypes[i]};base64,${input}`;
-          }
-        }
+  const renderInput = (input: string, setInput: (v: string) => void) => {
+    return (
+      <DroppableInput
+        input={input}
+        setInput={setInput}
+        format={format}
+        quality={quality}
+      />
+    );
+  };
 
-        return Promise.reject({
-          message: "Does not appear to be a valid Data URL.",
-        });
-      },
-    }),
-    [],
-  );
+  const renderOutput = (a: string, input: string, output: string) => {
+    return (
+      <Box>
+        <BoxTitle title="Output"></BoxTitle>
+        <BoxContent
+          isLast={true}
+          className="max-h-full flex justify-center py-4"
+        >
+          <img className="max-w-full" alt="Output" src={output} />
+        </BoxContent>
+      </Box>
+    );
+  };
 
-  const renderInput = useCallback(
-    (input: string, setInput: (v: string) => void) => {
-      return (
-        <DroppableInput
-          input={input}
-          setInput={setInput}
-          format={format}
-          quality={quality}
+  const renderReadFile = (setInput: (value: string) => void) => {
+    return (
+      <div className="flex gap-x-2">
+        <Dropdown
+          onOptionChange={setFormat}
+          options={[
+            { id: "jpg", label: "Jpeg" },
+            { id: "png", label: "Png" },
+            { id: "webp", label: "Webp" },
+            { id: "svg", label: "Svg" },
+          ]}
+          defaultValue={format}
         />
-      );
-    },
-    [format, quality],
-  );
 
-  const renderOutput = useCallback(
-    (a: string, input: string, output: string) => {
-      return (
-        <Box>
-          <BoxTitle title="Output"></BoxTitle>
-          <BoxContent
-            isLast={true}
-            className="max-h-full flex justify-center py-4"
-          >
-            <img className="max-w-full" alt="Output" src={output} />
-          </BoxContent>
-        </Box>
-      );
-    },
-    [],
-  );
-
-  const renderReadFile = useCallback(
-    (setInput: (value: string) => void) => {
-      return (
-        <div className="flex gap-x-2">
+        {format !== "png" && format !== "svg" ? (
           <Dropdown
-            onOptionChange={setFormat}
+            onOptionChange={setQuality}
             options={[
-              { id: "jpg", label: "Jpeg" },
-              { id: "png", label: "Png" },
-              { id: "webp", label: "Webp" },
-              { id: "svg", label: "Svg" },
+              { id: "0", label: "Default" },
+              { id: "1", label: "Full (100%)" },
+              { id: ".9", label: "Very High (90%)" },
+              { id: ".8", label: "High (80%)" },
+              { id: ".75", label: "Good (75%)" },
+              { id: ".6", label: "Medium (60%)" },
+              { id: ".5", label: "Low (50%)" },
+              { id: ".25", label: "Poor (25%)" },
             ]}
-            defaultValue={format}
+            defaultValue={quality.toString()}
           />
+        ) : null}
 
-          {format !== "png" && format !== "svg" ? (
-            <Dropdown
-              onOptionChange={setQuality}
-              options={[
-                { id: "0", label: "Default" },
-                { id: "1", label: "Full (100%)" },
-                { id: ".9", label: "Very High (90%)" },
-                { id: ".8", label: "High (80%)" },
-                { id: ".75", label: "Good (75%)" },
-                { id: ".6", label: "Medium (60%)" },
-                { id: ".5", label: "Low (50%)" },
-                { id: ".25", label: "Poor (25%)" },
-              ]}
-              defaultValue={quality.toString()}
-            />
-          ) : null}
+        <ReadFile
+          accept={format === "svg" ? "image/svg+xml" : "image/*"}
+          onLoad={async (files) =>
+            setInput(await convertFileToDataUrl(files[0], format, quality))
+          }
+        />
+      </div>
+    );
+  };
 
-          <ReadFile
-            accept={format === "svg" ? "image/svg+xml" : "image/*"}
-            onLoad={async (files) =>
-              setInput(await convertFileToDataUrl(files[0], format, quality))
-            }
-          />
-        </div>
-      );
-    },
-    [format, quality],
-  );
+  const renderExplanation = () => (
+    <>
+      <h2>Why Use Utiliti&apos;s Data URL Tool?</h2>
+      <p>
+        Data URLs often contain embedded images, documents, or other files that
+        may be sensitive—profile pictures, scanned documents, or proprietary
+        graphics. Many online data URL tools upload your files to their servers
+        for processing.
+      </p>
+      <p>
+        Utiliti&apos;s Data URL viewer runs{" "}
+        <strong>entirely in your browser</strong>. Your files and data URLs
+        never leave your device, making it safe to work with:
+      </p>
+      <ul>
+        <li>
+          <strong>Embedded Images</strong>: Preview Base64-encoded images from
+          emails or HTML files
+        </li>
+        <li>
+          <strong>API Responses</strong>: View images returned as data URLs from
+          APIs
+        </li>
+        <li>
+          <strong>Sensitive Documents</strong>: Decode data URLs containing
+          private files
+        </li>
+        <li>
+          <strong>Debug Assets</strong>: Inspect embedded resources in web
+          applications
+        </li>
+      </ul>
 
-  const renderExplanation = useCallback(
-    () => (
-      <>
-        <h2>What is a Data URL?</h2>
-        <p>
-          A data URL (Uniform Resource Locator) is a type of URI (Uniform
-          Resource Identifier) scheme that allows you to include data in-line in
-          web pages as if they were external resources. Instead of referencing
-          an external file, the data URL allows you to embed the actual data
-          directly within the URL itself.
-        </p>
-        <p>The general syntax of a data URL looks like this:</p>
-        <pre>data:[&#x3C;mediatype&#x3E;][;base64],&#x3C;data&#x3E;</pre>
-        <p>Here&apos;s a breakdown of the components:</p>
-        <ul>
-          <li>
-            <code>&#x3C;mediatype&#x3E;</code>: This is an optional parameter
-            that specifies the MIME type of the data. For example,
-            &quot;text/plain&quot;, &quot;image/jpeg&quot;,
-            &quot;application/pdf&quot;, etc.
-          </li>
-          <li>
-            <code>;base64</code>: This is an optional parameter indicating that
-            the data is Base64-encoded. If present, it means that the data
-            portion is encoded in Base64 format.
-          </li>
-          <li>
-            <code>&#x3C;data&#x3E;</code>: This is the actual data that you want
-            to include. If ;base64 is used, this data is encoded in Base64;
-            otherwise, it is in plain text.
-          </li>
-        </ul>
-        <p>
-          Data URLs are commonly used for small amounts of data, such as small
-          images, CSS stylesheets, or even small scripts. They can be useful in
-          situations where external file references are impractical or when you
-          want to reduce the number of HTTP requests for external resources,
-          potentially improving page load performance. However, they may not be
-          suitable for large files due to increased URL length and other
-          considerations.
-        </p>
-      </>
-    ),
-    [],
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Auto-detection</strong>: Automatically detects the image type
+          even if the data URL prefix is missing
+        </li>
+        <li>
+          <strong>Multiple Formats</strong>: Supports JPEG, PNG, WebP, and SVG
+          images
+        </li>
+        <li>
+          <strong>Quality Control</strong>: Adjust compression quality when
+          converting images to data URLs
+        </li>
+        <li>
+          <strong>Drag & Drop</strong>: Simply drag an image file onto the input
+          area to convert it
+        </li>
+        <li>
+          <strong>Instant Preview</strong>: See the decoded image immediately
+          after pasting
+        </li>
+      </ul>
+
+      <h2>How to Use</h2>
+      <ol>
+        <li>
+          <strong>Paste a data URL</strong>: Enter a complete data URL or just
+          the Base64-encoded string
+        </li>
+        <li>
+          <strong>Or upload a file</strong>: Drag and drop an image or use the
+          file picker to convert an image to a data URL
+        </li>
+        <li>
+          <strong>Choose format & quality</strong>: Select output format and
+          compression level for conversions
+        </li>
+        <li>
+          <strong>View the result</strong>: Click Display to see the decoded
+          image
+        </li>
+      </ol>
+
+      <h2>What is a Data URL?</h2>
+      <p>
+        A data URL (Uniform Resource Locator) is a type of URI (Uniform Resource
+        Identifier) scheme that allows you to include data in-line in web pages
+        as if they were external resources. Instead of referencing an external
+        file, the data URL allows you to embed the actual data directly within
+        the URL itself.
+      </p>
+      <p>The general syntax of a data URL looks like this:</p>
+      <pre>data:[&#x3C;mediatype&#x3E;][;base64],&#x3C;data&#x3E;</pre>
+      <p>Here&apos;s a breakdown of the components:</p>
+      <ul>
+        <li>
+          <code>&#x3C;mediatype&#x3E;</code>: This is an optional parameter that
+          specifies the MIME type of the data. For example,
+          &quot;text/plain&quot;, &quot;image/jpeg&quot;,
+          &quot;application/pdf&quot;, etc.
+        </li>
+        <li>
+          <code>;base64</code>: This is an optional parameter indicating that
+          the data is Base64-encoded. If present, it means that the data portion
+          is encoded in Base64 format.
+        </li>
+        <li>
+          <code>&#x3C;data&#x3E;</code>: This is the actual data that you want
+          to include. If ;base64 is used, this data is encoded in Base64;
+          otherwise, it is in plain text.
+        </li>
+      </ul>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li>
+          <strong>Email Debugging</strong>: View embedded images from HTML
+          emails that use data URLs
+        </li>
+        <li>
+          <strong>CSS Development</strong>: Create data URLs for small icons to
+          embed directly in stylesheets
+        </li>
+        <li>
+          <strong>Single-File HTML</strong>: Generate data URLs for creating
+          self-contained HTML documents
+        </li>
+        <li>
+          <strong>API Testing</strong>: Inspect image data returned by APIs in
+          Base64 format
+        </li>
+        <li>
+          <strong>Performance Optimization</strong>: Convert small images to
+          data URLs to reduce HTTP requests
+        </li>
+      </ul>
+
+      <h2>Data URL Size Considerations</h2>
+      <p>
+        While data URLs are convenient, they increase the size of your HTML/CSS
+        by approximately 33% compared to the original binary file (due to Base64
+        encoding overhead). They&apos;re best suited for small files under 10KB.
+        For larger images, traditional file references with proper caching are
+        usually more efficient.
+      </p>
+    </>
   );
 
   return (

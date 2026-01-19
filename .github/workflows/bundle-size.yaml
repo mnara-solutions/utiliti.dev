@@ -1,0 +1,56 @@
+name: Bundle Size
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  bundle-size:
+    name: Bundle Size
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Extract client bundle size
+        id: client_bundle_size
+        run: |
+          # Get JS-only size (excludes fonts, CSS, etc.)
+          JS_SIZE=$(find build/client/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
+          JS_GZIP=$(find build/client/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
+          echo "size=$JS_SIZE" >> $GITHUB_OUTPUT
+          echo "gzip=$JS_GZIP" >> $GITHUB_OUTPUT
+
+      - name: Extract worker bundle size
+        id: worker_bundle_size
+        run: |
+          # Get JS-only size for server bundle
+          JS_SIZE=$(find build/server/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
+          JS_GZIP=$(find build/server/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
+          echo "size=$JS_SIZE" >> $GITHUB_OUTPUT
+          echo "gzip=$JS_GZIP" >> $GITHUB_OUTPUT
+
+      - name: Comment bundle size
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: bundle-size
+          message: |
+            ## Bundle Size Report
+            | Bundle | Size | Gzipped |
+            |--------|------|---------|
+            | Client (JS) | ${{ steps.client_bundle_size.outputs.size }} KB | ${{ steps.client_bundle_size.outputs.gzip }} KB |
+            | Worker (JS) | ${{ steps.worker_bundle_size.outputs.size }} KB | ${{ steps.worker_bundle_size.outputs.gzip }} KB |

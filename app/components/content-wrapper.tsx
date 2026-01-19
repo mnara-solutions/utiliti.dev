@@ -1,13 +1,15 @@
-import type { PropsWithChildren } from "react";
+import type { ReactNode } from "react";
 import PopularUtilities from "~/components/popular-utilities";
-import GoogleAd from "~/components/google-ad";
 
-export default function ContentWrapper(props: PropsWithChildren<object>) {
+interface Props {
+  readonly children: ReactNode;
+}
+
+export default function ContentWrapper({ children }: Props) {
   return (
     <>
-      {props.children}
+      {children}
       <PopularUtilities />
-      <GoogleAd />
     </>
   );
 }
