@@ -94,9 +94,9 @@ export default function Utiliti<T>({
 
       <Transition
         show={output != null || error != null}
-        enter="transition-transform duration-300"
-        enterFrom="translate-y-2"
-        enterTo="translate-y-0"
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
         className="mt-6"
         as="div"
       >
