@@ -2,7 +2,9 @@ import SimpleOutput from "~/components/simple-output";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Utiliti from "~/components/utiliti";
-import JsonViewer from "~/components/json-viewer";
+import { lazy } from "react";
+
+const JsonViewer = lazy(() => import("~/components/json-viewer"));
 
 export const meta = metaHelper(
   utilities.url.name,
