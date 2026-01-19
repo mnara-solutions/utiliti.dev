@@ -3,7 +3,6 @@ import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { Routes } from "~/routes";
 import Slider from "~/components/slider";
 import Checkbox from "~/components/checkbox";
 import ReadOnlyTextArea from "~/components/read-only-textarea";
@@ -11,11 +10,7 @@ import Copy from "~/components/copy";
 import Button from "~/components/button";
 import NumberInput from "~/components/number-input";
 
-export const meta = metaHelper(
-  utilities.password.name,
-  "Generate cryptographically secure passwords instantly. Client-side generation using Web Crypto API means your passwords never leave your browser.",
-  Routes.PASSWORD_GENERATOR,
-);
+export const meta = metaHelper(utilities.password);
 
 // Currently not necessary, but if you want to add more potential for password (utf-8 > 255) characters, you can use this function
 function getCryptoGraphicallyRandomIntLargerMax(max: number) {

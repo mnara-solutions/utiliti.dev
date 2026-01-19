@@ -1,6 +1,5 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { Routes } from "~/routes";
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import { useState, useCallback } from "react";
 import Dropdown from "~/components/dropdown";
@@ -9,11 +8,7 @@ import ReadFile from "~/components/read-file";
 import { convertFileToDataUrl } from "~/utils/convert-image-file";
 import { useFileDrop } from "~/hooks/use-file-drop";
 
-export const meta = metaHelper(
-  utilities.dataurl.name,
-  "Display and decode data URLs privately. Convert images to Base64 data URLs entirely in your browser—your files never leave your device.",
-  Routes.DATAURL,
-);
+export const meta = metaHelper(utilities.dataurl);
 
 enum Action {
   DISPLAY = "Display",

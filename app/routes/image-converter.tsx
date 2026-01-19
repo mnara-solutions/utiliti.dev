@@ -1,6 +1,5 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { Routes } from "~/routes";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import { useEffect, useState } from "react";
 import { createZip } from "~/utils/jszip.client";
@@ -19,11 +18,7 @@ import {
 import { cn } from "~/common";
 import { useFileDrop } from "~/hooks/use-file-drop";
 
-export const meta = metaHelper(
-  utilities.imageConverter.name,
-  "Convert images between JPG, PNG, and WebP formats privately. All processing happens in your browser—your images never leave your device.",
-  Routes.IMAGE_CONVERTER,
-);
+export const meta = metaHelper(utilities.imageConverter);
 
 const formatImage: { [format: string]: string } = {
   jpg: "image/jpeg",

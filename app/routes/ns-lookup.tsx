@@ -1,7 +1,6 @@
 import ContentWrapper from "~/components/content-wrapper";
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { Routes } from "~/routes";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/button";
 import type { ActionFunction } from "react-router";
@@ -9,11 +8,7 @@ import { Form, useActionData, useNavigation } from "react-router";
 import FadeIn from "~/components/fade-in";
 import Copy from "~/components/copy";
 
-export const meta = metaHelper(
-  utilities.nsLookup.name,
-  "Look up DNS records for any domain. Query A, AAAA, MX, TXT, NS, CNAME, and SPF records using Cloudflare's DNS-over-HTTPS API.",
-  Routes.NS_LOOKUP,
-);
+export const meta = metaHelper(utilities.nsLookup);
 
 type Response = [
   string,

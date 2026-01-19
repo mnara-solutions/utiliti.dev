@@ -1,6 +1,6 @@
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-import { Routes } from "~/routes";
+
 import Box, { BoxContent, BoxOptions, BoxTitle } from "~/components/box";
 import { useEffect, useRef, useState } from "react";
 import ContentWrapper from "~/components/content-wrapper";
@@ -11,11 +11,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import FadeIn from "~/components/fade-in";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 
-export const meta = metaHelper(
-  utilities.unixTimestamp.name,
-  "Convert Unix timestamps to human-readable dates and vice versa. Supports seconds, milliseconds, microseconds, and nanoseconds—all processing happens locally.",
-  Routes.UNIX_TIMESTAMP,
-);
+export const meta = metaHelper(utilities.unixTimestamp);
 
 /**
  * Extracted as a separate component to minimize re-rendering the whole route.
