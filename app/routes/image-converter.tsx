@@ -2,6 +2,7 @@ import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
 import Box, { BoxButtons, BoxContent, BoxTitle } from "~/components/box";
 import { useEffect, useState } from "react";
+import { createZip } from "~/utils/jszip.client";
 import ContentWrapper from "~/components/content-wrapper";
 import ReadFile from "~/components/read-file";
 import Button from "~/components/button";
@@ -65,9 +66,7 @@ export default function ImageConverter() {
   }, [files]);
 
   const onDownloadZip = async () => {
-    // Lazy load JSZip only when needed
-    const JSZip = (await import("jszip")).default;
-    const zip = new JSZip();
+    const zip = await createZip();
 
     for (let i = 0; i < files.length; i++) {
       const f = files[i];

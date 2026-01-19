@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Utiliti from "~/components/utiliti";
-import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
+import { QRCodeCanvas, QRCodeSVG } from "~/components/qr-code.client";
 import Box, { BoxContent, BoxOptions, BoxTitle } from "~/components/box";
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import IconButton from "~/components/icon-button";

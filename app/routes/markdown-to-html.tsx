@@ -8,6 +8,7 @@ import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ShadowDom from "~/components/shadow-dom";
 import ReadFile from "~/components/read-file";
 import { setTextInputFromFiles } from "~/utils/convert-text-file";
+import { convertMarkdownToHtml, minimizeHtml } from "~/utils/markdown.client";
 
 export const meta = metaHelper(
   utilities.markdownToHtml.name,
@@ -20,26 +21,12 @@ enum Action {
   MINIFY = "Minify",
 }
 
-async function convert(markdown: string): Promise<string> {
-  const [{ marked }, DOMPurify] = await Promise.all([
-    import("marked"),
-    import("dompurify").then((m) => m.default),
-  ]);
-
-  const html = await marked(markdown);
-
-  return DOMPurify.sanitize(html).toString();
-}
-
-function minimize(html: string): string {
-  return html.replace(/\s\s+/g, " ").replace(/[\r\n]/g, "");
-}
-
 export default function MarkdownToHtml() {
   const actions = {
-    [Action.PREVIEW]: convert,
-    [Action.HTML]: convert,
-    [Action.MINIFY]: async (input: string) => minimize(await convert(input)),
+    [Action.PREVIEW]: convertMarkdownToHtml,
+    [Action.HTML]: convertMarkdownToHtml,
+    [Action.MINIFY]: async (input: string) =>
+      minimizeHtml(await convertMarkdownToHtml(input)),
   };
 
   const renderInput = (input: string, setInput: (v: string) => void) => (
