@@ -28,6 +28,7 @@
     "isbot": "^5.1.32",
     "jszip": "^3.10.1",
     "marked": "^17.0.1",
+    "moment-timezone": "^0.6.0",
     "prettier": "^3.7.4",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.3",

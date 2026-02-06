@@ -20,6 +20,7 @@ export class Routes {
   static readonly NS_LOOKUP = "/ns-lookup";
   static readonly WHOIS = "/whois";
   static readonly UNIX_TIMESTAMP = "/unix-timestamp";
+  static readonly TIMEZONE_CONVERTER = "/timezone-converter";
   static readonly SQL_FORMATTER = "/sql-formatter";
   static readonly QR_CODE = "/qr-code";
   static readonly HASHING = "/hashing";
@@ -48,6 +49,7 @@ export default [
   route(Routes.NS_LOOKUP, "./routes/ns-lookup.tsx"),
   route(Routes.WHOIS, "./routes/whois.tsx"),
   route(Routes.UNIX_TIMESTAMP, "./routes/unix-timestamp.tsx"),
+  route(Routes.TIMEZONE_CONVERTER, "./routes/timezone-converter.tsx"),
   route(Routes.SQL_FORMATTER, "./routes/sql-formatter.tsx"),
   route(Routes.QR_CODE, "./routes/qr-code.tsx"),
   route(Routes.HASHING, "./routes/hashing.tsx"),

@@ -110,6 +110,12 @@ export const utilities: Record<string, Utility> = {
       "Convert Unix timestamps to human-readable dates and vice versa. Supports seconds, milliseconds, microseconds, and nanoseconds.",
     url: Routes.UNIX_TIMESTAMP,
   },
+  timezoneConverter: {
+    name: "Timezone Converter",
+    description:
+      "Convert dates and times between timezones instantly. Supports all IANA timezones with accurate daylight saving adjustments.",
+    url: Routes.TIMEZONE_CONVERTER,
+  },
   sqlFormatter: {
     name: "SQL Formatter",
     description:
@@ -163,6 +169,6 @@ export const sidebar = [
   },
   {
     name: "Time",
-    children: [utilities.unixTimestamp],
+    children: [utilities.unixTimestamp, utilities.timezoneConverter],
   },
 ];
