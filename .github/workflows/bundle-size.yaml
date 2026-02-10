@@ -51,8 +51,9 @@ jobs:
           echo "Bundle sizes:"
           cat bundle-sizes.txt
 
-          # Keep a copy for the cache save step on push-to-main
-          cp bundle-sizes.txt main-bundle-sizes.txt
+      - name: Prepare baseline
+        if: github.event_name == 'push'
+        run: cp bundle-sizes.txt main-bundle-sizes.txt
 
       - name: Save baseline to cache
         if: github.event_name == 'push'
