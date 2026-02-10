@@ -5,6 +5,7 @@ on:
     types: [completed]
 
 permissions:
+  actions: read
   pull-requests: write
 
 jobs:
@@ -20,6 +21,15 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Log downloaded artifacts
+        run: |
+          echo "Downloaded artifacts:"
+          ls -la
+          echo "--- bundle-sizes.txt ---"
+          cat bundle-sizes.txt
+          echo "--- pr-number.txt ---"
+          cat pr-number.txt
+
       - name: Read bundle sizes
         id: sizes
         run: |
@@ -30,6 +40,14 @@ jobs:
       - name: Read PR number
         id: pr
         run: echo "number=$(cat pr-number.txt)" >> $GITHUB_OUTPUT
+
+      - name: Log parsed values
+        run: |
+          echo "PR number:   ${{ steps.pr.outputs.number }}"
+          echo "Client size: ${{ steps.sizes.outputs.client_size }} KB"
+          echo "Client gzip: ${{ steps.sizes.outputs.client_gzip }} KB"
+          echo "Worker size: ${{ steps.sizes.outputs.worker_size }} KB"
+          echo "Worker gzip: ${{ steps.sizes.outputs.worker_gzip }} KB"
 
       - name: Comment bundle size
         uses: marocchino/sticky-pull-request-comment@v2
