@@ -25,38 +25,18 @@ jobs:
         run: |
           echo "Downloaded artifacts:"
           ls -la
-          echo "--- bundle-sizes.txt ---"
-          cat bundle-sizes.txt
           echo "--- pr-number.txt ---"
           cat pr-number.txt
-
-      - name: Read bundle sizes
-        id: sizes
-        run: |
-          while IFS='=' read -r key value; do
-            echo "$key=$value" >> $GITHUB_OUTPUT
-          done < bundle-sizes.txt
+          echo "--- comment-body.md ---"
+          cat comment-body.md
 
       - name: Read PR number
         id: pr
         run: echo "number=$(cat pr-number.txt)" >> $GITHUB_OUTPUT
-
-      - name: Log parsed values
-        run: |
-          echo "PR number:   ${{ steps.pr.outputs.number }}"
-          echo "Client size: ${{ steps.sizes.outputs.client_size }} KB"
-          echo "Client gzip: ${{ steps.sizes.outputs.client_gzip }} KB"
-          echo "Worker size: ${{ steps.sizes.outputs.worker_size }} KB"
-          echo "Worker gzip: ${{ steps.sizes.outputs.worker_gzip }} KB"
 
       - name: Comment bundle size
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           number: ${{ steps.pr.outputs.number }}
           header: bundle-size
-          message: |
-            ## Bundle Size Report
-            | Bundle | Size | Gzipped |
-            |--------|------|---------|
-            | Client (JS) | ${{ steps.sizes.outputs.client_size }} KB | ${{ steps.sizes.outputs.client_gzip }} KB |
-            | Worker (JS) | ${{ steps.sizes.outputs.worker_size }} KB | ${{ steps.sizes.outputs.worker_gzip }} KB |
+          path: comment-body.md
