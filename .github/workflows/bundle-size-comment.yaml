@@ -1,0 +1,44 @@
+name: Bundle Size Comment
+on:
+  workflow_run:
+    workflows: ["Bundle Size"]
+    types: [completed]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  comment:
+    name: Comment Bundle Size
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Download bundle size data
+        uses: actions/download-artifact@v4
+        with:
+          name: bundle-size-data
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read bundle sizes
+        id: sizes
+        run: |
+          while IFS='=' read -r key value; do
+            echo "$key=$value" >> $GITHUB_OUTPUT
+          done < bundle-sizes.txt
+
+      - name: Read PR number
+        id: pr
+        run: echo "number=$(cat pr-number.txt)" >> $GITHUB_OUTPUT
+
+      - name: Comment bundle size
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          number: ${{ steps.pr.outputs.number }}
+          header: bundle-size
+          message: |
+            ## Bundle Size Report
+            | Bundle | Size | Gzipped |
+            |--------|------|---------|
+            | Client (JS) | ${{ steps.sizes.outputs.client_size }} KB | ${{ steps.sizes.outputs.client_gzip }} KB |
+            | Worker (JS) | ${{ steps.sizes.outputs.worker_size }} KB | ${{ steps.sizes.outputs.worker_gzip }} KB |
