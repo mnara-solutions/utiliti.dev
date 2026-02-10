@@ -2,6 +2,8 @@ name: Bundle Size
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
 
 jobs:
   bundle-size:
@@ -10,6 +12,16 @@ jobs:
     steps:
       - name: Checkout project sources
         uses: actions/checkout@v4
+
+      - name: Restore main baseline
+        if: github.event_name == 'pull_request'
+        id: baseline
+        uses: actions/cache/restore@v4
+        with:
+          path: main-bundle-sizes.txt
+          key: bundle-size-baseline-
+          restore-keys: |
+            bundle-size-baseline-
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -24,28 +36,129 @@ jobs:
         run: npm run build
 
       - name: Extract bundle sizes
-        id: bundle_sizes
         run: |
-          # Client JS bundle
           CLIENT_SIZE=$(find build/client/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
           CLIENT_GZIP=$(find build/client/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
 
-          # Worker JS bundle
           WORKER_SIZE=$(find build/server/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
           WORKER_GZIP=$(find build/server/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
 
-          echo "client_size=$CLIENT_SIZE" >> bundle-sizes.txt
+          echo "client_size=$CLIENT_SIZE" > bundle-sizes.txt
           echo "client_gzip=$CLIENT_GZIP" >> bundle-sizes.txt
           echo "worker_size=$WORKER_SIZE" >> bundle-sizes.txt
           echo "worker_gzip=$WORKER_GZIP" >> bundle-sizes.txt
 
+          echo "Bundle sizes:"
+          cat bundle-sizes.txt
+
+          # Keep a copy for the cache save step on push-to-main
+          cp bundle-sizes.txt main-bundle-sizes.txt
+
+      - name: Save baseline to cache
+        if: github.event_name == 'push'
+        uses: actions/cache/save@v4
+        with:
+          path: main-bundle-sizes.txt
+          key: bundle-size-baseline-${{ github.sha }}
+
+      - name: Generate comparison report
+        if: github.event_name == 'pull_request'
+        run: |
+          # Read PR sizes
+          while IFS='=' read -r key value; do
+            declare "pr_$key=$value"
+          done < bundle-sizes.txt
+
+          HAS_BASELINE="false"
+          if [ -f main-bundle-sizes.txt ]; then
+            HAS_BASELINE="true"
+            while IFS='=' read -r key value; do
+              declare "main_$key=$value"
+            done < main-bundle-sizes.txt
+          fi
+
+          format_diff() {
+            local diff=$1
+            local base=$2
+            local pct=""
+            if [ "$base" -gt 0 ]; then
+              pct=$(awk "BEGIN {printf \"%.1f\", ($diff / $base) * 100}")
+            fi
+            if [ "$diff" -gt 0 ]; then
+              echo "↑ +${diff} (+${pct}%)"
+            elif [ "$diff" -lt 0 ]; then
+              echo "↓ ${diff} (${pct}%)"
+            else
+              echo "— 0"
+            fi
+          }
+
+          # Flag with ⚠️ if gzip increase > 5%
+          flag_gzip() {
+            local diff=$1
+            local base=$2
+            if [ "$base" -gt 0 ] && [ "$diff" -gt 0 ]; then
+              local pct=$(awk "BEGIN {printf \"%.0f\", ($diff / $base) * 100}")
+              if [ "$pct" -gt 5 ]; then
+                echo " ⚠️"
+                return
+              fi
+            fi
+            echo ""
+          }
+
+          if [ "$HAS_BASELINE" = "true" ]; then
+            cs_diff=$((pr_client_size - main_client_size))
+            cg_diff=$((pr_client_gzip - main_client_gzip))
+            ws_diff=$((pr_worker_size - main_worker_size))
+            wg_diff=$((pr_worker_gzip - main_worker_gzip))
+
+            cg_flag=$(flag_gzip $cg_diff $main_client_gzip)
+            wg_flag=$(flag_gzip $wg_diff $main_worker_gzip)
+
+            cat > comment-body.md <<EOF
+          ## Bundle Size Report
+
+          | Bundle | Size | Gzipped | Δ Size | Δ Gzipped |
+          |--------|------|---------|--------|-----------|
+          | Client (JS) | ${pr_client_size} KB | ${pr_client_gzip} KB | $(format_diff $cs_diff $main_client_size) KB | $(format_diff $cg_diff $main_client_gzip) KB${cg_flag} |
+          | Worker (JS) | ${pr_worker_size} KB | ${pr_worker_gzip} KB | $(format_diff $ws_diff $main_worker_size) KB | $(format_diff $wg_diff $main_worker_gzip) KB${wg_flag} |
+
+          <details>
+          <summary>Compared to main</summary>
+
+          | Bundle | Main Size | Main Gzipped |
+          |--------|-----------|--------------|
+          | Client (JS) | ${main_client_size} KB | ${main_client_gzip} KB |
+          | Worker (JS) | ${main_worker_size} KB | ${main_worker_gzip} KB |
+
+          </details>
+          EOF
+          else
+            cat > comment-body.md <<EOF
+          ## Bundle Size Report
+
+          | Bundle | Size | Gzipped |
+          |--------|------|---------|
+          | Client (JS) | ${pr_client_size} KB | ${pr_client_gzip} KB |
+          | Worker (JS) | ${pr_worker_size} KB | ${pr_worker_gzip} KB |
+
+          > _No baseline found for \`main\`. Comparison will be available after the next merge._
+          EOF
+          fi
+
+          echo "Generated comment:"
+          cat comment-body.md
+
       - name: Save PR number
+        if: github.event_name == 'pull_request'
         run: echo "${{ github.event.number }}" > pr-number.txt
 
       - name: Upload bundle size data
+        if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: bundle-size-data
           path: |
-            bundle-sizes.txt
+            comment-body.md
             pr-number.txt
