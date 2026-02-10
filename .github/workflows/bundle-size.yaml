@@ -3,9 +3,6 @@ on:
   pull_request:
     branches: [main]
 
-permissions:
-  pull-requests: write
-
 jobs:
   bundle-size:
     name: Bundle Size
@@ -26,31 +23,29 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Extract client bundle size
-        id: client_bundle_size
+      - name: Extract bundle sizes
+        id: bundle_sizes
         run: |
-          # Get JS-only size (excludes fonts, CSS, etc.)
-          JS_SIZE=$(find build/client/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
-          JS_GZIP=$(find build/client/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
-          echo "size=$JS_SIZE" >> $GITHUB_OUTPUT
-          echo "gzip=$JS_GZIP" >> $GITHUB_OUTPUT
+          # Client JS bundle
+          CLIENT_SIZE=$(find build/client/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
+          CLIENT_GZIP=$(find build/client/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
 
-      - name: Extract worker bundle size
-        id: worker_bundle_size
-        run: |
-          # Get JS-only size for server bundle
-          JS_SIZE=$(find build/server/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
-          JS_GZIP=$(find build/server/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
-          echo "size=$JS_SIZE" >> $GITHUB_OUTPUT
-          echo "gzip=$JS_GZIP" >> $GITHUB_OUTPUT
+          # Worker JS bundle
+          WORKER_SIZE=$(find build/server/assets -name "*.js" -exec cat {} + | wc -c | awk '{printf "%.0f", $1/1024}')
+          WORKER_GZIP=$(find build/server/assets -name "*.js" -exec cat {} + | gzip -c | wc -c | awk '{printf "%.0f", $1/1024}')
 
-      - name: Comment bundle size
-        uses: marocchino/sticky-pull-request-comment@v2
+          echo "client_size=$CLIENT_SIZE" >> bundle-sizes.txt
+          echo "client_gzip=$CLIENT_GZIP" >> bundle-sizes.txt
+          echo "worker_size=$WORKER_SIZE" >> bundle-sizes.txt
+          echo "worker_gzip=$WORKER_GZIP" >> bundle-sizes.txt
+
+      - name: Save PR number
+        run: echo "${{ github.event.number }}" > pr-number.txt
+
+      - name: Upload bundle size data
+        uses: actions/upload-artifact@v4
         with:
-          header: bundle-size
-          message: |
-            ## Bundle Size Report
-            | Bundle | Size | Gzipped |
-            |--------|------|---------|
-            | Client (JS) | ${{ steps.client_bundle_size.outputs.size }} KB | ${{ steps.client_bundle_size.outputs.gzip }} KB |
-            | Worker (JS) | ${{ steps.worker_bundle_size.outputs.size }} KB | ${{ steps.worker_bundle_size.outputs.gzip }} KB |
+          name: bundle-size-data
+          path: |
+            bundle-sizes.txt
+            pr-number.txt
