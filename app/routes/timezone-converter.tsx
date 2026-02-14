@@ -1,20 +1,18 @@
 import { useRef, useState } from "react";
-import { format } from "date-fns";
-import moment from "moment-timezone";
-import type { Moment } from "moment-timezone";
+import { format, formatInTimeZone } from "date-fns-tz";
 
 import { metaHelper } from "~/utils/meta";
 import { utilities } from "~/utilities";
-
 import Box, { BoxContent, BoxTitle } from "~/components/box";
 import ContentWrapper from "~/components/content-wrapper";
 import Copy from "~/components/copy";
 import { useHydrated } from "~/hooks/use-hydrated";
-import FadeIn from "~/components/fade-in";
+import Dropdown from "~/components/dropdown";
 
 export const meta = metaHelper(utilities.timezoneConverter);
 
-const timeZones = moment.tz.names();
+const timeZones = Intl.supportedValuesOf("timeZone").sort();
+const formatString = "yyyy/MM/dd hh:mm:ss a";
 
 function Row({ title, value }: { title: string; value: string }) {
   return (
@@ -33,25 +31,23 @@ function Row({ title, value }: { title: string; value: string }) {
 export default function TimezoneConverter() {
   const hydrated = useHydrated();
   const dateRef = useRef<HTMLInputElement>(null);
-  const [targetZone, setTargetZone] = useState<string>("UTC");
-  const [input, setInput] = useState<Moment | null>(null);
 
-  const initialDate = hydrated ? new Date() : new Date("2023-04-16");
-  const systemTimeZone = moment.tz.guess() || "UTC";
+  const [input, setInput] = useState<Date>(new Date());
 
-  const onConvert = () => {
+  const initialDate = hydrated ? new Date() : new Date("2026-01-01T00:00:00Z");
+  const systemTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const [targetZone, setTargetZone] = useState<string>(
+    hydrated ? systemTimeZone : "America/Vancouver",
+  );
+
+  const onDateChange = () => {
     const value = dateRef.current?.value;
     if (!value) {
-      setInput(null);
+      setInput(new Date());
       return;
     }
 
-    const m = moment.tz(value, systemTimeZone);
-    if (!m.isValid()) {
-      setInput(null);
-      return;
-    }
-
+    const m = new Date(value + "Z");
     setInput(m);
   };
 
@@ -62,13 +58,7 @@ export default function TimezoneConverter() {
       <Box className="mt-6">
         <BoxTitle title="Input" />
         <BoxContent isLast={true} className="px-2 py-2">
-          <form
-            className="flex flex-col gap-2 md:flex-row md:items-center"
-            onSubmit={(e) => {
-              e.preventDefault();
-              onConvert();
-            }}
-          >
+          <div className="flex flex-col gap-2 md:flex-row md:items-center">
             <div className="flex items-center md:w-1/2">
               <div className="w-28 text-sm">Date &amp; Time</div>
               <div className="flex grow lg:grow-0">
@@ -78,80 +68,49 @@ export default function TimezoneConverter() {
                   step={1}
                   className="w-52 md:w-56 block text-sm border rounded-lg bg-zinc-700 border-zinc-600 placeholder-zinc-400 text-white focus:ring-orange-500 focus:border-orange-500"
                   defaultValue={format(initialDate, "yyyy-MM-dd'T'HH:mm:ss")}
+                  onChange={onDateChange}
                 />
               </div>
             </div>
 
             <div className="flex items-center md:w-1/2">
               <div className="w-28 text-sm">Target Time Zone</div>
-              <select
-                className="w-52 md:w-56 block text-sm border rounded-lg bg-zinc-700 border-zinc-600 text-white focus:ring-orange-500 focus:border-orange-500"
-                value={targetZone}
-                onChange={(e) => setTargetZone(e.target.value)}
-              >
-                {timeZones.map((tz) => (
-                  <option key={tz} value={tz}>
-                    {tz}
-                  </option>
-                ))}
-              </select>
+              <div className="flex grow lg:grow-0">
+                <Dropdown
+                  value={targetZone}
+                  onChange={(event) => setTargetZone(event.target.value)}
+                  onOptionChange={(value) => setTargetZone(value)}
+                  options={timeZones.map((tz) => ({ id: tz, label: tz }))}
+                />
+              </div>
             </div>
-
-            <div className="md:pl-2">
-              <button
-                type="submit"
-                className="inline-flex justify-center px-3 py-2 rounded-sm cursor-pointer text-orange-600 hover:text-white hover:bg-orange-800"
-              >
-                Convert
-              </button>
-            </div>
-          </form>
+          </div>
         </BoxContent>
       </Box>
 
-      <FadeIn show={input != null} className="mt-6">
-        {!input ? null : !input.isValid() ? (
-          <Box>
-            <BoxTitle title="Error" />
-            <BoxContent isLast={true} className="px-3 py-2 text-red-400">
-              Invalid date.
-            </BoxContent>
-          </Box>
-        ) : (
-          <Box>
-            <BoxTitle title="Output" />
-            <BoxContent isLast={true} className="px-3 py-2">
-              <table className="w-full text-sm text-left text-gray-400">
-                <tbody>
-                  <Row
-                    title="UTC"
-                    value={input
-                      .clone()
-                      .tz("UTC")
-                      .format("YYYY-MM-DD HH:mm:ss z")}
-                  />
-                  <Row
-                    title={systemTimeZone}
-                    value={input
-                      .clone()
-                      .tz(systemTimeZone)
-                      .format("YYYY-MM-DD HH:mm:ss z")}
-                  />
-                  <Row
-                    title={targetZone}
-                    value={input
-                      .clone()
-                      .tz(targetZone)
-                      .format("YYYY-MM-DD HH:mm:ss z")}
-                  />
-                </tbody>
-              </table>
-            </BoxContent>
-          </Box>
-        )}
-      </FadeIn>
+      <Box className="mt-6">
+        <BoxTitle title="Output" />
+        <BoxContent isLast={true} className="px-3 py-2">
+          <table className="w-full text-sm text-left text-gray-400">
+            <tbody>
+              <Row
+                title="UTC"
+                value={formatInTimeZone(input, "UTC", formatString)}
+              />
+              <Row
+                title={systemTimeZone}
+                value={formatInTimeZone(input, systemTimeZone, formatString)}
+              />
+              <Row
+                title={targetZone}
+                value={formatInTimeZone(input, targetZone, formatString)}
+              />
+            </tbody>
+          </table>
+        </BoxContent>
+      </Box>
 
-      <h2>Why Use Utiliti&apos;s Unix Timezone Converter?</h2>
+      <h2>Why Use Utiliti&apos;s Timezone Converter?</h2>
       <p>
         Utiliti&apos;s Time Zone Converter offers a quick, easy, and private way
         to convert date and time values between different time zones. Whether
@@ -185,7 +144,7 @@ export default function TimezoneConverter() {
         </li>
         <li>
           <strong>Accurate Conversions:</strong> Powered by the reliable
-          <code>moment-timezone</code> library to ensure precise results.
+          <code>date-fns-tz</code> library to ensure precise results.
         </li>
         <li>
           <strong>Quick UTC:</strong> Instantly see the UTC equivalent of your
