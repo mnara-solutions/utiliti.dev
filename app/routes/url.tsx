@@ -29,8 +29,17 @@ enum Action {
   DECODE = "Decode",
 }
 
+//the usage of this function expects a protocol in the url, so we need to add the protocol if its not in the text
 function textToUrl(text: string) {
-  return text.startsWith("https%3A%2F%2F") ? decodeURIComponent(text) : text;
+  // decode encoded text - we check index of "://" since it could be https or http
+  if (text.indexOf("%3A%2F%2F") <= 5) {
+    return decodeURIComponent(text);
+  // if text starts with http (or https), we return text as is 
+  } else if (text.startsWith("http")) {
+    return text;
+  }
+  // if text does not include protocol, we add it.
+  return `https://${text}`;
 }
 
 async function encode(text: string): Promise<string | JsonURL> {
